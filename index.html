@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CommandScout | Tactical Syntax & Scaffolding Studio</title>
+  <link rel="icon" type="image/x-icon" href="/commandscout.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #030508;
+      --bg-surface: #090c12;
+      --bg-card: #0d121c;
+      --bg-card-hover: #141c2c;
+      --bg-input: #05080e;
+      --border-subtle: #1c273c;
+      --border-focus: #00ff88;
+      --accent-cyan: #00e5ff;
+      --accent-blue: #3d82f6;
+      --accent-green: #00ff66;
+      --accent-purple: #b05cff;
+      --accent-amber: #ffb300;
+      --accent-red: #ff2244;
+      --text-main: #f8fafc;
+      --text-muted: #9db2ce;
+      --text-dim: #5c708f;
+      --shadow-glow: 0 0 25px rgba(0, 255, 102, 0.25);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation Header */
+    header {
+      background: linear-gradient(180deg, rgba(9, 12, 18, 0.95) 0%, rgba(3, 5, 8, 0.95) 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #000;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Dual Environment Switcher */
+    .env-switcher {
+      display: flex;
+      background: var(--bg-input);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      gap: 4px;
+    }
+
+    .env-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .env-btn:hover {
+      color: #fff;
+    }
+
+    .env-btn.active {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.25));
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+    }
+
+    /* Live Search Bar */
+    .search-box {
+      position: relative;
+      width: 320px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      padding: 9px 14px 9px 38px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    /* Main Layout */
+    .app-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Left Sidebar: Tool Selector */
+    .sidebar {
+      width: 320px;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      height: calc(100vh - 150px);
+    }
+
+    .sidebar-header {
+      padding: 16px 20px 12px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .pill-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill-btn:hover, .pill-btn.active {
+      color: #fff;
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .tool-list {
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      gap: 4px;
+    }
+
+    .tool-item {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+    }
+
+    .tool-item:hover {
+      background: var(--bg-card);
+    }
+
+    .tool-item.active {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.15);
+    }
+
+    .tool-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tool-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: #fff;
+    }
+
+    .tool-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .tool-desc-preview {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Center Content Area */
+    .content-area {
+      flex: 1;
+      padding: 28px 36px 120px;
+      overflow-y: auto;
+      height: calc(100vh - 150px);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .active-tool-banner {
+      background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-card) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .active-tool-info h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .active-tool-info p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .recipes-section-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 14px;
+    }
+
+    .recipe-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .recipe-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(6, 182, 212, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .recipe-card.active {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.2);
+    }
+
+    .recipe-card-title {
+      font-weight: 600;
+      font-size: 0.98rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .recipe-card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Parameter Scaffolding Box */
+    .params-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .params-header {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .params-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .param-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .param-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .param-input {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--accent-cyan);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.88rem;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    .param-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+      color: #fff;
+    }
+
+    /* Sticky Bottom Command Bar */
+    .command-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 13, 20, 0.98);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-subtle);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      z-index: 100;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .live-command-box {
+      flex: 1;
+      background: var(--bg-input);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.95rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+      user-select: all;
+      -webkit-user-select: all;
+      cursor: text;
+    }
+
+    .prompt-prefix {
+      color: var(--accent-green);
+      font-weight: 700;
+      user-select: none;
+    }
+
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-copy {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.3);
+    }
+
+    .btn-copy:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 22px rgba(6, 182, 212, 0.5);
+    }
+
+    .btn-copy.copied {
+      background: var(--accent-green);
+      color: #000;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+    }
+
+    .btn-exec {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-exec:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-blue);
+    }
+
+    /* Output Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 780px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      background: var(--bg-deep);
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="brand-group">
+      <div class="logo-badge">CS</div>
+      <div>
+        <div class="brand-title">CommandScout</div>
+        <div class="brand-subtitle">Tactical Syntax & Scaffolding Studio</div>
+      </div>
+    </div>
+
+    <!-- Dual Environment Selector -->
+    <div class="env-switcher">
+      <button class="env-btn active" id="btn-env-linux" onclick="switchEnvironment('linux')">
+        Linux / Kali Security
+      </button>
+      <button class="env-btn" id="btn-env-windows" onclick="switchEnvironment('windows')">
+        Windows / PowerShell
+      </button>
+    </div>
+
+    <!-- Live Search -->
+    <div class="search-box">
+      <span class="search-icon" style="font-weight: 700; font-size: 0.75rem; color: var(--accent-green); letter-spacing: 1px;">FIND</span>
+      <input type="text" id="search-input" class="search-input" placeholder="Search tool or recipe (e.g. nmap, winget)..." oninput="handleSearch()">
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-layout">
+
+    <!-- Left Sidebar: Tool Selector -->
+    <aside class="sidebar">
+      <div class="sidebar-header">Category Filter</div>
+      <div class="category-pills" id="category-pills">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="sidebar-header" style="margin-top: 6px;">Available Utilities (<span id="tool-count">0</span>)</div>
+      <div class="tool-list" id="tool-list">
+        <!-- Injected via JS -->
+      </div>
+    </aside>
+
+    <!-- Center Content -->
+    <main class="content-area">
+      <!-- Active Tool Banner -->
+      <div class="active-tool-banner" id="tool-banner">
+        <div class="active-tool-info">
+          <h1 id="active-tool-title">Nmap Network Scanner</h1>
+          <p id="active-tool-desc">Premier network exploration and vulnerability scanner.</p>
+        </div>
+        <div class="tool-badge" id="active-tool-category">Recon &amp; Scanning</div>
+      </div>
+
+      <!-- Recipes Grid -->
+      <div>
+        <div class="recipes-section-title">Operational Recipes (Click to Scaffold)</div>
+        <div class="recipe-grid" id="recipe-grid">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Parameter Scaffolding Box -->
+      <div class="params-container" id="params-container" style="display: none;">
+        <div class="params-header">
+          Parameter Scaffolding (Zero Typing: Edit Target IP / Ports Below)
+        </div>
+        <div class="params-grid" id="params-grid">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Sticky Bottom Command Bar -->
+  <footer class="command-footer">
+    <div class="live-command-box" onclick="const s = window.getSelection(); const r = document.createRange(); r.selectNodeContents(document.getElementById('live-command-text')); s.removeAllRanges(); s.addRange(r);">
+      <span class="prompt-prefix" id="prompt-prefix">user@kali:~$</span>
+      <span id="live-command-text">Select a recipe above to generate live syntax...</span>
+    </div>
+    <div class="action-buttons">
+      <button class="btn-copy" id="btn-copy" onclick="copyCurrentCommand()">
+        <span id="btn-copy-label">1-Click Copy</span>
+      </button>
+      <button class="btn-exec" id="btn-exec" onclick="executeCurrentCommand()">
+        Run
+      </button>
+    </div>
+  </footer>
+
+  <!-- Output Modal -->
+  <div class="modal-overlay" id="output-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title">Execution Output</div>
+        <button class="modal-close" onclick="closeModal()">X</button>
+      </div>
+      <div class="modal-body" id="modal-output">Executing command...</div>
+    </div>
+  </div>
+
+  <script>
+    let database = { linux: [], windows: [] };
+    let currentEnv = 'linux';
+    let currentCategory = 'ALL';
+    let activeTool = null;
+    let activeRecipe = null;
+    let currentParamValues = {};
+
+    // Web Audio Chime
+    function playChime() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+        osc.frequency.exponentialRampToValueAtTime(1320, audioCtx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.2);
+      } catch (e) {
+        // Fallback silently if audio context restricted
+      }
+    }
+
+    async function loadDatabase() {
+      try {
+        const res = await fetch('/api/commands');
+        if (res.ok) {
+          database = await res.json();
+          initUI();
+        } else {
+          console.error("Failed to load commands_db.json");
+        }
+      } catch (e) {
+        console.error("Error fetching database:", e);
+      }
+    }
+
+    function initUI() {
+      renderCategoryPills();
+      renderToolList();
+      if (database[currentEnv].length > 0) {
+        selectTool(database[currentEnv][0].id);
+      }
+    }
+
+    function switchEnvironment(env) {
+      currentEnv = env;
+      document.getElementById('btn-env-linux').classList.toggle('active', env === 'linux');
+      document.getElementById('btn-env-windows').classList.toggle('active', env === 'windows');
+      document.getElementById('prompt-prefix').textContent = env === 'linux' ? 'user@kali:~$' : 'PS C:\\Users\\Austin>';
+      
+      currentCategory = 'ALL';
+      document.getElementById('search-input').value = '';
+      renderCategoryPills();
+      renderToolList();
+
+      if (database[currentEnv].length > 0) {
+        selectTool(database[currentEnv][0].id);
+      }
+    }
+
+    function renderCategoryPills() {
+      const tools = database[currentEnv] || [];
+      const cats = ['ALL', ...new Set(tools.map(t => t.category))];
+      const container = document.getElementById('category-pills');
+      container.innerHTML = '';
+
+      cats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = `pill-btn ${cat === currentCategory ? 'active' : ''}`;
+        btn.textContent = cat;
+        btn.onclick = () => {
+          currentCategory = cat;
+          renderCategoryPills();
+          renderToolList();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function handleSearch() {
+      renderToolList();
+    }
+
+    function renderToolList() {
+      const query = document.getElementById('search-input').value.toLowerCase().trim();
+      const tools = database[currentEnv] || [];
+      const container = document.getElementById('tool-list');
+      container.innerHTML = '';
+
+      const filtered = tools.filter(tool => {
+        const matchesCategory = currentCategory === 'ALL' || tool.category === currentCategory;
+        const matchesSearch = !query || 
+          tool.name.toLowerCase().includes(query) || 
+          tool.id.toLowerCase().includes(query) ||
+          tool.desc.toLowerCase().includes(query) ||
+          tool.recipes.some(r => r.name.toLowerCase().includes(query) || r.desc.toLowerCase().includes(query));
+        return matchesCategory && matchesSearch;
+      });
+
+      document.getElementById('tool-count').textContent = filtered.length;
+
+      filtered.forEach(tool => {
+        const div = document.createElement('div');
+        div.className = `tool-item ${activeTool && activeTool.id === tool.id ? 'active' : ''}`;
+        div.onclick = () => selectTool(tool.id);
+
+        div.innerHTML = `
+          <div class="tool-header-row">
+            <span class="tool-name">${tool.name}</span>
+            <span class="tool-badge">${tool.category.split('&')[0].trim()}</span>
+          </div>
+          <div class="tool-desc-preview">${tool.desc}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function selectTool(toolId) {
+      const tools = database[currentEnv] || [];
+      activeTool = tools.find(t => t.id === toolId);
+      if (!activeTool) return;
+
+      renderToolList();
+
+      document.getElementById('active-tool-title').textContent = activeTool.name;
+      document.getElementById('active-tool-desc').textContent = activeTool.desc;
+      document.getElementById('active-tool-category').textContent = activeTool.category;
+
+      renderRecipes();
+    }
+
+    function renderRecipes() {
+      const container = document.getElementById('recipe-grid');
+      container.innerHTML = '';
+
+      if (!activeTool || !activeTool.recipes.length) {
+        container.innerHTML = '<div style="color: var(--text-dim);">No recipes found.</div>';
+        return;
+      }
+
+      activeTool.recipes.forEach((recipe, idx) => {
+        const card = document.createElement('div');
+        card.className = `recipe-card ${idx === 0 ? 'active' : ''}`;
+        card.onclick = () => selectRecipe(recipe, card);
+
+        card.innerHTML = `
+          <div class="recipe-card-title">
+            <span>${recipe.name}</span>
+          </div>
+          <div class="recipe-card-desc">${recipe.desc}</div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Default select first recipe
+      selectRecipe(activeTool.recipes[0]);
+    }
+
+    function selectRecipe(recipe, cardElement = null) {
+      activeRecipe = recipe;
+      currentParamValues = {};
+
+      if (cardElement) {
+        document.querySelectorAll('.recipe-card').forEach(c => c.classList.remove('active'));
+        cardElement.classList.add('active');
+      }
+
+      // Initialize default param values
+      if (recipe.params && recipe.params.length > 0) {
+        recipe.params.forEach(p => {
+          currentParamValues[p.key] = p.default || '';
+        });
+      }
+
+      renderParameters();
+      updateLiveCommand();
+    }
+
+    function renderParameters() {
+      const container = document.getElementById('params-container');
+      const grid = document.getElementById('params-grid');
+      grid.innerHTML = '';
+
+      if (!activeRecipe || !activeRecipe.params || activeRecipe.params.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'flex';
+
+      activeRecipe.params.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'param-field';
+
+        const label = document.createElement('label');
+        label.className = 'param-label';
+        label.textContent = p.label;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'param-input';
+        input.value = currentParamValues[p.key] || '';
+        input.placeholder = p.placeholder || '';
+        input.oninput = (e) => {
+          currentParamValues[p.key] = e.target.value;
+          updateLiveCommand();
+        };
+
+        div.appendChild(label);
+        div.appendChild(input);
+        grid.appendChild(div);
+      });
+    }
+
+    function updateLiveCommand() {
+      if (!activeRecipe) return;
+      let cmd = activeRecipe.template;
+
+      // Replace {{key}} placeholders with current values
+      for (const [key, val] of Object.entries(currentParamValues)) {
+        const regex = new RegExp(`{{${key}}}`, 'g');
+        cmd = cmd.replace(regex, val || `<${key}>`);
+      }
+
+      document.getElementById('live-command-text').textContent = cmd;
+    }
+
+    async function copyCurrentCommand() {
+      const cmd = document.getElementById('live-command-text').textContent;
+      if (!cmd || cmd.startsWith('Select a recipe')) return;
+
+      playChime();
+
+      // 1. Direct robust browser copy
+      let copied = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(cmd);
+          copied = true;
+        }
+      } catch (err) {
+        console.warn('navigator.clipboard failed, attempting textarea fallback:', err);
+      }
+
+      if (!copied) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = cmd;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          ta.style.top = '-9999px';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          copied = true;
+        } catch (e) {
+          console.error('Textarea copy fallback failed:', e);
+        }
+      }
+
+      // 2. Notify backend
+      try {
+        fetch('/api/copy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ command: cmd })
+        }).catch(() => {});
+      } catch (e) {}
+
+      // Visual feedback
+      const btn = document.getElementById('btn-copy');
+      const label = document.getElementById('btn-copy-label');
+
+      btn.classList.add('copied');
+      label.textContent = 'Copied to Clipboard!';
+
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        label.textContent = '1-Click Copy';
+      }, 1600);
+    }
+
+    async function executeCurrentCommand() {
+      const cmd = document.getElementById('live-command-text').textContent;
+      if (!cmd || cmd.startsWith('Select a recipe')) return;
+
+      const modal = document.getElementById('output-modal');
+      const modalOutput = document.getElementById('modal-output');
+      const modalTitle = document.getElementById('modal-title');
+
+      modal.classList.add('open');
+      modalTitle.textContent = `Executing in ${currentEnv === 'linux' ? 'WSL2 Kali' : 'PowerShell'}...`;
+      modalOutput.textContent = `>> [CommandScout] Running: ${cmd}\n\nPlease wait...\n`;
+
+      try {
+        const res = await fetch('/api/execute', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ command: cmd, env: currentEnv === 'linux' ? 'wsl' : 'powershell' })
+        });
+
+        const data = await res.json();
+        if (data.error) {
+          modalOutput.textContent += `\n[ERROR]: ${data.error}`;
+        } else {
+          modalOutput.textContent = `>> Exit Code: ${data.exit_code}\n\n`;
+          if (data.stdout) modalOutput.textContent += `--- STDOUT ---\n${data.stdout}\n`;
+          if (data.stderr) modalOutput.textContent += `--- STDERR ---\n${data.stderr}\n`;
+        }
+      } catch (e) {
+        modalOutput.textContent += `\n[COMMUNICATION ERROR]: ${e}`;
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('output-modal').classList.remove('open');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    loadDatabase();
+  </script>
+</body>
+</html>
