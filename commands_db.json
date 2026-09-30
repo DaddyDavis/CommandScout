@@ -24,7 +24,8 @@
               "default": "1-1000",
               "placeholder": "80,443,8080 or 1-65535"
             }
-          ]
+          ],
+          "id": "nmap_stealth_syn_port_scan"
         },
         {
           "name": "Aggressive OS & Service Version Detection",
@@ -43,7 +44,8 @@
               "default": "1-1024",
               "placeholder": "21,22,80,443"
             }
-          ]
+          ],
+          "id": "nmap_aggressive_os_service_version_detection"
         },
         {
           "name": "Comprehensive Vulnerability Engine (NSE Vuln)",
@@ -56,7 +58,8 @@
               "default": "192.168.1.1",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "nmap_comprehensive_vulnerability_engine_nse_vuln"
         },
         {
           "name": "Subnet Live Host Discovery (Ping Sweep)",
@@ -69,7 +72,8 @@
               "default": "192.168.1.0/24",
               "placeholder": "10.0.0.0/24"
             }
-          ]
+          ],
+          "id": "nmap_subnet_live_host_discovery_ping_sweep"
         },
         {
           "name": "Fast UDP Top Ports Audit",
@@ -88,7 +92,8 @@
               "default": "50",
               "placeholder": "20, 50, 100"
             }
-          ]
+          ],
+          "id": "nmap_fast_udp_top_ports_audit"
         },
         {
           "name": "SMB Share & Security Enum (SMB-Security-Mode)",
@@ -101,7 +106,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "nmap_smb_share_security_enum_smb_security_mode"
         }
       ]
     },
@@ -123,7 +129,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0, wlan0mon"
             }
-          ]
+          ],
+          "id": "kismet_launch_kismet_on_monitor_interface"
         },
         {
           "name": "Headless Logging with Fixed Channel",
@@ -148,7 +155,8 @@
               "default": "TacticalCapture",
               "placeholder": "Campus_Scan"
             }
-          ]
+          ],
+          "id": "kismet_headless_logging_with_fixed_channel"
         },
         {
           "name": "Capture with RTL-SDR Source (HackRF / NESDR)",
@@ -161,7 +169,8 @@
               "default": "rtlsdr",
               "placeholder": "rtlsdr, hackrf"
             }
-          ]
+          ],
+          "id": "kismet_capture_with_rtl_sdr_source_hackrf_nesdr"
         },
         {
           "name": "Multi-Source Dual-Band Capture (Wi-Fi + SDR)",
@@ -180,7 +189,8 @@
               "default": "rtlsdr",
               "placeholder": "rtlsdr, hackrf"
             }
-          ]
+          ],
+          "id": "kismet_multi_source_dual_band_capture_wi_fi_sdr"
         },
         {
           "name": "GPS-Tagged Wardriving with GPSD",
@@ -193,7 +203,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0mon"
             }
-          ]
+          ],
+          "id": "kismet_gps_tagged_wardriving_with_gpsd"
         },
         {
           "name": "Export Kismet Log to PCAP (kismetdb_to_pcap)",
@@ -212,13 +223,15 @@
               "default": "kismet_export.pcap",
               "placeholder": "export.pcap"
             }
-          ]
+          ],
+          "id": "kismet_export_kismet_log_to_pcap_kismetdb_to_pcap"
         },
         {
           "name": "REST API - List All Detected Devices (curl)",
           "desc": "Queries Kismet's built-in REST API to dump JSON of all tracked wireless devices.",
           "template": "curl -s http://localhost:2501/devices/all_devices.json -u kismet:kismet | python3 -m json.tool | head -100",
-          "params": []
+          "params": [],
+          "id": "kismet_rest_api_list_all_detected_devices_curl"
         }
       ]
     },
@@ -240,7 +253,8 @@
               "default": "wlan0",
               "placeholder": "wlan0"
             }
-          ]
+          ],
+          "id": "aircrack_enable_monitor_mode_airmon_ng"
         },
         {
           "name": "Targeted Handshake Capture (airodump-ng)",
@@ -271,7 +285,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0mon"
             }
-          ]
+          ],
+          "id": "aircrack_targeted_handshake_capture_airodump_ng"
         },
         {
           "name": "Deauthentication Attack (aireplay-ng)",
@@ -302,7 +317,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0mon"
             }
-          ]
+          ],
+          "id": "aircrack_deauthentication_attack_aireplay_ng"
         },
         {
           "name": "Dictionary Handshake Crack (aircrack-ng)",
@@ -327,7 +343,8 @@
               "default": "handshake_capture-01.cap",
               "placeholder": "capture.cap"
             }
-          ]
+          ],
+          "id": "aircrack_dictionary_handshake_crack_aircrack_ng"
         }
       ]
     },
@@ -349,7 +366,8 @@
               "default": "eth0",
               "placeholder": "eth0, any, 1"
             }
-          ]
+          ],
+          "id": "tshark_live_http_host_uri_sniffer"
         },
         {
           "name": "DNS Query Resolution Sniffer",
@@ -362,7 +380,8 @@
               "default": "eth0",
               "placeholder": "eth0, any"
             }
-          ]
+          ],
+          "id": "tshark_dns_query_resolution_sniffer"
         },
         {
           "name": "Filter Existing PCAP for Specific IP",
@@ -387,7 +406,8 @@
               "default": "filtered.pcap",
               "placeholder": "target_traffic.pcap"
             }
-          ]
+          ],
+          "id": "tshark_filter_existing_pcap_for_specific_ip"
         }
       ]
     },
@@ -427,7 +447,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "hydra_ssh_parallel_brute_force"
         },
         {
           "name": "FTP Brute Force with User & Pass Lists",
@@ -452,7 +473,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "hydra_ftp_brute_force_with_user_pass_lists"
         }
       ]
     },
@@ -492,7 +514,8 @@
               "default": "20",
               "placeholder": "10, 20, 50"
             }
-          ]
+          ],
+          "id": "gobuster_web_directory_file_brute_force"
         },
         {
           "name": "DNS Subdomain Enumeration",
@@ -511,7 +534,8 @@
               "default": "/usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt",
               "placeholder": "subdomains.txt"
             }
-          ]
+          ],
+          "id": "gobuster_dns_subdomain_enumeration"
         }
       ]
     },
@@ -539,7 +563,8 @@
               "default": "/usr/share/wordlists/rockyou.txt",
               "placeholder": "wordlist.txt"
             }
-          ]
+          ],
+          "id": "hashcat_ntlm_hash_cracking_mode_1000"
         },
         {
           "name": "WPA/WPA2 Handshake Hashcat (Mode 22000)",
@@ -558,7 +583,8 @@
               "default": "/usr/share/wordlists/rockyou.txt",
               "placeholder": "wordlist.txt"
             }
-          ]
+          ],
+          "id": "hashcat_wpa_wpa2_handshake_hashcat_mode_22000"
         }
       ]
     },
@@ -592,7 +618,8 @@
               "default": "payload_x64.exe",
               "placeholder": "update.exe"
             }
-          ]
+          ],
+          "id": "metasploit_generate_windows_x64_reverse_shell_msfvenom"
         },
         {
           "name": "Quick Multi-Handler One-Liner (Msfconsole)",
@@ -611,7 +638,8 @@
               "default": "4444",
               "placeholder": "4444"
             }
-          ]
+          ],
+          "id": "metasploit_quick_multi_handler_one_liner_msfconsole"
         }
       ]
     },
@@ -633,7 +661,8 @@
               "default": "4444",
               "placeholder": "80, 4444, 9001"
             }
-          ]
+          ],
+          "id": "netcat_simple_tcp_port_listener"
         },
         {
           "name": "Banner Grabbing on Target Port",
@@ -652,7 +681,8 @@
               "default": "22",
               "placeholder": "21, 22, 80"
             }
-          ]
+          ],
+          "id": "netcat_banner_grabbing_on_target_port"
         }
       ]
     },
@@ -667,19 +697,22 @@
           "name": "Audit SUID Binaries (Privilege Escalation)",
           "desc": "Scans filesystem for root-owned executables with setuid bit set.",
           "template": "find / -perm -4000 -user root -type f 2>/dev/null",
-          "params": []
+          "params": [],
+          "id": "linux_admin_audit_suid_binaries_privilege_escalation"
         },
         {
           "name": "Listening Endpoints with Owning PIDs (ss)",
           "desc": "Lists active TCP and UDP listening sockets without DNS name resolution delay.",
           "template": "ss -tulpn",
-          "params": []
+          "params": [],
+          "id": "linux_admin_listening_endpoints_with_owning_pids_ss"
         },
         {
           "name": "Real-Time Auth Log Monitor (Failed SSH)",
           "desc": "Follows auth.log and highlights failed authentication attempts.",
           "template": "tail -f /var/log/auth.log | grep -i --color=always \"failed\"",
-          "params": []
+          "params": [],
+          "id": "linux_admin_real_time_auth_log_monitor_failed_ssh"
         },
         {
           "name": "Inspect Service Status and Recent Logs (systemctl)",
@@ -692,7 +725,8 @@
               "default": "ssh",
               "placeholder": "nginx, docker, ssh"
             }
-          ]
+          ],
+          "id": "linux_admin_inspect_service_status_and_recent_logs_systemctl"
         },
         {
           "name": "Find Files Modified in Last 24 Hours",
@@ -705,7 +739,8 @@
               "default": "/etc",
               "placeholder": "/etc, /var/www, /home"
             }
-          ]
+          ],
+          "id": "linux_admin_find_files_modified_in_last_24_hours"
         }
       ]
     },
@@ -733,7 +768,8 @@
               "default": "pmkid_capture.pcapng",
               "placeholder": "capture.pcapng"
             }
-          ]
+          ],
+          "id": "wireless_pmkid_capture_pmkid_hashes_headless_hcxdumptool"
         },
         {
           "name": "Convert PCAPNG to Hashcat 22000 Format",
@@ -752,7 +788,8 @@
               "default": "hashes.22000",
               "placeholder": "pmkid.22000"
             }
-          ]
+          ],
+          "id": "wireless_pmkid_convert_pcapng_to_hashcat_22000_format"
         }
       ]
     },
@@ -786,7 +823,8 @@
               "default": "80",
               "placeholder": "80, 443"
             }
-          ]
+          ],
+          "id": "tunneling_pivoting_socat_tcp_port_redirection_relay"
         },
         {
           "name": "Chisel Reverse SOCKS5 Server",
@@ -799,7 +837,8 @@
               "default": "8000",
               "placeholder": "8000, 8080"
             }
-          ]
+          ],
+          "id": "tunneling_pivoting_chisel_reverse_socks5_server"
         },
         {
           "name": "Chisel Reverse Client Connection",
@@ -818,7 +857,8 @@
               "default": "8000",
               "placeholder": "8000"
             }
-          ]
+          ],
+          "id": "tunneling_pivoting_chisel_reverse_client_connection"
         }
       ]
     },
@@ -833,25 +873,29 @@
           "name": "Audit Current Sudo Capabilities (sudo -l)",
           "desc": "Lists available commands the current user can execute with root or other user privileges.",
           "template": "sudo -l",
-          "params": []
+          "params": [],
+          "id": "linux_privesc_audit_audit_current_sudo_capabilities_sudo_l"
         },
         {
           "name": "Search for Writable Files in /etc and /var",
           "desc": "Finds configuration files that can be tampered with by unprivileged users.",
           "template": "find /etc /var -writable -type f 2>/dev/null | grep -v '/proc/'",
-          "params": []
+          "params": [],
+          "id": "linux_privesc_audit_search_for_writable_files_in_etc_and_var"
         },
         {
           "name": "Audit Crontab and Scheduled Tasks",
           "desc": "Inspects system crontabs, user cron jobs, and systemd timers for privilege escalation vectors.",
           "template": "cat /etc/crontab /etc/cron.*/* 2>/dev/null | grep -v '^#'",
-          "params": []
+          "params": [],
+          "id": "linux_privesc_audit_audit_crontab_and_scheduled_tasks"
         },
         {
           "name": "Check Linux Kernel Release and Architecture",
           "desc": "Dumps kernel version to quickly identify dirtycow, overlayfs, or pwnkit vulnerabilities.",
           "template": "uname -a && cat /etc/os-release | head -n 4",
-          "params": []
+          "params": [],
+          "id": "linux_privesc_audit_check_linux_kernel_release_and_architecture"
         }
       ]
     },
@@ -866,25 +910,29 @@
           "name": "Real-Time SSH Auth Failures (tail journalctl)",
           "desc": "Streams real-time SSH brute force and failed login attempts with colored output.",
           "template": "journalctl -u ssh -f --no-pager | grep -i --color=always 'Failed password'",
-          "params": []
+          "params": [],
+          "id": "linux_log_hunting_real_time_ssh_auth_failures_tail_journalctl"
         },
         {
           "name": "Audit Active User Sessions and Last Logins",
           "desc": "Displays who is currently logged into the system along with recent user login history.",
           "template": "w && echo '--- RECENT LOGINS ---' && last -n 10",
-          "params": []
+          "params": [],
+          "id": "linux_log_hunting_audit_active_user_sessions_and_last_logins"
         },
         {
           "name": "Find SUID Executables Outside Standard System Paths",
           "desc": "Flags anomalous SUID binaries placed in non-standard directories like /tmp, /dev/shm, or /opt.",
           "template": "find / -perm -4000 -not -path '/usr/*' -not -path '/bin/*' 2>/dev/null",
-          "params": []
+          "params": [],
+          "id": "linux_log_hunting_find_suid_executables_outside_standard_system_paths"
         },
         {
           "name": "Audit Open Network Files Correlated to Sockets (lsof)",
           "desc": "Reveals which specific process binary and user owns each open internet socket.",
           "template": "lsof -i -P -n",
-          "params": []
+          "params": [],
+          "id": "linux_log_hunting_audit_open_network_files_correlated_to_sockets_lsof"
         }
       ]
     },
@@ -918,7 +966,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0mon"
             }
-          ]
+          ],
+          "id": "wifi_deauth_jam_continuous_broadcast_deauth_burst_aireplay_ng"
         },
         {
           "name": "Airodump Channel Hop Survey",
@@ -931,7 +980,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0mon"
             }
-          ]
+          ],
+          "id": "wifi_deauth_jam_airodump_channel_hop_survey"
         }
       ]
     },
@@ -953,7 +1003,8 @@
               "default": "http://192.168.1.50/item.php?id=1",
               "placeholder": "http://target.com/page?id=1"
             }
-          ]
+          ],
+          "id": "sqlmap_basic_get_parameter_injection_test"
         },
         {
           "name": "POST Form Body Injection (Cookie Auth)",
@@ -978,7 +1029,8 @@
               "default": "PHPSESSID=abc123",
               "placeholder": "session=xyz"
             }
-          ]
+          ],
+          "id": "sqlmap_post_form_body_injection_cookie_auth"
         },
         {
           "name": "Dump Entire Database Tables",
@@ -997,7 +1049,8 @@
               "default": "webapp_db",
               "placeholder": "mysql, users_db"
             }
-          ]
+          ],
+          "id": "sqlmap_dump_entire_database_tables"
         },
         {
           "name": "OS Shell via SQL Injection (xp_cmdshell / UDF)",
@@ -1010,7 +1063,8 @@
               "default": "http://192.168.1.50/item.php?id=1",
               "placeholder": "http://target.com/vuln?id=1"
             }
-          ]
+          ],
+          "id": "sqlmap_os_shell_via_sql_injection_xp_cmdshell_udf"
         }
       ]
     },
@@ -1038,7 +1092,8 @@
               "default": "/usr/share/wordlists/rockyou.txt",
               "placeholder": "rockyou.txt"
             }
-          ]
+          ],
+          "id": "john_auto_detect_hash_format_and_crack"
         },
         {
           "name": "Crack /etc/shadow Linux Passwords",
@@ -1063,7 +1118,8 @@
               "default": "/usr/share/wordlists/rockyou.txt",
               "placeholder": "rockyou.txt"
             }
-          ]
+          ],
+          "id": "john_crack_etc_shadow_linux_passwords"
         },
         {
           "name": "Show All Previously Cracked Passwords",
@@ -1076,7 +1132,8 @@
               "default": "hashes.txt",
               "placeholder": "ntlm.txt"
             }
-          ]
+          ],
+          "id": "john_show_all_previously_cracked_passwords"
         }
       ]
     },
@@ -1098,7 +1155,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "enum4linux_full_aggressive_smb_enumeration"
         },
         {
           "name": "RID Brute Force User Enumeration",
@@ -1123,7 +1181,8 @@
               "default": "",
               "placeholder": "leave empty"
             }
-          ]
+          ],
+          "id": "enum4linux_rid_brute_force_user_enumeration"
         },
         {
           "name": "Password Policy Extract",
@@ -1136,7 +1195,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.50"
             }
-          ]
+          ],
+          "id": "enum4linux_password_policy_extract"
         }
       ]
     },
@@ -1170,7 +1230,8 @@
               "default": "Password123!",
               "placeholder": "P@ssw0rd"
             }
-          ]
+          ],
+          "id": "crackmapexec_smb_credential_spray_subnet"
         },
         {
           "name": "Pass-the-Hash SMB Authentication",
@@ -1195,7 +1256,8 @@
               "default": "aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0",
               "placeholder": "LM:NT hash"
             }
-          ]
+          ],
+          "id": "crackmapexec_pass_the_hash_smb_authentication"
         },
         {
           "name": "Dump SAM Hashes via SMB",
@@ -1220,7 +1282,8 @@
               "default": "Password123!",
               "placeholder": "password"
             }
-          ]
+          ],
+          "id": "crackmapexec_dump_sam_hashes_via_smb"
         },
         {
           "name": "Remote Command Execution via WinRM",
@@ -1251,7 +1314,8 @@
               "default": "whoami /all",
               "placeholder": "ipconfig /all"
             }
-          ]
+          ],
+          "id": "crackmapexec_remote_command_execution_via_winrm"
         }
       ]
     },
@@ -1279,7 +1343,8 @@
               "default": "nikto_report.txt",
               "placeholder": "report.txt"
             }
-          ]
+          ],
+          "id": "nikto_full_host_web_vulnerability_scan"
         },
         {
           "name": "Scan with SSL/TLS on HTTPS",
@@ -1298,7 +1363,8 @@
               "default": "443",
               "placeholder": "443, 8443"
             }
-          ]
+          ],
+          "id": "nikto_scan_with_ssl_tls_on_https"
         }
       ]
     },
@@ -1320,7 +1386,8 @@
               "default": "eth0",
               "placeholder": "eth0, ens33"
             }
-          ]
+          ],
+          "id": "responder_full_interface_llmnr_nbt_ns_poisoning"
         },
         {
           "name": "Analyze Mode (Passive, No Poisoning)",
@@ -1333,7 +1400,8 @@
               "default": "eth0",
               "placeholder": "eth0, ens33"
             }
-          ]
+          ],
+          "id": "responder_analyze_mode_passive_no_poisoning"
         }
       ]
     },
@@ -1373,7 +1441,8 @@
               "default": "192.168.1.10",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "impacket_dcsync_domain_credential_dump_secretsdump"
         },
         {
           "name": "GetUserSPNs Kerberoasting Attack",
@@ -1404,7 +1473,8 @@
               "default": "192.168.1.10",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "impacket_getuserspns_kerberoasting_attack"
         },
         {
           "name": "SMBClient Anonymous Share Browse",
@@ -1417,7 +1487,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "impacket_smbclient_anonymous_share_browse"
         },
         {
           "name": "psexec Remote Shell (Admin$)",
@@ -1448,7 +1519,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "impacket_psexec_remote_shell_admin"
         }
       ]
     },
@@ -1482,7 +1554,8 @@
               "default": "40",
               "placeholder": "20, 40, 100"
             }
-          ]
+          ],
+          "id": "ffuf_directory_file_discovery"
         },
         {
           "name": "Virtual Host Brute Force",
@@ -1507,7 +1580,8 @@
               "default": "/usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt",
               "placeholder": "subdomains.txt"
             }
-          ]
+          ],
+          "id": "ffuf_virtual_host_brute_force"
         },
         {
           "name": "GET Parameter Fuzzing",
@@ -1532,7 +1606,8 @@
               "default": "0",
               "placeholder": "1234"
             }
-          ]
+          ],
+          "id": "ffuf_get_parameter_fuzzing"
         }
       ]
     },
@@ -1547,7 +1622,8 @@
           "name": "Full System Security Audit",
           "desc": "Runs all Lynis security checks and generates a detailed hardening report.",
           "template": "lynis audit system",
-          "params": []
+          "params": [],
+          "id": "lynis_full_system_security_audit"
         },
         {
           "name": "Non-Interactive CI/CD Scan",
@@ -1560,7 +1636,8 @@
               "default": "lynis_audit.log",
               "placeholder": "audit.log"
             }
-          ]
+          ],
+          "id": "lynis_non_interactive_ci_cd_scan"
         }
       ]
     },
@@ -1588,7 +1665,8 @@
               "default": "capture.pcap",
               "placeholder": "traffic.pcap"
             }
-          ]
+          ],
+          "id": "tcpdump_capture_all_traffic_on_interface_to_file"
         },
         {
           "name": "Live Filter by Host IP",
@@ -1607,7 +1685,8 @@
               "default": "192.168.1.1",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "tcpdump_live_filter_by_host_ip"
         },
         {
           "name": "Capture Only Port Traffic",
@@ -1626,7 +1705,8 @@
               "default": "80",
               "placeholder": "80, 443, 22"
             }
-          ]
+          ],
+          "id": "tcpdump_capture_only_port_traffic"
         },
         {
           "name": "Show HTTP GET Requests in Real Time",
@@ -1639,7 +1719,8 @@
               "default": "eth0",
               "placeholder": "eth0, any"
             }
-          ]
+          ],
+          "id": "tcpdump_show_http_get_requests_in_real_time"
         }
       ]
     },
@@ -1654,7 +1735,8 @@
           "name": "List All Current Rules (Verbose)",
           "desc": "Displays all active iptables rules in all chains with packet/byte counters.",
           "template": "iptables -L -v -n --line-numbers",
-          "params": []
+          "params": [],
+          "id": "iptables_list_all_current_rules_verbose"
         },
         {
           "name": "Block Inbound from Specific IP",
@@ -1667,7 +1749,8 @@
               "default": "10.0.0.99",
               "placeholder": "192.168.1.200"
             }
-          ]
+          ],
+          "id": "iptables_block_inbound_from_specific_ip"
         },
         {
           "name": "Allow Inbound on Specific Port",
@@ -1680,7 +1763,8 @@
               "default": "22",
               "placeholder": "80, 443, 8080"
             }
-          ]
+          ],
+          "id": "iptables_allow_inbound_on_specific_port"
         },
         {
           "name": "Enable Masquerade NAT (Internet Sharing)",
@@ -1693,13 +1777,15 @@
               "default": "eth0",
               "placeholder": "eth0, wlan0"
             }
-          ]
+          ],
+          "id": "iptables_enable_masquerade_nat_internet_sharing"
         },
         {
           "name": "Save Rules Persistently (iptables-save)",
           "desc": "Writes current iptables ruleset to disk so rules survive reboots.",
           "template": "iptables-save > /etc/iptables/rules.v4",
-          "params": []
+          "params": [],
+          "id": "iptables_save_rules_persistently_iptables_save"
         }
       ]
     },
@@ -1733,7 +1819,8 @@
               "default": "strace_output.txt",
               "placeholder": "trace.log"
             }
-          ]
+          ],
+          "id": "strace_ltrace_trace_all_system_calls_of_a_binary"
         },
         {
           "name": "Attach to Running Process by PID",
@@ -1746,7 +1833,8 @@
               "default": "1234",
               "placeholder": "1234"
             }
-          ]
+          ],
+          "id": "strace_ltrace_attach_to_running_process_by_pid"
         }
       ]
     },
@@ -1768,7 +1856,8 @@
               "default": "firmware.bin",
               "placeholder": "router.bin"
             }
-          ]
+          ],
+          "id": "binwalk_analyze_and_extract_embedded_firmware"
         },
         {
           "name": "Entropy Analysis (Obfuscation/Encryption Detection)",
@@ -1781,7 +1870,8 @@
               "default": "firmware.bin",
               "placeholder": "malware.exe"
             }
-          ]
+          ],
+          "id": "binwalk_entropy_analysis_obfuscation_encryption_detection"
         }
       ]
     },
@@ -1803,7 +1893,8 @@
               "default": "http://192.168.1.50",
               "placeholder": "https://example.com"
             }
-          ]
+          ],
+          "id": "curl_recon_fetch_http_response_headers_only"
         },
         {
           "name": "POST JSON Data to API Endpoint",
@@ -1822,7 +1913,8 @@
               "default": "{\"username\":\"admin\",\"password\":\"admin\"}",
               "placeholder": "{\"key\":\"value\"}"
             }
-          ]
+          ],
+          "id": "curl_recon_post_json_data_to_api_endpoint"
         },
         {
           "name": "Follow Redirects with Cookie Jar",
@@ -1841,7 +1933,8 @@
               "default": "cookies.txt",
               "placeholder": "session.txt"
             }
-          ]
+          ],
+          "id": "curl_recon_follow_redirects_with_cookie_jar"
         },
         {
           "name": "SSRF Internal Probe",
@@ -1860,7 +1953,8 @@
               "default": "127.0.0.1:8080",
               "placeholder": "169.254.169.254/latest/meta-data/"
             }
-          ]
+          ],
+          "id": "curl_recon_ssrf_internal_probe"
         }
       ]
     },
@@ -1888,7 +1982,8 @@
               "default": "443",
               "placeholder": "443, 8443"
             }
-          ]
+          ],
+          "id": "openssl_certs_inspect_remote_tls_certificate_chain"
         },
         {
           "name": "Generate Self-Signed Certificate (1-Year)",
@@ -1913,7 +2008,8 @@
               "default": "192.168.1.50",
               "placeholder": "myserver.local"
             }
-          ]
+          ],
+          "id": "openssl_certs_generate_self_signed_certificate_1_year"
         },
         {
           "name": "File Symmetric Encryption (AES-256-CBC)",
@@ -1932,7 +2028,8 @@
               "default": "secrets.enc",
               "placeholder": "data.enc"
             }
-          ]
+          ],
+          "id": "openssl_certs_file_symmetric_encryption_aes_256_cbc"
         }
       ]
     },
@@ -1954,7 +2051,8 @@
               "default": "memory.raw",
               "placeholder": "ram.vmem"
             }
-          ]
+          ],
+          "id": "volatility3_list_running_processes_from_memory_dump"
         },
         {
           "name": "Dump Active Network Connections from RAM",
@@ -1967,7 +2065,8 @@
               "default": "memory.raw",
               "placeholder": "dump.raw"
             }
-          ]
+          ],
+          "id": "volatility3_dump_active_network_connections_from_ram"
         },
         {
           "name": "Scan for Injected Code (malfind)",
@@ -1980,7 +2079,8 @@
               "default": "memory.raw",
               "placeholder": "capture.vmem"
             }
-          ]
+          ],
+          "id": "volatility3_scan_for_injected_code_malfind"
         },
         {
           "name": "Extract Registry Hives from Memory",
@@ -1993,7 +2093,8 @@
               "default": "memory.raw",
               "placeholder": "dump.raw"
             }
-          ]
+          ],
+          "id": "volatility3_extract_registry_hives_from_memory"
         }
       ]
     },
@@ -2021,7 +2122,8 @@
               "default": "~/.ssh/id_ed25519_tactical",
               "placeholder": "~/.ssh/mykey"
             }
-          ]
+          ],
+          "id": "ssh_keygen_ops_generate_ed25519_ssh_key_pair"
         },
         {
           "name": "Copy Public Key to Remote Host",
@@ -2046,7 +2148,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "ssh_keygen_ops_copy_public_key_to_remote_host"
         },
         {
           "name": "SSH Dynamic SOCKS5 Proxy Tunnel",
@@ -2071,7 +2174,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "ssh_keygen_ops_ssh_dynamic_socks5_proxy_tunnel"
         },
         {
           "name": "Remote Port Forward (Reverse Tunnel)",
@@ -2108,7 +2212,8 @@
               "default": "192.168.1.50",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "ssh_keygen_ops_remote_port_forward_reverse_tunnel"
         }
       ]
     },
@@ -2136,7 +2241,8 @@
               "default": "-sT -p 80,443 192.168.2.50",
               "placeholder": "-v http://internal.local"
             }
-          ]
+          ],
+          "id": "proxychains_run_tool_through_socks5_proxy"
         },
         {
           "name": "Nmap Pivot Scan via Proxy",
@@ -2155,7 +2261,8 @@
               "default": "22,80,443,445,3389",
               "placeholder": "1-1024"
             }
-          ]
+          ],
+          "id": "proxychains_nmap_pivot_scan_via_proxy"
         }
       ]
     },
@@ -2177,7 +2284,8 @@
               "default": "/var/log/nginx/access.log",
               "placeholder": "access.log"
             }
-          ]
+          ],
+          "id": "sed_awk_grep_extract_unique_ip_addresses_from_log_file"
         },
         {
           "name": "Replace String Across Multiple Files (sed)",
@@ -2202,7 +2310,8 @@
               "default": "config.txt",
               "placeholder": "*.conf"
             }
-          ]
+          ],
+          "id": "sed_awk_grep_replace_string_across_multiple_files_sed"
         },
         {
           "name": "awk Column Extraction from CSV/TSV",
@@ -2233,7 +2342,8 @@
               "default": "data.csv",
               "placeholder": "log.txt"
             }
-          ]
+          ],
+          "id": "sed_awk_grep_awk_column_extraction_from_csv_tsv"
         }
       ]
     },
@@ -2267,7 +2377,8 @@
               "default": "admin",
               "placeholder": "admin, root"
             }
-          ]
+          ],
+          "id": "wfuzz_http_login_form_brute_force"
         },
         {
           "name": "Directory Brute Force with Status Filter",
@@ -2286,7 +2397,8 @@
               "default": "/usr/share/wordlists/dirb/common.txt",
               "placeholder": "common.txt"
             }
-          ]
+          ],
+          "id": "wfuzz_directory_brute_force_with_status_filter"
         }
       ]
     },
@@ -2314,7 +2426,8 @@
               "default": "250000",
               "placeholder": "250000, 1024000"
             }
-          ]
+          ],
+          "id": "rtl_433_live_decode_all_supported_protocols"
         },
         {
           "name": "Log Decoded Packets to JSON File",
@@ -2333,7 +2446,8 @@
               "default": "rf_capture.json",
               "placeholder": "packets.json"
             }
-          ]
+          ],
+          "id": "rtl_433_log_decoded_packets_to_json_file"
         },
         {
           "name": "Scan with PPM Frequency Correction",
@@ -2352,7 +2466,8 @@
               "default": "0",
               "placeholder": "-5, 0, 12"
             }
-          ]
+          ],
+          "id": "rtl_433_scan_with_ppm_frequency_correction"
         },
         {
           "name": "Decode Specific Protocol by ID",
@@ -2371,7 +2486,8 @@
               "default": "73",
               "placeholder": "73, 100, 145"
             }
-          ]
+          ],
+          "id": "rtl_433_decode_specific_protocol_by_id"
         },
         {
           "name": "Record Raw IQ Samples to File",
@@ -2390,13 +2506,15 @@
               "default": "iq_capture.cu8",
               "placeholder": "capture.cu8"
             }
-          ]
+          ],
+          "id": "rtl_433_record_raw_iq_samples_to_file"
         },
         {
           "name": "List All Supported Protocols",
           "desc": "Prints every built-in protocol decoder with its ID number and device description.",
           "template": "rtl_433 -R help 2>&1 | less",
-          "params": []
+          "params": [],
+          "id": "rtl_433_list_all_supported_protocols"
         }
       ]
     },
@@ -2418,7 +2536,8 @@
               "default": "60",
               "placeholder": "60, 300"
             }
-          ]
+          ],
+          "id": "rtl_sdr_hardware_benchmark_ppm_drift_test"
         },
         {
           "name": "Wideband Power Spectrum Scan (rtl_power)",
@@ -2467,7 +2586,8 @@
               "default": "power_scan.csv",
               "placeholder": "scan.csv"
             }
-          ]
+          ],
+          "id": "rtl_sdr_wideband_power_spectrum_scan_rtl_power"
         },
         {
           "name": "Launch Remote RTL-TCP IQ Stream Server",
@@ -2498,7 +2618,8 @@
               "default": "40",
               "placeholder": "0, 20, 40"
             }
-          ]
+          ],
+          "id": "rtl_sdr_launch_remote_rtl_tcp_iq_stream_server"
         },
         {
           "name": "Capture Raw IQ Samples to File (rtl_sdr)",
@@ -2535,7 +2656,8 @@
               "default": "capture.iq",
               "placeholder": "signal.cu8"
             }
-          ]
+          ],
+          "id": "rtl_sdr_capture_raw_iq_samples_to_file_rtl_sdr"
         }
       ]
     },
@@ -2557,7 +2679,8 @@
               "default": "-10",
               "placeholder": "-10, 40, 48"
             }
-          ]
+          ],
+          "id": "dump1090_interactive_terminal_ads_b_display"
         },
         {
           "name": "Headless Net Mode (readsb / tar1090 Feed)",
@@ -2570,7 +2693,8 @@
               "default": "/run/dump1090-mutability",
               "placeholder": "/tmp/adsb-json"
             }
-          ]
+          ],
+          "id": "dump1090_headless_net_mode_readsb_tar1090_feed"
         },
         {
           "name": "Replay Recorded Beast Format File",
@@ -2589,7 +2713,8 @@
               "default": "BEAST",
               "placeholder": "BEAST, RAW, VRS"
             }
-          ]
+          ],
+          "id": "dump1090_replay_recorded_beast_format_file"
         },
         {
           "name": "Decode with Custom PPM Correction",
@@ -2608,7 +2733,8 @@
               "default": "-10",
               "placeholder": "-10, 40"
             }
-          ]
+          ],
+          "id": "dump1090_decode_with_custom_ppm_correction"
         }
       ]
     },
@@ -2623,7 +2749,8 @@
           "name": "Record FM Audio to WAV (gr-osmosdr / gqrx headless)",
           "desc": "Uses gnuradio-companion Python script to tune FM and record demodulated audio to WAV.",
           "template": "python3 -c \"import osmosdr; src = osmosdr.source(); print(src.get_sample_rates())\"",
-          "params": []
+          "params": [],
+          "id": "gqrx_record_fm_audio_to_wav_gr_osmosdr_gqrx_headless"
         },
         {
           "name": "Launch GQRX with RTL-SDR Device",
@@ -2642,7 +2769,8 @@
               "default": "40",
               "placeholder": "0, 20, 40"
             }
-          ]
+          ],
+          "id": "gqrx_launch_gqrx_with_rtl_sdr_device"
         }
       ]
     },
@@ -2664,7 +2792,8 @@
               "default": "eth0",
               "placeholder": "eth0, wlan0"
             }
-          ]
+          ],
+          "id": "bettercap_launch_interactive_bettercap_console"
         },
         {
           "name": "ARP Spoof + Sniffer MITM One-Liner",
@@ -2683,7 +2812,8 @@
               "default": "192.168.1.0/24",
               "placeholder": "192.168.1.50"
             }
-          ]
+          ],
+          "id": "bettercap_arp_spoof_sniffer_mitm_one_liner"
         },
         {
           "name": "DNS Spoof Target to Fake IP",
@@ -2708,7 +2838,8 @@
               "default": "192.168.1.10",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "bettercap_dns_spoof_target_to_fake_ip"
         },
         {
           "name": "BLE Bluetooth Low Energy Sniffer",
@@ -2721,7 +2852,8 @@
               "default": "eth0",
               "placeholder": "eth0"
             }
-          ]
+          ],
+          "id": "bettercap_ble_bluetooth_low_energy_sniffer"
         },
         {
           "name": "HTTPS SSL Stripping (HSTS Bypass)",
@@ -2734,7 +2866,8 @@
               "default": "eth0",
               "placeholder": "eth0"
             }
-          ]
+          ],
+          "id": "bettercap_https_ssl_stripping_hsts_bypass"
         }
       ]
     },
@@ -2768,7 +2901,8 @@
               "default": "200",
               "placeholder": "100, 200, 500"
             }
-          ]
+          ],
+          "id": "mdk4_beacon_flood_rogue_ap_chaos"
         },
         {
           "name": "Deauthentication / Disassociation Flood",
@@ -2787,7 +2921,8 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AP MAC"
             }
-          ]
+          ],
+          "id": "mdk4_deauthentication_disassociation_flood"
         },
         {
           "name": "ESSID Probe Request Flooding (Client Confusion)",
@@ -2806,7 +2941,8 @@
               "default": "ssids.txt",
               "placeholder": "probes.txt"
             }
-          ]
+          ],
+          "id": "mdk4_essid_probe_request_flooding_client_confusion"
         }
       ]
     },
@@ -2828,13 +2964,15 @@
               "default": "SITREP: All clear.",
               "placeholder": "Your tactical message"
             }
-          ]
+          ],
+          "id": "meshtastic_cli_send_text_message_to_mesh_network"
         },
         {
           "name": "Dump Node Info & Channel Config",
           "desc": "Reads and displays the connected node's configuration, channels, and mesh peer list.",
           "template": "meshtastic --info",
-          "params": []
+          "params": [],
+          "id": "meshtastic_cli_dump_node_info_channel_config"
         },
         {
           "name": "Set Node Name & Short Name",
@@ -2853,7 +2991,8 @@
               "default": "AUST",
               "placeholder": "KALI"
             }
-          ]
+          ],
+          "id": "meshtastic_cli_set_node_name_short_name"
         },
         {
           "name": "Set Channel Frequency / LoRa Preset",
@@ -2866,13 +3005,15 @@
               "default": "LONG_FAST",
               "placeholder": "LONG_FAST, LONG_SLOW, SHORT_FAST, MEDIUM_FAST"
             }
-          ]
+          ],
+          "id": "meshtastic_cli_set_channel_frequency_lora_preset"
         },
         {
           "name": "Export Mesh Node List to JSON",
           "desc": "Dumps the full mesh node database to stdout in JSON format for mapping or analysis.",
           "template": "meshtastic --export-config",
-          "params": []
+          "params": [],
+          "id": "meshtastic_cli_export_mesh_node_list_to_json"
         }
       ]
     },
@@ -2881,7 +3022,7 @@
       "name": "hostapd-WPE Rogue AP / EAP Capture",
       "category": "Wireless & 802.11 Wi-Fi",
       "icon": "wifi",
-      "desc": "Wireless Pwnage Edition hostapd \u2014 deploys a rogue access point to capture RADIUS EAP-PEAP/TTLS credentials.",
+      "desc": "Wireless Pwnage Edition hostapd — deploys a rogue access point to capture RADIUS EAP-PEAP/TTLS credentials.",
       "recipes": [
         {
           "name": "Launch Rogue WPA2-Enterprise AP",
@@ -2894,7 +3035,8 @@
               "default": "/etc/hostapd-wpe/hostapd-wpe.conf",
               "placeholder": "hostapd-wpe.conf"
             }
-          ]
+          ],
+          "id": "hostapd_wpe_launch_rogue_wpa2_enterprise_ap"
         },
         {
           "name": "Crack Captured EAP-PEAP Hash (asleap)",
@@ -2919,7 +3061,8 @@
               "default": "/usr/share/wordlists/rockyou.txt",
               "placeholder": "rockyou.txt"
             }
-          ]
+          ],
+          "id": "hostapd_wpe_crack_captured_eap_peap_hash_asleap"
         }
       ]
     },
@@ -2941,13 +3084,15 @@
               "default": "/dev/ttyUSB0",
               "placeholder": "/dev/ttyACM0, /dev/ttyUSB0"
             }
-          ]
+          ],
+          "id": "gpsd_cgps_start_gpsd_on_usb_gps_device"
         },
         {
           "name": "Live GPS Fix Display (cgps)",
           "desc": "Opens the cgps terminal client to display live coordinates, speed, altitude, and satellite count.",
           "template": "cgps -s",
-          "params": []
+          "params": [],
+          "id": "gpsd_cgps_live_gps_fix_display_cgps"
         },
         {
           "name": "Log GPS Track to NMEA File",
@@ -2966,7 +3111,8 @@
               "default": "gps_track.nmea",
               "placeholder": "track.nmea"
             }
-          ]
+          ],
+          "id": "gpsd_cgps_log_gps_track_to_nmea_file"
         }
       ]
     },
@@ -2979,9 +3125,10 @@
       "recipes": [
         {
           "name": "Start BLE Scan (Discover Advertising Devices)",
-          "desc": "Powers on the adapter and begins passive scanning for all nearby BLE advertising packets. Every device that broadcasts will appear here \u2014 smart locks, fitness trackers, beacons, etc.",
+          "desc": "Powers on the adapter and begins passive scanning for all nearby BLE advertising packets. Every device that broadcasts will appear here — smart locks, fitness trackers, beacons, etc.",
           "template": "bluetoothctl << 'EOF'\npower on\nagent on\ndefault-agent\nscan on\nEOF",
-          "params": []
+          "params": [],
+          "id": "bluetoothctl_start_ble_scan_discover_advertising_devices"
         },
         {
           "name": "Connect and Pair to BLE Device",
@@ -2994,13 +3141,15 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AA:BB:CC:DD:EE:FF"
             }
-          ]
+          ],
+          "id": "bluetoothctl_connect_and_pair_to_ble_device"
         },
         {
           "name": "List Paired & Known Devices",
           "desc": "Shows all previously paired or detected BLE devices cached by BlueZ.",
           "template": "bluetoothctl devices",
-          "params": []
+          "params": [],
+          "id": "bluetoothctl_list_paired_known_devices"
         },
         {
           "name": "Show Device Info & GATT Services",
@@ -3013,7 +3162,8 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AA:BB:CC:DD:EE:FF"
             }
-          ]
+          ],
+          "id": "bluetoothctl_show_device_info_gatt_services"
         },
         {
           "name": "Remove / Unpair a Device",
@@ -3026,11 +3176,12 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AA:BB:CC:DD:EE:FF"
             }
-          ]
+          ],
+          "id": "bluetoothctl_remove_unpair_a_device"
         },
         {
           "name": "Set Adapter to Discoverable (Rogue Beacon)",
-          "desc": "Makes your Bluetooth adapter visible with a custom name \u2014 useful for social engineering or testing device discovery.",
+          "desc": "Makes your Bluetooth adapter visible with a custom name — useful for social engineering or testing device discovery.",
           "template": "bluetoothctl << 'EOF'\npower on\nset-alias {{device_name}}\ndiscoverable on\nEOF",
           "params": [
             {
@@ -3039,7 +3190,8 @@
               "default": "iPhone 15 Pro",
               "placeholder": "Any device name"
             }
-          ]
+          ],
+          "id": "bluetoothctl_set_adapter_to_discoverable_rogue_beacon"
         }
       ]
     },
@@ -3054,7 +3206,8 @@
           "name": "List All Bluetooth Adapters",
           "desc": "Shows all physical Bluetooth HCI adapters, their addresses, and current state.",
           "template": "hciconfig -a",
-          "params": []
+          "params": [],
+          "id": "hcitool_list_all_bluetooth_adapters"
         },
         {
           "name": "Reset & Bring Up Bluetooth Adapter",
@@ -3067,7 +3220,8 @@
               "default": "hci0",
               "placeholder": "hci0, hci1"
             }
-          ]
+          ],
+          "id": "hcitool_reset_bring_up_bluetooth_adapter"
         },
         {
           "name": "BLE Passive Scan (LE Scan, Raw MAC Dump)",
@@ -3080,7 +3234,8 @@
               "default": "hci0",
               "placeholder": "hci0"
             }
-          ]
+          ],
+          "id": "hcitool_ble_passive_scan_le_scan_raw_mac_dump"
         },
         {
           "name": "Active BLE Scan (Requests Scan Response)",
@@ -3093,7 +3248,8 @@
               "default": "hci0",
               "placeholder": "hci0"
             }
-          ]
+          ],
+          "id": "hcitool_active_ble_scan_requests_scan_response"
         },
         {
           "name": "Query Remote Device Name (Classic BT)",
@@ -3106,11 +3262,12 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AA:BB:CC:DD:EE:FF"
             }
-          ]
+          ],
+          "id": "hcitool_query_remote_device_name_classic_bt"
         },
         {
           "name": "RSSI Signal Strength Reading",
-          "desc": "Reads the RSSI (signal strength in dBm) of a connected BLE device \u2014 useful for proximity estimation.",
+          "desc": "Reads the RSSI (signal strength in dBm) of a connected BLE device — useful for proximity estimation.",
           "template": "hcitool rssi {{target_mac}}",
           "params": [
             {
@@ -3119,7 +3276,8 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AA:BB:CC:DD:EE:FF"
             }
-          ]
+          ],
+          "id": "hcitool_rssi_signal_strength_reading"
         }
       ]
     },
@@ -3128,11 +3286,11 @@
       "name": "gatttool GATT Attribute Explorer",
       "category": "Bluetooth & BLE",
       "icon": "radio",
-      "desc": "GATT (Generic Attribute Profile) reader/writer for BLE. Think of GATT as the BLE device's API \u2014 Services contain Characteristics which hold sensor data, config values, and control commands.",
+      "desc": "GATT (Generic Attribute Profile) reader/writer for BLE. Think of GATT as the BLE device's API — Services contain Characteristics which hold sensor data, config values, and control commands.",
       "recipes": [
         {
           "name": "Dump All GATT Services & Characteristics",
-          "desc": "Connects to a BLE device and lists every Service UUID and Characteristic handle. This is your recon step \u2014 find what data the device exposes before you read/write.",
+          "desc": "Connects to a BLE device and lists every Service UUID and Characteristic handle. This is your recon step — find what data the device exposes before you read/write.",
           "template": "gatttool -b {{target_mac}} --primary && gatttool -b {{target_mac}} --characteristics",
           "params": [
             {
@@ -3141,7 +3299,8 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AA:BB:CC:DD:EE:FF"
             }
-          ]
+          ],
+          "id": "gatttool_dump_all_gatt_services_characteristics"
         },
         {
           "name": "Read a Characteristic by Handle",
@@ -3160,11 +3319,12 @@
               "default": "0x0003",
               "placeholder": "0x0003, 0x0006, 0x0025"
             }
-          ]
+          ],
+          "id": "gatttool_read_a_characteristic_by_handle"
         },
         {
           "name": "Write to a Characteristic (Send Command)",
-          "desc": "Writes a hex value to a GATT characteristic. This is how you send commands to BLE devices \u2014 flip a smart bulb, trigger a relay, send text to a display.",
+          "desc": "Writes a hex value to a GATT characteristic. This is how you send commands to BLE devices — flip a smart bulb, trigger a relay, send text to a display.",
           "template": "gatttool -b {{target_mac}} --char-write-req -a {{handle}} -n {{hex_value}}",
           "params": [
             {
@@ -3185,11 +3345,12 @@
               "default": "01",
               "placeholder": "01 = ON, 00 = OFF"
             }
-          ]
+          ],
+          "id": "gatttool_write_to_a_characteristic_send_command"
         },
         {
           "name": "Enable Notifications on Characteristic",
-          "desc": "Subscribes to a GATT Notification by writing 0100 to the Client Characteristic Configuration Descriptor (CCCD). Device will then push updates automatically \u2014 used for live sensor data.",
+          "desc": "Subscribes to a GATT Notification by writing 0100 to the Client Characteristic Configuration Descriptor (CCCD). Device will then push updates automatically — used for live sensor data.",
           "template": "gatttool -b {{target_mac}} --char-write-req -a {{cccd_handle}} -n 0100",
           "params": [
             {
@@ -3204,7 +3365,8 @@
               "default": "0x0026",
               "placeholder": "0x0026"
             }
-          ]
+          ],
+          "id": "gatttool_enable_notifications_on_characteristic"
         },
         {
           "name": "Interactive GATT Shell (Explore Live)",
@@ -3217,11 +3379,12 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AA:BB:CC:DD:EE:FF"
             }
-          ]
+          ],
+          "id": "gatttool_interactive_gatt_shell_explore_live"
         },
         {
           "name": "Read by UUID (Standard BLE Profile)",
-          "desc": "Reads a characteristic by its standard Bluetooth SIG UUID instead of handle \u2014 useful for well-known profiles like Heart Rate, Battery, or Temperature.",
+          "desc": "Reads a characteristic by its standard Bluetooth SIG UUID instead of handle — useful for well-known profiles like Heart Rate, Battery, or Temperature.",
           "template": "gatttool -b {{target_mac}} --char-read --uuid={{uuid}}",
           "params": [
             {
@@ -3236,7 +3399,8 @@
               "default": "0x2A19",
               "placeholder": "0x2A19=Battery, 0x2A6E=Temp, 0x2A37=HR"
             }
-          ]
+          ],
+          "id": "gatttool_read_by_uuid_standard_ble_profile"
         }
       ]
     },
@@ -3251,7 +3415,8 @@
           "name": "Scan for Active BLE Connections to Sniff",
           "desc": "Passively listens on all BLE advertising channels to detect active connections between a central (phone) and peripheral (device). First step before hijacking.",
           "template": "btlejack -s",
-          "params": []
+          "params": [],
+          "id": "btlejack_scan_for_active_ble_connections_to_sniff"
         },
         {
           "name": "Sniff a Specific BLE Access Address",
@@ -3264,7 +3429,8 @@
               "default": "0x9a328370",
               "placeholder": "0xAABBCCDD"
             }
-          ]
+          ],
+          "id": "btlejack_sniff_a_specific_ble_access_address"
         },
         {
           "name": "Export Sniffed Traffic to PCAP (Wireshark)",
@@ -3283,7 +3449,8 @@
               "default": "ble_capture.pcap",
               "placeholder": "ble_sniff.pcap"
             }
-          ]
+          ],
+          "id": "btlejack_export_sniffed_traffic_to_pcap_wireshark"
         },
         {
           "name": "Jamming a BLE Connection (Denial of Service)",
@@ -3296,11 +3463,12 @@
               "default": "0x9a328370",
               "placeholder": "0xAABBCCDD"
             }
-          ]
+          ],
+          "id": "btlejack_jamming_a_ble_connection_denial_of_service"
         },
         {
           "name": "Hijack / Takeover Active BLE Connection",
-          "desc": "Performs a connection hijack, taking over an existing BLE session between a phone and device. Attacker becomes the new Central device \u2014 can then issue GATT commands.",
+          "desc": "Performs a connection hijack, taking over an existing BLE session between a phone and device. Attacker becomes the new Central device — can then issue GATT commands.",
           "template": "btlejack -f {{access_address}} -m {{microbit_port}}",
           "params": [
             {
@@ -3315,7 +3483,8 @@
               "default": "/dev/ttyACM0",
               "placeholder": "/dev/ttyACM0"
             }
-          ]
+          ],
+          "id": "btlejack_hijack_takeover_active_ble_connection"
         }
       ]
     },
@@ -3330,7 +3499,8 @@
           "name": "Decode iBeacon / Eddystone Advertisements (blesuite)",
           "desc": "Passively reads BLE advertisement payloads and decodes standard beacon formats (UUID, Major, Minor, TX Power).",
           "template": "sudo python3 -m bleson.tools.observer 2>/dev/null",
-          "params": []
+          "params": [],
+          "id": "ble_recon_misc_decode_ibeacon_eddystone_advertisements_blesuite"
         },
         {
           "name": "Scan BLE with Verbose Ad Payload (hcidump)",
@@ -3343,7 +3513,8 @@
               "default": "hci0",
               "placeholder": "hci0"
             }
-          ]
+          ],
+          "id": "ble_recon_misc_scan_ble_with_verbose_ad_payload_hcidump"
         },
         {
           "name": "Continuous BLE Signal Strength Logger",
@@ -3356,11 +3527,12 @@
               "default": "AA:BB:CC:DD:EE:FF",
               "placeholder": "AA:BB:CC:DD:EE:FF"
             }
-          ]
+          ],
+          "id": "ble_recon_misc_continuous_ble_signal_strength_logger"
         },
         {
           "name": "BLE Advertising Packet Spoof (Fake Beacon)",
-          "desc": "Uses hcitool to inject custom BLE advertising data \u2014 can spoof an iBeacon UUID or fake an arbitrary device.",
+          "desc": "Uses hcitool to inject custom BLE advertising data — can spoof an iBeacon UUID or fake an arbitrary device.",
           "template": "hciconfig {{hci_dev}} leadv 3 && hcitool -i {{hci_dev}} cmd 0x08 0x0008 1e 02 01 1a 1a ff 4c 00 02 15 {{uuid_hex}} 00 01 00 01 c8 00",
           "params": [
             {
@@ -3375,7 +3547,8 @@
               "default": "e2c56db5dffb48d2b060d0f5a71096e0",
               "placeholder": "e2c56db5dffb48d2b060d0f5a71096e0"
             }
-          ]
+          ],
+          "id": "ble_recon_misc_ble_advertising_packet_spoof_fake_beacon"
         }
       ]
     },
@@ -3409,7 +3582,8 @@
               "default": "./noaa_output",
               "placeholder": "./noaa_output"
             }
-          ]
+          ],
+          "id": "satdump_cli_live_noaa_apt_downlink_rtl_sdr"
         },
         {
           "name": "Meteor-M2 LRPT Offline Processing",
@@ -3434,7 +3608,8 @@
               "default": "./meteor_products",
               "placeholder": "./meteor_products"
             }
-          ]
+          ],
+          "id": "satdump_cli_meteor_m2_lrpt_offline_processing"
         },
         {
           "name": "Generate False-Color MSA/MCIR Composites",
@@ -3453,7 +3628,8 @@
               "default": "MSA",
               "placeholder": "MSA, MCIR, Thermal, HVC"
             }
-          ]
+          ],
+          "id": "satdump_cli_generate_false_color_msa_mcir_composites"
         },
         {
           "name": "ISS SSTV Audio Demodulation",
@@ -3472,7 +3648,8 @@
               "default": "./iss_sstv_images",
               "placeholder": "./iss_sstv_images"
             }
-          ]
+          ],
+          "id": "satdump_cli_iss_sstv_audio_demodulation"
         }
       ]
     },
@@ -3506,13 +3683,15 @@
               "default": "/run/readsb",
               "placeholder": "/run/readsb"
             }
-          ]
+          ],
+          "id": "readsb_adsb_headless_ads_b_ingestion_for_tar1090"
         },
         {
           "name": "Beast Binary Network Streaming (Port 30005)",
           "desc": "Broadcasts decoded Mode-S Beast binary frames for feeding flight aggregator networks or remote radar nodes.",
           "template": "readsb --device-type rtlsdr --net --net-bo-port 30005 --net-bind-address 0.0.0.0 --quiet",
-          "params": []
+          "params": [],
+          "id": "readsb_adsb_beast_binary_network_streaming_port_30005"
         },
         {
           "name": "Polar Reception Range & Gain Calibration",
@@ -3525,13 +3704,15 @@
               "default": "/run/readsb",
               "placeholder": "/run/readsb"
             }
-          ]
+          ],
+          "id": "readsb_adsb_polar_reception_range_gain_calibration"
         },
         {
           "name": "Emergency Squawk Alert Monitor (7500 / 7600 / 7700)",
           "desc": "Extracts Mode A/C transponder emergency squawks (Hijack 7500, Comm Failure 7600, General Emergency 7700).",
           "template": "readsb --device-type rtlsdr --modeac --interactive | grep -E \"7500|7600|7700\"",
-          "params": []
+          "params": [],
+          "id": "readsb_adsb_emergency_squawk_alert_monitor_7500_7600_7700"
         }
       ]
     },
@@ -3565,7 +3746,8 @@
               "default": "direwolf.conf",
               "placeholder": "direwolf.conf"
             }
-          ]
+          ],
+          "id": "direwolf_aprs_rtl_sdr_live_aprs_144_390_mhz_ingestion"
         },
         {
           "name": "Headless KISS TNC over TCP (Port 8001)",
@@ -3578,7 +3760,8 @@
               "default": "direwolf.conf",
               "placeholder": "direwolf.conf"
             }
-          ]
+          ],
+          "id": "direwolf_aprs_headless_kiss_tnc_over_tcp_port_8001"
         },
         {
           "name": "Transmit APRS Position Beacon",
@@ -3597,7 +3780,8 @@
               "default": "09012.00W",
               "placeholder": "09012.00W"
             }
-          ]
+          ],
+          "id": "direwolf_aprs_transmit_aprs_position_beacon"
         },
         {
           "name": "APRS-IS Internet Gateway (IGate) Forwarder",
@@ -3616,7 +3800,8 @@
               "default": "./logs",
               "placeholder": "./logs"
             }
-          ]
+          ],
+          "id": "direwolf_aprs_aprs_is_internet_gateway_igate_forwarder"
         }
       ]
     },
@@ -3662,7 +3847,8 @@
               "default": "spectrum_survey.csv",
               "placeholder": "survey.csv"
             }
-          ]
+          ],
+          "id": "hackrf_rtl_sweep_rtl_power_wideband_survey_24_mhz_to_1_7_ghz"
         },
         {
           "name": "hackrf_sweep High-Speed Sweep (0 to 6 GHz)",
@@ -3699,7 +3885,8 @@
               "default": "sweep_data.csv",
               "placeholder": "sweep_data.csv"
             }
-          ]
+          ],
+          "id": "hackrf_rtl_sweep_hackrf_sweep_high_speed_sweep_0_to_6_ghz"
         },
         {
           "name": "Generate Waterfall Spectrogram Image (heatmap.py)",
@@ -3718,7 +3905,8 @@
               "default": "waterfall.png",
               "placeholder": "waterfall.png"
             }
-          ]
+          ],
+          "id": "hackrf_rtl_sweep_generate_waterfall_spectrogram_image_heatmap_py"
         }
       ]
     },
@@ -3746,7 +3934,8 @@
               "default": "./decompiled_apk",
               "placeholder": "./decompiled_apk"
             }
-          ]
+          ],
+          "id": "apktool_jadx_re_decompile_apk_to_smali_resources_apktool_d"
         },
         {
           "name": "Rebuild & Package Modified Smali Code (apktool b)",
@@ -3765,7 +3954,8 @@
               "default": "app_patched.apk",
               "placeholder": "patched.apk"
             }
-          ]
+          ],
+          "id": "apktool_jadx_re_rebuild_package_modified_smali_code_apktool_b"
         },
         {
           "name": "Decompile APK Directly to Java Source (JADX CLI)",
@@ -3784,7 +3974,8 @@
               "default": "./java_source",
               "placeholder": "./java_source"
             }
-          ]
+          ],
+          "id": "apktool_jadx_re_decompile_apk_directly_to_java_source_jadx_cli"
         },
         {
           "name": "Extract AndroidManifest.xml & Exported Components",
@@ -3797,7 +3988,8 @@
               "default": "target_app.apk",
               "placeholder": "app.apk"
             }
-          ]
+          ],
+          "id": "apktool_jadx_re_extract_androidmanifest_xml_exported_components"
         }
       ]
     },
@@ -3825,7 +4017,8 @@
               "default": "/usr/share/wordlists/rockyou.txt",
               "placeholder": "/usr/share/wordlists/rockyou.txt"
             }
-          ]
+          ],
+          "id": "wifite2_automated_automated_attack_on_all_nearby_targets_wpa_pmkid_wps"
         },
         {
           "name": "Clientless PMKID Attack Only (Zero Deauth)",
@@ -3838,7 +4031,8 @@
               "default": "wlan0",
               "placeholder": "wlan0"
             }
-          ]
+          ],
+          "id": "wifite2_automated_clientless_pmkid_attack_only_zero_deauth"
         },
         {
           "name": "Target Specific BSSID with Atheros Power Boost",
@@ -3863,7 +4057,8 @@
               "default": "6",
               "placeholder": "1, 6, 11"
             }
-          ]
+          ],
+          "id": "wifite2_automated_target_specific_bssid_with_atheros_power_boost"
         },
         {
           "name": "WPS Pixie-Dust Only Attack",
@@ -3876,7 +4071,8 @@
               "default": "wlan0",
               "placeholder": "wlan0"
             }
-          ]
+          ],
+          "id": "wifite2_automated_wps_pixie_dust_only_attack"
         }
       ]
     },
@@ -3910,7 +4106,8 @@
               "default": "6",
               "placeholder": "1, 6, 11"
             }
-          ]
+          ],
+          "id": "pixiewps_reaver_automated_pixie_dust_attack_reaver_pixiewps"
         },
         {
           "name": "Bully Pixie-Dust Alternative Runner",
@@ -3935,7 +4132,8 @@
               "default": "1",
               "placeholder": "1, 6, 11"
             }
-          ]
+          ],
+          "id": "pixiewps_reaver_bully_pixie_dust_alternative_runner"
         },
         {
           "name": "Verify Atheros Packet Injection Quality",
@@ -3948,7 +4146,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0mon"
             }
-          ]
+          ],
+          "id": "pixiewps_reaver_verify_atheros_packet_injection_quality"
         }
       ]
     },
@@ -3970,7 +4169,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0mon"
             }
-          ]
+          ],
+          "id": "wifi_probe_stalker_sniff_client_probes_with_ssids_tshark"
         },
         {
           "name": "Continuous Client Presence & Signal Level (RSSI)",
@@ -3989,7 +4189,8 @@
               "default": "aa:bb:cc:dd:ee:ff",
               "placeholder": "aa:bb:cc:dd:ee:ff"
             }
-          ]
+          ],
+          "id": "wifi_probe_stalker_continuous_client_presence_signal_level_rssi"
         },
         {
           "name": "Unmask Hidden SSIDs from Active Clients",
@@ -4014,7 +4215,8 @@
               "default": "6",
               "placeholder": "6"
             }
-          ]
+          ],
+          "id": "wifi_probe_stalker_unmask_hidden_ssids_from_active_clients"
         }
       ]
     },
@@ -4048,7 +4250,8 @@
               "default": "40",
               "placeholder": "30, 40, 49.6"
             }
-          ]
+          ],
+          "id": "dsd_fme_digital_voice_live_p25_phase_1_dmr_demodulation_from_rtl_fm"
         },
         {
           "name": "Auto-Detect Digital Protocol & Log Talkgroups",
@@ -4073,7 +4276,8 @@
               "default": "dsd_traffic.log",
               "placeholder": "traffic.log"
             }
-          ]
+          ],
+          "id": "dsd_fme_digital_voice_auto_detect_digital_protocol_log_talkgroups"
         }
       ]
     },
@@ -4113,13 +4317,15 @@
               "default": "50",
               "placeholder": "30, 50, 70"
             }
-          ]
+          ],
+          "id": "sdr_airband_marine_civilian_aviation_am_airband_voice_scanner"
         },
         {
           "name": "Multi-Frequency Aviation Tower Scanner",
           "desc": "Scans across up to 4 local airport frequencies simultaneously (Tower, Ground, Approach, Departure).",
           "template": "rtl_fm -M am -f 118.1M -f 119.3M -f 121.9M -f 124.0M -s 12k -l 60 -g 42 | aplay -r 12000 -f S16_LE",
-          "params": []
+          "params": [],
+          "id": "sdr_airband_marine_multi_frequency_aviation_tower_scanner"
         },
         {
           "name": "Marine AIS Vessel Radar Interceptor (161.975 / 162.025 MHz)",
@@ -4138,7 +4344,8 @@
               "default": "0",
               "placeholder": "0, 1"
             }
-          ]
+          ],
+          "id": "sdr_airband_marine_marine_ais_vessel_radar_interceptor_161_975_162_025_mhz"
         }
       ]
     },
@@ -4172,7 +4379,8 @@
               "default": "42",
               "placeholder": "30, 42, 49.6"
             }
-          ]
+          ],
+          "id": "pager_noaa_alerts_decode_pocsag_hospital_dispatch_pager_traffic"
         },
         {
           "name": "NOAA Weather Radio (NWR) Live Audio Feed",
@@ -4197,7 +4405,8 @@
               "default": "0",
               "placeholder": "0"
             }
-          ]
+          ],
+          "id": "pager_noaa_alerts_noaa_weather_radio_nwr_live_audio_feed"
         },
         {
           "name": "NOAA Emergency Alert System (EAS / SAME) Demodulator",
@@ -4216,7 +4425,8 @@
               "default": "0",
               "placeholder": "0"
             }
-          ]
+          ],
+          "id": "pager_noaa_alerts_noaa_emergency_alert_system_eas_same_demodulator"
         }
       ]
     },
@@ -4244,7 +4454,8 @@
               "default": "pmkid_capture.pcapng",
               "placeholder": "capture.pcapng"
             }
-          ]
+          ],
+          "id": "hcxdumptool_capture_pmkid_handshakes_clientless"
         },
         {
           "name": "Convert PCAPNG to Hashcat 22000 Format",
@@ -4263,7 +4474,8 @@
               "default": "pmkid_capture.pcapng",
               "placeholder": "capture.pcapng"
             }
-          ]
+          ],
+          "id": "hcxdumptool_convert_pcapng_to_hashcat_22000_format"
         },
         {
           "name": "Filter Specific BSSID Target with hcxdumptool",
@@ -4282,7 +4494,8 @@
               "default": "wlan0mon",
               "placeholder": "wlan0mon"
             }
-          ]
+          ],
+          "id": "hcxdumptool_filter_specific_bssid_target_with_hcxdumptool"
         }
       ]
     },
@@ -4297,13 +4510,15 @@
           "name": "Launch Airgeddon Interactive Console",
           "desc": "Starts Airgeddon with full dependency validation and automatic monitor mode toggle.",
           "template": "sudo airgeddon",
-          "params": []
+          "params": [],
+          "id": "airgeddon_launch_airgeddon_interactive_console"
         },
         {
           "name": "Automated Evil Twin & Captive Portal Engine",
           "desc": "Airgeddon option 7 - creates rogue AP and captive portal to harvest WPA2 passphrases.",
           "template": "sudo bash -c 'export AIRGEDDON_AUTO=1; airgeddon'",
-          "params": []
+          "params": [],
+          "id": "airgeddon_automated_evil_twin_captive_portal_engine"
         }
       ]
     },
@@ -4325,7 +4540,8 @@
               "default": "192.168.1.1",
               "placeholder": "10.0.0.1 or domain.com"
             }
-          ]
+          ],
+          "id": "rustscan_full_65_535_port_sweep_with_nmap_service_fingerprint"
         },
         {
           "name": "Subnet Mass Port Probe (Fast Discovery)",
@@ -4338,7 +4554,8 @@
               "default": "192.168.1.0/24",
               "placeholder": "10.0.0.0/24"
             }
-          ]
+          ],
+          "id": "rustscan_subnet_mass_port_probe_fast_discovery"
         }
       ]
     },
@@ -4353,7 +4570,8 @@
           "name": "Find All Attached SDR Hardware",
           "desc": "Discovers all USB and network SDR devices available through SoapySDR hardware layers.",
           "template": "SoapySDRUtil --find",
-          "params": []
+          "params": [],
+          "id": "soapy_sdr_util_find_all_attached_sdr_hardware"
         },
         {
           "name": "Deep Probe SDR Tuner Capabilities & Gain Ranges",
@@ -4366,7 +4584,8 @@
               "default": "rtlsdr",
               "placeholder": "rtlsdr, hackrf, plutosdr"
             }
-          ]
+          ],
+          "id": "soapy_sdr_util_deep_probe_sdr_tuner_capabilities_gain_ranges"
         },
         {
           "name": "Benchmark USB Bus Throughput (Sample Rate Test)",
@@ -4385,7 +4604,8 @@
               "default": "2048000",
               "placeholder": "1024000, 2048000"
             }
-          ]
+          ],
+          "id": "soapy_sdr_util_benchmark_usb_bus_throughput_sample_rate_test"
         }
       ]
     },
@@ -4407,7 +4627,8 @@
               "default": "/path/to/evidence.raw",
               "placeholder": "/evidence/disk.dd"
             }
-          ]
+          ],
+          "id": "sleuthkit_tsk_generate_master_file_activity_timeline_fls_bodyfile"
         },
         {
           "name": "Extract Deleted File by Inode / MFT Record Number",
@@ -4426,7 +4647,8 @@
               "default": "12845",
               "placeholder": "12345"
             }
-          ]
+          ],
+          "id": "sleuthkit_tsk_extract_deleted_file_by_inode_mft_record_number"
         }
       ]
     }
@@ -4450,7 +4672,8 @@
               "default": "Wireshark",
               "placeholder": "Nmap, VSCode, Git"
             }
-          ]
+          ],
+          "id": "winget_search_for_application_by_name"
         },
         {
           "name": "Silent Install by Exact Package ID",
@@ -4463,13 +4686,15 @@
               "default": "WiresharkFoundation.Wireshark",
               "placeholder": "Insecure.Nmap"
             }
-          ]
+          ],
+          "id": "winget_silent_install_by_exact_package_id"
         },
         {
           "name": "Upgrade All Installed Applications Silently",
           "desc": "Scans installed applications and triggers automated silent upgrades for all outdated packages.",
           "template": "winget upgrade --all --silent --accept-package-agreements --accept-source-agreements",
-          "params": []
+          "params": [],
+          "id": "winget_upgrade_all_installed_applications_silently"
         },
         {
           "name": "Export Installed Machine Software Manifest",
@@ -4482,7 +4707,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\InstalledApps.json",
               "placeholder": "apps.json"
             }
-          ]
+          ],
+          "id": "winget_export_installed_machine_software_manifest"
         }
       ]
     },
@@ -4504,7 +4730,8 @@
               "default": "25",
               "placeholder": "25, 50, 100"
             }
-          ]
+          ],
+          "id": "powershell_dfir_audit_failed_logons_security_event_4625"
         },
         {
           "name": "Audit Interactive Logons (Security Event 4624)",
@@ -4517,13 +4744,15 @@
               "default": "25",
               "placeholder": "25, 50"
             }
-          ]
+          ],
+          "id": "powershell_dfir_audit_interactive_logons_security_event_4624"
         },
         {
           "name": "Audit Defender Antivirus Exclusions (Defense Evasion)",
           "desc": "Checks Windows Defender configurations for suspicious exclusion paths or extensions.",
           "template": "Get-MpPreference | Select-Object -ExpandProperty ExclusionPath",
-          "params": []
+          "params": [],
+          "id": "powershell_dfir_audit_defender_antivirus_exclusions_defense_evasion"
         },
         {
           "name": "Audit Process Creation Lineage (Sysmon / Event 4688)",
@@ -4536,7 +4765,8 @@
               "default": "20",
               "placeholder": "20, 50"
             }
-          ]
+          ],
+          "id": "powershell_dfir_audit_process_creation_lineage_sysmon_event_4688"
         }
       ]
     },
@@ -4551,7 +4781,8 @@
           "name": "Established TCP Sockets with Process Names",
           "desc": "Correlates active network sockets directly to local executable names.",
           "template": "Get-NetTCPConnection -State Established | Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, OwningProcess, @{N='Process';E={(Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue).ProcessName}} | Format-Table -AutoSize",
-          "params": []
+          "params": [],
+          "id": "powershell_net_established_tcp_sockets_with_process_names"
         },
         {
           "name": "Test Remote TCP Port Connectivity (Test-NetConnection)",
@@ -4570,19 +4801,22 @@
               "default": "443",
               "placeholder": "80, 443, 3389"
             }
-          ]
+          ],
+          "id": "powershell_net_test_remote_tcp_port_connectivity_test_netconnection"
         },
         {
           "name": "Flush DNS Resolver Cache & Register",
           "desc": "Clears local DNS client cache and re-registers client name with DNS servers.",
           "template": "Clear-DnsClientCache; Register-DnsClient",
-          "params": []
+          "params": [],
+          "id": "powershell_net_flush_dns_resolver_cache_register"
         },
         {
           "name": "Complete Network Adapter & DNS IP Configuration",
           "desc": "Dumps full IPv4/IPv6, default gateways, and DNS server addresses across all connected interfaces.",
           "template": "Get-NetIPConfiguration | Format-Table InterfaceAlias, IPv4Address, IPv4DefaultGateway, DNSServer -AutoSize",
-          "params": []
+          "params": [],
+          "id": "powershell_net_complete_network_adapter_dns_ip_configuration"
         },
         {
           "name": "Continuous Latency & Jitter Monitor (Test-Connection)",
@@ -4595,7 +4829,8 @@
               "default": "1.1.1.1",
               "placeholder": "8.8.8.8"
             }
-          ]
+          ],
+          "id": "powershell_net_continuous_latency_jitter_monitor_test_connection"
         }
       ]
     },
@@ -4617,13 +4852,15 @@
               "default": "MyHomeNetwork",
               "placeholder": "Home_WiFi"
             }
-          ]
+          ],
+          "id": "netsh_extract_saved_wi_fi_password_cleartext_key"
         },
         {
           "name": "List All Stored Wi-Fi SSIDs",
           "desc": "Lists every wireless network profile currently cached on the Windows machine.",
           "template": "netsh wlan show profiles",
-          "params": []
+          "params": [],
+          "id": "netsh_list_all_stored_wi_fi_ssids"
         },
         {
           "name": "Configure Local Port Proxy Forwarding",
@@ -4648,7 +4885,8 @@
               "default": "80",
               "placeholder": "80"
             }
-          ]
+          ],
+          "id": "netsh_configure_local_port_proxy_forwarding"
         }
       ]
     },
@@ -4670,19 +4908,22 @@
               "default": "C:\\Users\\daddy\\Desktop\\Autoruns_Audit.csv",
               "placeholder": "autoruns.csv"
             }
-          ]
+          ],
+          "id": "sysinternals_autoruns_deep_persistence_export_cli"
         },
         {
           "name": "Process Monitor Boot Log Setup",
           "desc": "Configures ProcMon to capture system activity during the earliest boot phases.",
           "template": "procmon.exe /EnableBootLogging /Quiet",
-          "params": []
+          "params": [],
+          "id": "sysinternals_process_monitor_boot_log_setup"
         },
         {
           "name": "Unquoted Service Paths Vulnerability Audit",
           "desc": "PowerShell audit discovering third-party services installed with unquoted paths containing spaces.",
           "template": "Get-CimInstance win32_service | Where-Object {$_.PathName -notmatch '^\"' -and $_.PathName -match '\\s' -and $_.PathName -notmatch 'C:\\\\Windows'} | Select-Object Name, PathName, StartMode",
-          "params": []
+          "params": [],
+          "id": "sysinternals_unquoted_service_paths_vulnerability_audit"
         }
       ]
     },
@@ -4697,13 +4938,15 @@
           "name": "Online Component Store Health Restore",
           "desc": "Downloads verified clean system binaries from Windows Update to heal corrupted system stores.",
           "template": "dism /Online /Cleanup-Image /RestoreHealth",
-          "params": []
+          "params": [],
+          "id": "dism_sfc_online_component_store_health_restore"
         },
         {
           "name": "System File Checker Integrity Verification",
           "desc": "Scans all protected system files and replaces corrupted files with a cached copy.",
           "template": "sfc /scannow",
-          "params": []
+          "params": [],
+          "id": "dism_sfc_system_file_checker_integrity_verification"
         },
         {
           "name": "Offline WIM Image Repair (Rescue USB)",
@@ -4722,7 +4965,8 @@
               "default": "E:",
               "placeholder": "E:, F:"
             }
-          ]
+          ],
+          "id": "dism_sfc_offline_wim_image_repair_rescue_usb"
         }
       ]
     },
@@ -4737,7 +4981,8 @@
           "name": "List All Physical USB Peripherals & Bus IDs",
           "desc": "Queries Windows USB host controller to find Bus IDs for SDRs, microcontrollers, and devices.",
           "template": "usbipd list",
-          "params": []
+          "params": [],
+          "id": "wsl_usbipd_list_all_physical_usb_peripherals_bus_ids"
         },
         {
           "name": "Attach USB Device to WSL2 Linux",
@@ -4750,7 +4995,8 @@
               "default": "1-1",
               "placeholder": "1-1, 2-3"
             }
-          ]
+          ],
+          "id": "wsl_usbipd_attach_usb_device_to_wsl2_linux"
         },
         {
           "name": "Detach USB Device from WSL2",
@@ -4763,13 +5009,15 @@
               "default": "1-1",
               "placeholder": "1-1"
             }
-          ]
+          ],
+          "id": "wsl_usbipd_detach_usb_device_from_wsl2"
         },
         {
           "name": "Clean Shutdown of All WSL Distros",
           "desc": "Gracefully terminates all running WSL2 virtual machines to release RAM and disk locks.",
           "template": "wsl --shutdown",
-          "params": []
+          "params": [],
+          "id": "wsl_usbipd_clean_shutdown_of_all_wsl_distros"
         }
       ]
     },
@@ -4791,7 +5039,8 @@
               "default": "C:\\Windows\\System32\\cmd.exe",
               "placeholder": "file.exe"
             }
-          ]
+          ],
+          "id": "certutil_calculate_sha_256_file_hash"
         },
         {
           "name": "Base64 Encode a Binary File",
@@ -4810,7 +5059,8 @@
               "default": "sample.b64",
               "placeholder": "file.txt"
             }
-          ]
+          ],
+          "id": "certutil_base64_encode_a_binary_file"
         }
       ]
     },
@@ -4825,13 +5075,15 @@
           "name": "Physical Disk & S.M.A.R.T. Status Audit",
           "desc": "Queries CIM storage subsystem for drive model, serial, media type (SSD/NVMe), and operational health.",
           "template": "Get-PhysicalDisk | Select-Object DeviceId, FriendlyName, MediaType, OperationalStatus, HealthStatus, Size",
-          "params": []
+          "params": [],
+          "id": "powershell_sysadmin_physical_disk_s_m_a_r_t_status_audit"
         },
         {
           "name": "Audit Unquoted Service Paths (Privilege Escalation)",
           "desc": "Identifies non-system32 services with spaces in the executable path lacking quotation marks.",
           "template": "Get-CimInstance Win32_Service | Where-Object { $_.PathName -notmatch '^\"' -and $_.PathName -match ' ' -and $_.PathName -notmatch '^C:\\\\Windows\\\\' } | Select-Object Name, PathName, StartMode, StartName",
-          "params": []
+          "params": [],
+          "id": "powershell_sysadmin_audit_unquoted_service_paths_privilege_escalation"
         },
         {
           "name": "Detailed Battery & Power Capacity Report",
@@ -4844,13 +5096,15 @@
               "default": "C:\\Users\\daddy\\Desktop\\battery_report.html",
               "placeholder": "battery.html"
             }
-          ]
+          ],
+          "id": "powershell_sysadmin_detailed_battery_power_capacity_report"
         },
         {
           "name": "Dump Installed Drivers with Vendor & Date",
           "desc": "Lists third-party installed hardware drivers to identify outdated or unsigned kernel modules.",
           "template": "driverquery /FO CSV | ConvertFrom-Csv | Select-Object 'Display Name', 'Driver Type', 'Link Date' | Out-GridView",
-          "params": []
+          "params": [],
+          "id": "powershell_sysadmin_dump_installed_drivers_with_vendor_date"
         }
       ]
     },
@@ -4865,25 +5119,29 @@
           "name": "Inspect Registry Run & RunOnce Keys",
           "desc": "Enumerates user and system autorun locations for suspicious persistence binaries.",
           "template": "Get-ItemProperty -Path 'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run', 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run' | Format-List",
-          "params": []
+          "params": [],
+          "id": "powershell_persistence_inspect_registry_run_runonce_keys"
         },
         {
           "name": "Audit Non-Microsoft Scheduled Tasks",
           "desc": "Filters active scheduled tasks excluding standard Microsoft/Windows tasks to spot malware persistence.",
           "template": "Get-ScheduledTask | Where-Object { $_.TaskPath -notlike '\\Microsoft*' } | Select-Object TaskName, TaskPath, State | Format-Table -AutoSize",
-          "params": []
+          "params": [],
+          "id": "powershell_persistence_audit_non_microsoft_scheduled_tasks"
         },
         {
           "name": "Inspect Startup Folders (LNK Shortcuts)",
           "desc": "Checks current user and all-users startup directories for persistent script or executable shortcuts.",
           "template": "Get-ChildItem -Path \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\", \"$env:ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\" -File | Select-Object Name, Length, LastWriteTime",
-          "params": []
+          "params": [],
+          "id": "powershell_persistence_inspect_startup_folders_lnk_shortcuts"
         },
         {
           "name": "WMI Event Consumer Persistence Audit",
           "desc": "Audits stealthy WMI Event Filters and CommandLineEventConsumers commonly used by APTs.",
           "template": "Get-CimInstance -Namespace root\\subscription -ClassName __EventConsumer | Select-Object Name, CommandLineTemplate",
-          "params": []
+          "params": [],
+          "id": "powershell_persistence_wmi_event_consumer_persistence_audit"
         }
       ]
     },
@@ -4898,25 +5156,29 @@
           "name": "Query Domain Controllers & Primary Forest",
           "desc": "Retrieves the current domain, forest name, and active PDC emulator hostname using native .NET.",
           "template": "[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain() | Select-Object Name, PdcRoleOwner, DomainMode",
-          "params": []
+          "params": [],
+          "id": "powershell_ad_recon_query_domain_controllers_primary_forest"
         },
         {
           "name": "Enumerate Domain Admin Accounts via ADSI",
           "desc": "Searches Active Directory LDAP tree for all accounts belonging to the Domain Admins security group.",
           "template": "$searcher = [adsisearcher]'(&(objectCategory=group)(cn=Domain Admins))'; ($searcher.FindOne()).GetDirectoryEntry().member",
-          "params": []
+          "params": [],
+          "id": "powershell_ad_recon_enumerate_domain_admin_accounts_via_adsi"
         },
         {
           "name": "Audit Password Last Set & Expiration for All Users",
           "desc": "Dumps account status, password age, and bad password counts across domain or local accounts.",
           "template": "Get-LocalUser | Select-Object Name, Enabled, PasswordLastSet, PasswordExpires | Format-Table -AutoSize",
-          "params": []
+          "params": [],
+          "id": "powershell_ad_recon_audit_password_last_set_expiration_for_all_users"
         },
         {
           "name": "Find Computers Running Server Operating Systems",
           "desc": "Searches AD computer objects for server distributions (Domain Controllers, SQL, Web Servers).",
           "template": "$searcher = [adsisearcher]'(&(objectCategory=computer)(operatingSystem=*Server*))'; $searcher.FindAll() | ForEach-Object { $_.Properties.name }",
-          "params": []
+          "params": [],
+          "id": "powershell_ad_recon_find_computers_running_server_operating_systems"
         }
       ]
     },
@@ -4931,25 +5193,29 @@
           "name": "Audit Windows Defender Real-Time Protection & Signatures",
           "desc": "Queries antivirus engine status, signature age, and behavioral monitoring flags.",
           "template": "Get-MpComputerStatus | Select-Object AntivirusEnabled, RealTimeProtectionEnabled, IoavProtectionEnabled, AntispywareSignatureAge",
-          "params": []
+          "params": [],
+          "id": "powershell_defense_evasion_audit_windows_defender_real_time_protection_signatures"
         },
         {
           "name": "Inspect LSASS RunAsPPL Protection Status",
           "desc": "Checks if LSA Protection (Protected Process Light) is enforced to prevent credential memory dumping.",
           "template": "Get-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa' -Name 'RunAsPPL' -ErrorAction SilentlyContinue",
-          "params": []
+          "params": [],
+          "id": "powershell_defense_evasion_inspect_lsass_runasppl_protection_status"
         },
         {
           "name": "Audit Windows Firewall Profiles (Domain, Private, Public)",
           "desc": "Verifies firewall status and default inbound/outbound blocking behaviors across all 3 profiles.",
           "template": "Get-NetFirewallProfile | Format-Table Name, Enabled, DefaultInboundAction, DefaultOutboundAction -AutoSize",
-          "params": []
+          "params": [],
+          "id": "powershell_defense_evasion_audit_windows_firewall_profiles_domain_private_public"
         },
         {
           "name": "Check Controlled Folder Access (Ransomware Shield)",
           "desc": "Inspects ransomware folder protection and lists user-whitelisted folders and executables.",
           "template": "Get-MpPreference | Select-Object -ExpandProperty ControlledFolderAccessProtectedFolders",
-          "params": []
+          "params": [],
+          "id": "powershell_defense_evasion_check_controlled_folder_access_ransomware_shield"
         }
       ]
     },
@@ -4964,25 +5230,29 @@
           "name": "Process Lineage & Full Command Lines (Parent-Child)",
           "desc": "Lists running processes with full CLI arguments, process ID, and parent PID.",
           "template": "Get-CimInstance Win32_Process | Select-Object ProcessId, ParentProcessId, Name, CommandLine | Sort-Object ProcessId | Format-Table -Wrap",
-          "params": []
+          "params": [],
+          "id": "powershell_quick_triage_process_lineage_full_command_lines_parent_child"
         },
         {
           "name": "Extract USB Storage Device Connection History",
           "desc": "Parses the Windows USBSTOR registry hive to reveal serial numbers, vendors, and device IDs of mounted USBs.",
           "template": "Get-ChildItem -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR' | ForEach-Object { Get-ChildItem $_.PSPath } | Select-Object PSChildName",
-          "params": []
+          "params": [],
+          "id": "powershell_quick_triage_extract_usb_storage_device_connection_history"
         },
         {
           "name": "Inspect Hidden Alternate Data Streams (Zone.Identifier)",
           "desc": "Audits downloaded files in user directories for MOTW (Mark of the Web) Zone.Identifier streams.",
           "template": "Get-ChildItem -Path \"$env:USERPROFILE\\Downloads\" -Recurse -Stream * | Where-Object { $_.Stream -ne ':$DATA' } | Select-Object Filename, Stream, Length",
-          "params": []
+          "params": [],
+          "id": "powershell_quick_triage_inspect_hidden_alternate_data_streams_zone_identifier"
         },
         {
           "name": "Dump Active Network Adapters with DHCP & DNS Leases",
           "desc": "Shows adapter MAC addresses, physical link speed, DHCP server, and current lease expiration.",
           "template": "Get-NetIPConfiguration | Select-Object InterfaceAlias, IPv4Address, IPv4DefaultGateway, DNSServer | Format-List",
-          "params": []
+          "params": [],
+          "id": "powershell_quick_triage_dump_active_network_adapters_with_dhcp_dns_leases"
         }
       ]
     },
@@ -5010,7 +5280,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\autorun_backup.reg",
               "placeholder": "backup.reg"
             }
-          ]
+          ],
+          "id": "reg_exe_export_registry_hive_to_file"
         },
         {
           "name": "Query Registry Key for Value",
@@ -5029,7 +5300,8 @@
               "default": "RunAsPPL",
               "placeholder": "NoLMHash"
             }
-          ]
+          ],
+          "id": "reg_exe_query_registry_key_for_value"
         },
         {
           "name": "Search Registry for Keyword (Red Team Intel)",
@@ -5048,7 +5320,8 @@
               "default": "password",
               "placeholder": "admin, token, key"
             }
-          ]
+          ],
+          "id": "reg_exe_search_registry_for_keyword_red_team_intel"
         }
       ]
     },
@@ -5063,7 +5336,8 @@
           "name": "Query All Running Services",
           "desc": "Lists all services currently in a RUNNING state on the local machine.",
           "template": "sc query type= all state= all | findstr /I \"SERVICE_NAME STATE\"",
-          "params": []
+          "params": [],
+          "id": "sc_exe_query_all_running_services"
         },
         {
           "name": "Start or Stop a Service",
@@ -5082,7 +5356,8 @@
               "default": "wuauserv",
               "placeholder": "Spooler, WinRM"
             }
-          ]
+          ],
+          "id": "sc_exe_start_or_stop_a_service"
         },
         {
           "name": "Create Persistence Service (Red Team)",
@@ -5101,7 +5376,8 @@
               "default": "C:\\Windows\\Temp\\payload.exe",
               "placeholder": "C:\\path\\to\\evil.exe"
             }
-          ]
+          ],
+          "id": "sc_exe_create_persistence_service_red_team"
         }
       ]
     },
@@ -5135,7 +5411,8 @@
               "default": "C:\\Windows\\Temp\\payload.exe",
               "placeholder": "C:\\Temp\\file.exe"
             }
-          ]
+          ],
+          "id": "bitsadmin_download_file_via_bits_lolbin"
         }
       ]
     },
@@ -5157,7 +5434,8 @@
               "default": "C:",
               "placeholder": "C:, D:"
             }
-          ]
+          ],
+          "id": "cipher_exe_secure_wipe_free_space_on_drive"
         }
       ]
     },
@@ -5179,13 +5457,15 @@
               "default": "C:\\Users\\daddy\\Desktop\\installed_software.csv",
               "placeholder": "software.csv"
             }
-          ]
+          ],
+          "id": "wmic_recon_list_all_installed_software_wmic"
         },
         {
           "name": "Query Running Processes with Executable Paths",
           "desc": "Lists process name, PID, and full executable path for running processes.",
           "template": "wmic process get Caption,ProcessId,ExecutablePath | findstr /v \"^$\"",
-          "params": []
+          "params": [],
+          "id": "wmic_recon_query_running_processes_with_executable_paths"
         },
         {
           "name": "Remote System Info via WMIC",
@@ -5210,7 +5490,8 @@
               "default": "Password123!",
               "placeholder": "password"
             }
-          ]
+          ],
+          "id": "wmic_recon_remote_system_info_via_wmic"
         }
       ]
     },
@@ -5232,7 +5513,8 @@
               "default": "192.168.1.50",
               "placeholder": "DESKTOP-ABC123"
             }
-          ]
+          ],
+          "id": "powershell_remoting_open_interactive_remote_ps_session"
         },
         {
           "name": "Execute Command on Remote Machine",
@@ -5251,13 +5533,15 @@
               "default": "whoami; ipconfig /all",
               "placeholder": "Get-Process"
             }
-          ]
+          ],
+          "id": "powershell_remoting_execute_command_on_remote_machine"
         },
         {
           "name": "Enable WinRM on Remote Machine (PsExec style)",
           "desc": "Enables WinRM listener on a machine where it may not be configured yet.",
           "template": "Enable-PSRemoting -Force -SkipNetworkProfileCheck",
-          "params": []
+          "params": [],
+          "id": "powershell_remoting_enable_winrm_on_remote_machine_psexec_style"
         }
       ]
     },
@@ -5272,13 +5556,15 @@
           "name": "List All Installed Hotfixes (Sorted by Date)",
           "desc": "Dumps all KB patches with installation date sorted newest to oldest.",
           "template": "Get-HotFix | Sort-Object InstalledOn -Descending | Format-Table HotFixID, InstalledOn, InstalledBy, Description -AutoSize",
-          "params": []
+          "params": [],
+          "id": "windows_hotfix_list_all_installed_hotfixes_sorted_by_date"
         },
         {
           "name": "Check System Uptime",
           "desc": "Calculates how long the machine has been online since last reboot.",
           "template": "(Get-Date) - (gcim Win32_OperatingSystem).LastBootUpTime | Select-Object Days, Hours, Minutes",
-          "params": []
+          "params": [],
+          "id": "windows_hotfix_check_system_uptime"
         },
         {
           "name": "Search for Specific KB Patch",
@@ -5291,7 +5577,8 @@
               "default": "KB5034441",
               "placeholder": "KB5034441"
             }
-          ]
+          ],
+          "id": "windows_hotfix_search_for_specific_kb_patch"
         }
       ]
     },
@@ -5306,19 +5593,22 @@
           "name": "Full System Antivirus Scan",
           "desc": "Kicks off a full Defender scan on the entire system filesystem.",
           "template": "\"C:\\Program Files\\Windows Defender\\MpCmdRun.exe\" -Scan -ScanType 2",
-          "params": []
+          "params": [],
+          "id": "defender_cli_full_system_antivirus_scan"
         },
         {
           "name": "Quick Scan (Memory-Resident Threats)",
           "desc": "Runs a fast memory and startup locations scan for active threats.",
           "template": "\"C:\\Program Files\\Windows Defender\\MpCmdRun.exe\" -Scan -ScanType 1",
-          "params": []
+          "params": [],
+          "id": "defender_cli_quick_scan_memory_resident_threats"
         },
         {
           "name": "Force Update Virus Definitions",
           "desc": "Downloads and installs the latest Defender signature database immediately.",
           "template": "\"C:\\Program Files\\Windows Defender\\MpCmdRun.exe\" -SignatureUpdate",
-          "params": []
+          "params": [],
+          "id": "defender_cli_force_update_virus_definitions"
         },
         {
           "name": "Scan a Specific Directory",
@@ -5331,7 +5621,8 @@
               "default": "C:\\Users\\daddy\\Downloads",
               "placeholder": "C:\\Temp"
             }
-          ]
+          ],
+          "id": "defender_cli_scan_a_specific_directory"
         }
       ]
     },
@@ -5359,7 +5650,8 @@
               "default": "C:\\Windows\\Temp\\tools.zip",
               "placeholder": "C:\\Temp\\payload.exe"
             }
-          ]
+          ],
+          "id": "powershell_download_exec_download_file_with_invoke_webrequest"
         },
         {
           "name": "In-Memory Script Execution Cradle",
@@ -5372,7 +5664,8 @@
               "default": "http://192.168.1.10/shell.ps1",
               "placeholder": "http://attacker.com/script.ps1"
             }
-          ]
+          ],
+          "id": "powershell_download_exec_in_memory_script_execution_cradle"
         },
         {
           "name": "Bypass ExecutionPolicy for Script Execution",
@@ -5385,7 +5678,8 @@
               "default": "C:\\Windows\\Temp\\script.ps1",
               "placeholder": "C:\\path\\to\\script.ps1"
             }
-          ]
+          ],
+          "id": "powershell_download_exec_bypass_executionpolicy_for_script_execution"
         }
       ]
     },
@@ -5407,7 +5701,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\Security_Events.csv",
               "placeholder": "events.csv"
             }
-          ]
+          ],
+          "id": "windows_event_export_export_security_log_to_csv"
         },
         {
           "name": "Export Specific Event ID to JSON",
@@ -5432,11 +5727,12 @@
               "default": "C:\\Users\\daddy\\Desktop\\events.json",
               "placeholder": "events.json"
             }
-          ]
+          ],
+          "id": "windows_event_export_export_specific_event_id_to_json"
         },
         {
           "name": "Clear a Specific Event Log (Cover Tracks)",
-          "desc": "Clears an event log channel \u2014 commonly used in attacker defense evasion (log this action).",
+          "desc": "Clears an event log channel — commonly used in attacker defense evasion (log this action).",
           "template": "Clear-EventLog -LogName \"{{log_name}}\"",
           "params": [
             {
@@ -5445,7 +5741,8 @@
               "default": "Security",
               "placeholder": "System, Application"
             }
-          ]
+          ],
+          "id": "windows_event_export_clear_a_specific_event_log_cover_tracks"
         }
       ]
     },
@@ -5460,7 +5757,8 @@
           "name": "Show All Active TCP/UDP Connections with PIDs",
           "desc": "Displays all active connections and listening ports with owning process IDs.",
           "template": "netstat -ano",
-          "params": []
+          "params": [],
+          "id": "netstat_route_show_all_active_tcp_udp_connections_with_pids"
         },
         {
           "name": "Find Process Owning a Specific Port",
@@ -5473,13 +5771,15 @@
               "default": "4444",
               "placeholder": "80, 443, 8080"
             }
-          ]
+          ],
+          "id": "netstat_route_find_process_owning_a_specific_port"
         },
         {
           "name": "Display Routing Table",
           "desc": "Shows the complete IP routing table including default gateways and static routes.",
           "template": "route print",
-          "params": []
+          "params": [],
+          "id": "netstat_route_display_routing_table"
         },
         {
           "name": "Add Static Route",
@@ -5504,7 +5804,8 @@
               "default": "192.168.1.1",
               "placeholder": "10.0.0.1"
             }
-          ]
+          ],
+          "id": "netstat_route_add_static_route"
         }
       ]
     },
@@ -5519,7 +5820,8 @@
           "name": "Check BitLocker Status on All Drives",
           "desc": "Lists encryption protection status, key protectors, and conversion progress on all volumes.",
           "template": "manage-bde -status",
-          "params": []
+          "params": [],
+          "id": "bitlocker_audit_check_bitlocker_status_on_all_drives"
         },
         {
           "name": "Export BitLocker Recovery Key to File",
@@ -5538,7 +5840,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\bitlocker_recovery.txt",
               "placeholder": "recovery.txt"
             }
-          ]
+          ],
+          "id": "bitlocker_audit_export_bitlocker_recovery_key_to_file"
         }
       ]
     },
@@ -5553,13 +5856,15 @@
           "name": "List All Local Users",
           "desc": "Dumps all local user accounts including disabled and locked-out accounts.",
           "template": "Get-LocalUser | Select-Object Name, Enabled, PasswordRequired, LastLogon, PasswordLastSet | Format-Table -AutoSize",
-          "params": []
+          "params": [],
+          "id": "windows_users_groups_list_all_local_users"
         },
         {
           "name": "List Members of Local Administrators Group",
           "desc": "Enumerates all accounts with local administrator privileges.",
           "template": "Get-LocalGroupMember -Group \"Administrators\" | Format-Table Name, ObjectClass, PrincipalSource -AutoSize",
-          "params": []
+          "params": [],
+          "id": "windows_users_groups_list_members_of_local_administrators_group"
         },
         {
           "name": "Add User to Local Administrators (Persistence)",
@@ -5578,13 +5883,15 @@
               "default": "P@ssw0rd123!",
               "placeholder": "SecureP@ss!"
             }
-          ]
+          ],
+          "id": "windows_users_groups_add_user_to_local_administrators_persistence"
         },
         {
           "name": "Audit All Local Groups",
           "desc": "Lists all local security groups and their descriptions.",
           "template": "Get-LocalGroup | Select-Object Name, Description | Format-Table -AutoSize",
-          "params": []
+          "params": [],
+          "id": "windows_users_groups_audit_all_local_groups"
         }
       ]
     },
@@ -5618,13 +5925,15 @@
               "default": "onlogon",
               "placeholder": "onstart, daily, hourly"
             }
-          ]
+          ],
+          "id": "powershell_scheduled_tasks_create_scheduled_task_persistence"
         },
         {
           "name": "List All Scheduled Tasks with Run Time",
           "desc": "Displays all registered task names, states, and next run time.",
           "template": "schtasks /query /fo LIST /v | findstr /i \"Task Name: Status: Next Run\"",
-          "params": []
+          "params": [],
+          "id": "powershell_scheduled_tasks_list_all_scheduled_tasks_with_run_time"
         },
         {
           "name": "Delete a Scheduled Task",
@@ -5637,7 +5946,8 @@
               "default": "WindowsUpdate",
               "placeholder": "MalwareTask"
             }
-          ]
+          ],
+          "id": "powershell_scheduled_tasks_delete_a_scheduled_task"
         }
       ]
     },
@@ -5652,7 +5962,8 @@
           "name": "List All Local SMB Shares",
           "desc": "Displays all shares being hosted on the local machine including hidden admin shares.",
           "template": "Get-SmbShare | Select-Object Name, Path, Description | Format-Table -AutoSize",
-          "params": []
+          "params": [],
+          "id": "powershell_network_shares_list_all_local_smb_shares"
         },
         {
           "name": "Map Network Drive via Command Line",
@@ -5689,13 +6000,15 @@
               "default": "Password123!",
               "placeholder": "password"
             }
-          ]
+          ],
+          "id": "powershell_network_shares_map_network_drive_via_command_line"
         },
         {
           "name": "Audit Open Files on Share (Sessions)",
           "desc": "Lists which remote users have open file handles on locally hosted SMB shares.",
           "template": "Get-SmbOpenFile | Select-Object FileId, ClientComputerName, ClientUserName, Path | Format-Table -AutoSize",
-          "params": []
+          "params": [],
+          "id": "powershell_network_shares_audit_open_files_on_share_sessions"
         }
       ]
     },
@@ -5729,7 +6042,8 @@
               "default": "noaa_capture",
               "placeholder": "noaa_capture"
             }
-          ]
+          ],
+          "id": "powershell_satdump_sdr_noaa_apt_live_reception_via_rtl_sdr"
         },
         {
           "name": "Offline Baseband Pass Decoding (.wav / .c16)",
@@ -5748,7 +6062,8 @@
               "default": "meteor_output",
               "placeholder": "meteor_output"
             }
-          ]
+          ],
+          "id": "powershell_satdump_sdr_offline_baseband_pass_decoding_wav_c16"
         },
         {
           "name": "Generate False-Color Thermal Overlays (MSA/MCIR)",
@@ -5761,7 +6076,8 @@
               "default": "noaa_capture",
               "placeholder": "noaa_capture"
             }
-          ]
+          ],
+          "id": "powershell_satdump_sdr_generate_false_color_thermal_overlays_msa_mcir"
         }
       ]
     },
@@ -5783,7 +6099,8 @@
               "default": "433.92M",
               "placeholder": "433.92M, 315M, 915M"
             }
-          ]
+          ],
+          "id": "powershell_rtl_433_live_decode_all_protocols_433_92_mhz"
         },
         {
           "name": "Stream Decoded Telemetry to Local JSON File",
@@ -5802,7 +6119,8 @@
               "default": "telemetry.json",
               "placeholder": "telemetry.json"
             }
-          ]
+          ],
+          "id": "powershell_rtl_433_stream_decoded_telemetry_to_local_json_file"
         },
         {
           "name": "Target US 915 MHz Smart Meters & Weather Stations",
@@ -5815,7 +6133,8 @@
               "default": "0",
               "placeholder": "0, 1"
             }
-          ]
+          ],
+          "id": "powershell_rtl_433_target_us_915_mhz_smart_meters_weather_stations"
         },
         {
           "name": "Filter Specific Protocol by ID",
@@ -5834,7 +6153,8 @@
               "default": "433.92M",
               "placeholder": "433.92M"
             }
-          ]
+          ],
+          "id": "powershell_rtl_433_filter_specific_protocol_by_id"
         }
       ]
     },
@@ -5862,7 +6182,8 @@
               "default": "40",
               "placeholder": "30, 40, 49.6"
             }
-          ]
+          ],
+          "id": "powershell_sdr_scanner_listen_to_noaa_weather_radio_live_162_550_mhz"
         },
         {
           "name": "Civilian Aviation AM Airband Intercept (118-136 MHz)",
@@ -5881,7 +6202,8 @@
               "default": "42",
               "placeholder": "35, 42, 49.6"
             }
-          ]
+          ],
+          "id": "powershell_sdr_scanner_civilian_aviation_am_airband_intercept_118_136_mhz"
         },
         {
           "name": "Headless RTL-TCP Server (Stream SDR over Network)",
@@ -5900,7 +6222,8 @@
               "default": "32",
               "placeholder": "16, 32, 64"
             }
-          ]
+          ],
+          "id": "powershell_sdr_scanner_headless_rtl_tcp_server_stream_sdr_over_network"
         }
       ]
     },
@@ -5915,25 +6238,29 @@
           "name": "Survey All Visible BSSIDs, Channels & Signal Quality",
           "desc": "Dumps detailed network survey with BSSID, RSSI signal percentage, authentication type, and radio channels.",
           "template": "netsh wlan show networks mode=bssid",
-          "params": []
+          "params": [],
+          "id": "powershell_wifi_recon_survey_all_visible_bssids_channels_signal_quality"
         },
         {
           "name": "Dump All Saved Wi-Fi Profiles with Cleartext WPA2 Passwords",
           "desc": "Extracts every saved wireless network profile on the system and prints the cleartext passphrase (key=clear).",
           "template": "(netsh wlan show profiles) | Select-String 'All User Profile' | ForEach-Object { $name = $_.Line.Split(':')[1].Trim(); netsh wlan show profile name=\"$name\" key=clear }",
-          "params": []
+          "params": [],
+          "id": "powershell_wifi_recon_dump_all_saved_wi_fi_profiles_with_cleartext_wpa2_passwords"
         },
         {
           "name": "Inspect Active Wi-Fi Interface & Link Speed",
           "desc": "Queries connection status, current BSSID, transmission rate (Tx/Rx Mbps), and radio channel.",
           "template": "netsh wlan show interfaces",
-          "params": []
+          "params": [],
+          "id": "powershell_wifi_recon_inspect_active_wi_fi_interface_link_speed"
         },
         {
           "name": "Generate Comprehensive Windows WLAN Diagnostics Report",
           "desc": "Generates a detailed HTML wireless diagnostic report covering connection drops, adapter transitions, and events.",
           "template": "netsh wlan show wlanreport; Start-Process (Get-ChildItem -Path $env:ProgramData\\Microsoft\\Windows\\WlanReport -Filter '*.html' | Sort-Object LastWriteTime -Descending | Select-Object -First 1).FullName",
-          "params": []
+          "params": [],
+          "id": "powershell_wifi_recon_generate_comprehensive_windows_wlan_diagnostics_report"
         }
       ]
     },
@@ -5948,7 +6275,8 @@
           "name": "List All Host USB Devices & Hardware UUIDs",
           "desc": "Queries VirtualBox host controller for all plugged USB hardware UUIDs, vendor IDs, and states.",
           "template": "\"C:\\Program Files\\Oracle\\VirtualBox\\VBoxManage.exe\" list usbhost",
-          "params": []
+          "params": [],
+          "id": "vbox_hardware_bridge_list_all_host_usb_devices_hardware_uuids"
         },
         {
           "name": "Attach USB Dongle (Atheros AR9271) Directly into Running Kali VM",
@@ -5967,7 +6295,8 @@
               "default": "9caf371e-7aa9-490d-8d70-4d17d21db5e1",
               "placeholder": "UUID from list usbhost"
             }
-          ]
+          ],
+          "id": "vbox_hardware_bridge_attach_usb_dongle_atheros_ar9271_directly_into_running_kali_vm"
         },
         {
           "name": "Detach USB Hardware from Kali VM back to Host",
@@ -5986,7 +6315,8 @@
               "default": "9caf371e-7aa9-490d-8d70-4d17d21db5e1",
               "placeholder": "UUID"
             }
-          ]
+          ],
+          "id": "vbox_hardware_bridge_detach_usb_hardware_from_kali_vm_back_to_host"
         },
         {
           "name": "Start Kali VM in Headless / Background Mode",
@@ -5999,7 +6329,8 @@
               "default": "kali-linux-2026.2-virtualbox-amd64",
               "placeholder": "kali"
             }
-          ]
+          ],
+          "id": "vbox_hardware_bridge_start_kali_vm_in_headless_background_mode"
         },
         {
           "name": "Execute Command Inside Kali VM from Windows CLI",
@@ -6018,7 +6349,8 @@
               "default": "ip a && iwconfig",
               "placeholder": "iwconfig, lsusb"
             }
-          ]
+          ],
+          "id": "vbox_hardware_bridge_execute_command_inside_kali_vm_from_windows_cli"
         }
       ]
     },
@@ -6033,13 +6365,15 @@
           "name": "Sigma Threat Hunt Against Live Security Event Logs",
           "desc": "Runs Sigma detection rules against Security.evtx to detect credential dumping, lateral movement, and defense evasion.",
           "template": "hayabusa.exe csv-timeline -d C:\\Windows\\System32\\Winevt\\Logs\\ -o timeline.csv --min-level high",
-          "params": []
+          "params": [],
+          "id": "hayabusa_hunting_sigma_threat_hunt_against_live_security_event_logs"
         },
         {
           "name": "Logon Activity & Lateral Movement Summary",
           "desc": "Aggregates successful and failed logon types (Type 2 interactive, Type 3 network, Type 10 RDP).",
           "template": "hayabusa.exe logon-summary -f C:\\Windows\\System32\\Winevt\\Logs\\Security.evtx",
-          "params": []
+          "params": [],
+          "id": "hayabusa_hunting_logon_activity_lateral_movement_summary"
         }
       ]
     }
@@ -6056,7 +6390,8 @@
           "name": "List Connected Devices with Detailed Model Specs",
           "desc": "Queries all USB and Wi-Fi attached Android targets with product, model, and device names.",
           "template": "adb devices -l",
-          "params": []
+          "params": [],
+          "id": "adb_connection_list_connected_devices_with_detailed_model_specs"
         },
         {
           "name": "Enable Wireless TCP/IP Debugging on Port 5555",
@@ -6069,7 +6404,8 @@
               "default": "5555",
               "placeholder": "5555"
             }
-          ]
+          ],
+          "id": "adb_connection_enable_wireless_tcp_ip_debugging_on_port_5555"
         },
         {
           "name": "Connect to Device Over Local Wi-Fi",
@@ -6088,7 +6424,8 @@
               "default": "5555",
               "placeholder": "5555"
             }
-          ]
+          ],
+          "id": "adb_connection_connect_to_device_over_local_wi_fi"
         },
         {
           "name": "Pair with Android 11+ Wireless Debugging Code",
@@ -6113,7 +6450,8 @@
               "default": "123456",
               "placeholder": "6-digit code"
             }
-          ]
+          ],
+          "id": "adb_connection_pair_with_android_11_wireless_debugging_code"
         },
         {
           "name": "Disconnect Wireless Target",
@@ -6132,7 +6470,8 @@
               "default": "5555",
               "placeholder": "5555"
             }
-          ]
+          ],
+          "id": "adb_connection_disconnect_wireless_target"
         },
         {
           "name": "Target Specific Hardware Serial Number",
@@ -6151,25 +6490,29 @@
               "default": "shell getprop ro.product.model",
               "placeholder": "shell, install, pull"
             }
-          ]
+          ],
+          "id": "adb_connection_target_specific_hardware_serial_number"
         },
         {
           "name": "Wait For Device Online (Script Synchronizer)",
           "desc": "Blocks execution in scripts until the target device boots and attaches to ADB daemon.",
           "template": "adb wait-for-device",
-          "params": []
+          "params": [],
+          "id": "adb_connection_wait_for_device_online_script_synchronizer"
         },
         {
           "name": "Query State & Serial Number",
           "desc": "Checks if device is in device, recovery, bootloader, or unauthorized state.",
           "template": "adb get-state && adb get-serialno",
-          "params": []
+          "params": [],
+          "id": "adb_connection_query_state_serial_number"
         },
         {
           "name": "Restart ADB Server Daemon",
           "desc": "Kills hanging ADB host processes and re-initializes USB/TCP listening service.",
           "template": "adb kill-server && adb start-server",
-          "params": []
+          "params": [],
+          "id": "adb_connection_restart_adb_server_daemon"
         }
       ]
     },
@@ -6191,7 +6534,8 @@
               "default": "C:\\Users\\daddy\\Downloads\\app-release.apk",
               "placeholder": "C:\\path\\to\\app.apk"
             }
-          ]
+          ],
+          "id": "adb_package_manager_install_apk_with_permissions_downgrade_clean_sideload"
         },
         {
           "name": "Install Split APKs / App Bundles",
@@ -6204,7 +6548,8 @@
               "default": "base.apk split_config.arm64_v8a.apk split_config.xxhdpi.apk",
               "placeholder": "base.apk split1.apk split2.apk"
             }
-          ]
+          ],
+          "id": "adb_package_manager_install_split_apks_app_bundles"
         },
         {
           "name": "Uninstall App Keeping Data & Cache",
@@ -6217,19 +6562,22 @@
               "default": "com.example.app",
               "placeholder": "com.developer.game"
             }
-          ]
+          ],
+          "id": "adb_package_manager_uninstall_app_keeping_data_cache"
         },
         {
           "name": "List Third-Party (User-Installed) Apps",
           "desc": "Filters out system apps and shows only user-installed apps and their APK locations.",
           "template": "adb shell pm list packages -3 -f",
-          "params": []
+          "params": [],
+          "id": "adb_package_manager_list_third_party_user_installed_apps"
         },
         {
           "name": "List Disabled / Frozen Packages",
           "desc": "Identifies all apps currently suspended or disabled on the system.",
           "template": "adb shell pm list packages -d",
-          "params": []
+          "params": [],
+          "id": "adb_package_manager_list_disabled_frozen_packages"
         },
         {
           "name": "Find Target App's APK Path on Device",
@@ -6242,7 +6590,8 @@
               "default": "com.samsung.android.messaging",
               "placeholder": "com.target.app"
             }
-          ]
+          ],
+          "id": "adb_package_manager_find_target_app_s_apk_path_on_device"
         },
         {
           "name": "Pull Installed APK from Device to PC",
@@ -6261,7 +6610,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\extracted.apk",
               "placeholder": "C:\\path\\app.apk"
             }
-          ]
+          ],
+          "id": "adb_package_manager_pull_installed_apk_from_device_to_pc"
         },
         {
           "name": "Clear App Cache & Data (Factory Reset App)",
@@ -6274,7 +6624,8 @@
               "default": "com.example.app",
               "placeholder": "com.package.name"
             }
-          ]
+          ],
+          "id": "adb_package_manager_clear_app_cache_data_factory_reset_app"
         },
         {
           "name": "Disable / Freeze Bloatware Without Root",
@@ -6287,7 +6638,8 @@
               "default": "com.facebook.katana",
               "placeholder": "com.carrier.bloat"
             }
-          ]
+          ],
+          "id": "adb_package_manager_disable_freeze_bloatware_without_root"
         },
         {
           "name": "Re-enable Frozen Application",
@@ -6300,7 +6652,8 @@
               "default": "com.facebook.katana",
               "placeholder": "com.package.name"
             }
-          ]
+          ],
+          "id": "adb_package_manager_re_enable_frozen_application"
         }
       ]
     },
@@ -6328,7 +6681,8 @@
               "default": "/sdcard/Download/",
               "placeholder": "/sdcard/Download/"
             }
-          ]
+          ],
+          "id": "adb_file_transfers_push_file_or_directory_to_android"
         },
         {
           "name": "Pull File or Directory from Android to PC",
@@ -6347,7 +6701,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\",
               "placeholder": "C:\\Users\\...\\"
             }
-          ]
+          ],
+          "id": "adb_file_transfers_pull_file_or_directory_from_android_to_pc"
         },
         {
           "name": "Backup Full DCIM Camera Photos to PC",
@@ -6360,7 +6715,8 @@
               "default": "C:\\Users\\daddy\\Pictures\\Phone_Backup\\",
               "placeholder": "C:\\Pictures\\Backup\\"
             }
-          ]
+          ],
+          "id": "adb_file_transfers_backup_full_dcim_camera_photos_to_pc"
         },
         {
           "name": "Detailed Storage & Permission Listing",
@@ -6373,19 +6729,22 @@
               "default": "/sdcard/Download",
               "placeholder": "/sdcard/"
             }
-          ]
+          ],
+          "id": "adb_file_transfers_detailed_storage_permission_listing"
         },
         {
           "name": "Disk Free Space & Mount Point Audit",
           "desc": "Displays filesystem usage, available free space, block sizes, and mounted partitions.",
           "template": "adb shell df -h",
-          "params": []
+          "params": [],
+          "id": "adb_file_transfers_disk_free_space_mount_point_audit"
         },
         {
           "name": "Find Top Space-Consuming Folders",
           "desc": "Calculates disk usage across internal storage and sorts the top largest directories.",
           "template": "adb shell du -sh /sdcard/* | sort -hr | head -n 15",
-          "params": []
+          "params": [],
+          "id": "adb_file_transfers_find_top_space_consuming_folders"
         }
       ]
     },
@@ -6400,7 +6759,8 @@
           "name": "Stream Real-Time Timestamped System Logs",
           "desc": "Streams system logs with date, time, thread ID, and log level formatting.",
           "template": "adb logcat -v time",
-          "params": []
+          "params": [],
+          "id": "adb_logcat_diagnostics_stream_real_time_timestamped_system_logs"
         },
         {
           "name": "Filter Logcat by Specific Application Tag",
@@ -6413,31 +6773,36 @@
               "default": "FeedTheFrog",
               "placeholder": "Tag name or MainActivity"
             }
-          ]
+          ],
+          "id": "adb_logcat_diagnostics_filter_logcat_by_specific_application_tag"
         },
         {
           "name": "Display Fatal Exceptions & Errors Only (*:E)",
           "desc": "Hides verbose and debug messages, showing only critical app crashes, ANRs, and kernel errors.",
           "template": "adb logcat *:E",
-          "params": []
+          "params": [],
+          "id": "adb_logcat_diagnostics_display_fatal_exceptions_errors_only_e"
         },
         {
           "name": "Dump Telephony & Cellular Radio Buffer",
           "desc": "Dumps cellular modem, SIM, RIL, signal dBm, and baseband radio communication events.",
           "template": "adb logcat -b radio -v time -d",
-          "params": []
+          "params": [],
+          "id": "adb_logcat_diagnostics_dump_telephony_cellular_radio_buffer"
         },
         {
           "name": "Dump System Crash Buffer",
           "desc": "Extracts tombstone crash reports and native process segmentation faults.",
           "template": "adb logcat -b crash -v time -d",
-          "params": []
+          "params": [],
+          "id": "adb_logcat_diagnostics_dump_system_crash_buffer"
         },
         {
           "name": "Clear All Logcat Buffers",
           "desc": "Flushes the ring buffer so subsequent captures start completely fresh.",
           "template": "adb logcat -c",
-          "params": []
+          "params": [],
+          "id": "adb_logcat_diagnostics_clear_all_logcat_buffers"
         },
         {
           "name": "Save Full Diagnostic Logcat to Local File",
@@ -6450,7 +6815,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\logcat_dump.txt",
               "placeholder": "C:\\path\\logcat.txt"
             }
-          ]
+          ],
+          "id": "adb_logcat_diagnostics_save_full_diagnostic_logcat_to_local_file"
         }
       ]
     },
@@ -6465,7 +6831,8 @@
           "name": "Battery Health, Voltage, Temperature & Level",
           "desc": "Dumps real-time battery status including mV voltage, temperature in tenths of a degree C, and charging status.",
           "template": "adb shell dumpsys battery",
-          "params": []
+          "params": [],
+          "id": "adb_dumpsys_telemetry_battery_health_voltage_temperature_level"
         },
         {
           "name": "Mock Battery Unplug & Set Custom Level",
@@ -6478,13 +6845,15 @@
               "default": "15",
               "placeholder": "1 - 100"
             }
-          ]
+          ],
+          "id": "adb_dumpsys_telemetry_mock_battery_unplug_set_custom_level"
         },
         {
           "name": "Reset Battery Mocking to Real Hardware",
           "desc": "Restores real hardware battery telemetry after simulation tests.",
           "template": "adb shell dumpsys battery reset",
-          "params": []
+          "params": [],
+          "id": "adb_dumpsys_telemetry_reset_battery_mocking_to_real_hardware"
         },
         {
           "name": "Detailed Application RAM Memory Breakdown",
@@ -6497,31 +6866,36 @@
               "default": "com.daddydavis.feedthefrog",
               "placeholder": "com.example.app"
             }
-          ]
+          ],
+          "id": "adb_dumpsys_telemetry_detailed_application_ram_memory_breakdown"
         },
         {
           "name": "Live CPU Usage by Process",
           "desc": "Ranks processes by current user, kernel, and I/O CPU percentage over recent samples.",
           "template": "adb shell dumpsys cpuinfo",
-          "params": []
+          "params": [],
+          "id": "adb_dumpsys_telemetry_live_cpu_usage_by_process"
         },
         {
           "name": "Active Wi-Fi Link Speed, RSSI & BSSID",
           "desc": "Extracts current connected Wi-Fi SSID, BSSID, RSSI dBm signal, link speed in Mbps, and frequency.",
           "template": "adb shell dumpsys wifi | grep -E \"mWifiInfo|mNetworkInfo|curBssid\"",
-          "params": []
+          "params": [],
+          "id": "adb_dumpsys_telemetry_active_wi_fi_link_speed_rssi_bssid"
         },
         {
           "name": "Identify Currently Active / Top Screen Activity",
           "desc": "Identifies the exact foreground package and activity currently visible to the user.",
           "template": "adb shell dumpsys activity top | grep ACTIVITY",
-          "params": []
+          "params": [],
+          "id": "adb_dumpsys_telemetry_identify_currently_active_top_screen_activity"
         },
         {
           "name": "Thermal Throttling & Temperature Sensors",
           "desc": "Inspects SoC thermal zones, skin temperature limits, and active throttling status.",
           "template": "adb shell dumpsys thermalservice",
-          "params": []
+          "params": [],
+          "id": "adb_dumpsys_telemetry_thermal_throttling_temperature_sensors"
         }
       ]
     },
@@ -6549,7 +6923,8 @@
               "default": ".MainActivity",
               "placeholder": ".MainActivity"
             }
-          ]
+          ],
+          "id": "adb_activity_input_launch_specific_activity_screen"
         },
         {
           "name": "Open Web URL in Default Mobile Browser",
@@ -6562,7 +6937,8 @@
               "default": "https://google.com",
               "placeholder": "https://..."
             }
-          ]
+          ],
+          "id": "adb_activity_input_open_web_url_in_default_mobile_browser"
         },
         {
           "name": "Force Stop / Kill Running Application",
@@ -6575,7 +6951,8 @@
               "default": "com.daddydavis.feedthefrog",
               "placeholder": "com.example.app"
             }
-          ]
+          ],
+          "id": "adb_activity_input_force_stop_kill_running_application"
         },
         {
           "name": "Simulate Screen Tap at Coordinates (X, Y)",
@@ -6594,7 +6971,8 @@
               "default": "1200",
               "placeholder": "1200"
             }
-          ]
+          ],
+          "id": "adb_activity_input_simulate_screen_tap_at_coordinates_x_y"
         },
         {
           "name": "Simulate Swipe / Drag Gesture",
@@ -6631,7 +7009,8 @@
               "default": "300",
               "placeholder": "300"
             }
-          ]
+          ],
+          "id": "adb_activity_input_simulate_swipe_drag_gesture"
         },
         {
           "name": "Type Text String into Focused Input Field",
@@ -6644,7 +7023,8 @@
               "default": "CommandScout_Automated_Input",
               "placeholder": "text_here"
             }
-          ]
+          ],
+          "id": "adb_activity_input_type_text_string_into_focused_input_field"
         },
         {
           "name": "Send Hardware Keyevent (Home / Back / Power / Volume)",
@@ -6657,13 +7037,15 @@
               "default": "3",
               "placeholder": "3"
             }
-          ]
+          ],
+          "id": "adb_activity_input_send_hardware_keyevent_home_back_power_volume"
         },
         {
           "name": "Wake Device & Unlock Lockscreen",
           "desc": "Presses power key to wake display then swipes or sends menu key to unlock.",
           "template": "adb shell input keyevent 26 && adb shell input keyevent 82",
-          "params": []
+          "params": [],
+          "id": "adb_activity_input_wake_device_unlock_lockscreen"
         }
       ]
     },
@@ -6678,13 +7060,15 @@
           "name": "Ultra-Smooth High-FPS scrcpy Mirroring",
           "desc": "Launches scrcpy mirror tuned for 60 FPS, 1024px maximum size, and 2 Mbps low-latency bitrate.",
           "template": "scrcpy -m 1024 -b 2M --max-fps 60 --video-codec=h264",
-          "params": []
+          "params": [],
+          "id": "adb_screen_scrcpy_ultra_smooth_high_fps_scrcpy_mirroring"
         },
         {
           "name": "Stealth Mirroring: Screen Off & Device Awake",
           "desc": "Mirrors phone screen to PC while keeping the physical phone display turned off to save battery and reduce heat.",
           "template": "scrcpy --turn-screen-off --stay-awake",
-          "params": []
+          "params": [],
+          "id": "adb_screen_scrcpy_stealth_mirroring_screen_off_device_awake"
         },
         {
           "name": "Target Specific Phone Serial via scrcpy",
@@ -6697,7 +7081,8 @@
               "default": "R5CX10ABCDE",
               "placeholder": "Serial from adb devices"
             }
-          ]
+          ],
+          "id": "adb_screen_scrcpy_target_specific_phone_serial_via_scrcpy"
         },
         {
           "name": "Capture High-Res Screenshot PNG to PC",
@@ -6710,7 +7095,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\android_screenshot.png",
               "placeholder": "C:\\path\\screen.png"
             }
-          ]
+          ],
+          "id": "adb_screen_scrcpy_capture_high_res_screenshot_png_to_pc"
         },
         {
           "name": "Record Screen Video (MP4)",
@@ -6729,7 +7115,8 @@
               "default": "4000000",
               "placeholder": "4000000"
             }
-          ]
+          ],
+          "id": "adb_screen_scrcpy_record_screen_video_mp4"
         },
         {
           "name": "Override Screen Resolution (Window Manager)",
@@ -6742,7 +7129,8 @@
               "default": "1080x2400",
               "placeholder": "1080x1920 or 720x1280"
             }
-          ]
+          ],
+          "id": "adb_screen_scrcpy_override_screen_resolution_window_manager"
         },
         {
           "name": "Override Display Density (DPI Scaling)",
@@ -6755,13 +7143,15 @@
               "default": "420",
               "placeholder": "320, 420, 480"
             }
-          ]
+          ],
+          "id": "adb_screen_scrcpy_override_display_density_dpi_scaling"
         },
         {
           "name": "Reset Display Size & Density to Factory Defaults",
           "desc": "Restores original physical screen resolution and pixel density.",
           "template": "adb shell wm size reset && adb shell wm density reset",
-          "params": []
+          "params": [],
+          "id": "adb_screen_scrcpy_reset_display_size_density_to_factory_defaults"
         }
       ]
     },
@@ -6783,25 +7173,29 @@
               "default": "C:\\Users\\daddy\\Desktop\\android_bugreport.zip",
               "placeholder": "C:\\path\\bugreport.zip"
             }
-          ]
+          ],
+          "id": "adb_forensics_bugreport_generate_full_android_bugreport_zip"
         },
         {
           "name": "Dump All System Properties (getprop)",
           "desc": "Dumps all ro. hardware, build, security patch level, and vendor properties.",
           "template": "adb shell getprop",
-          "params": []
+          "params": [],
+          "id": "adb_forensics_bugreport_dump_all_system_properties_getprop"
         },
         {
           "name": "Inspect SoC Platform & Security Patch Level",
           "desc": "Queries exact chipset hardware, security patch date, and Android SDK API level.",
           "template": "adb shell getprop ro.board.platform && adb shell getprop ro.build.version.security_patch && adb shell getprop ro.build.version.sdk",
-          "params": []
+          "params": [],
+          "id": "adb_forensics_bugreport_inspect_soc_platform_security_patch_level"
         },
         {
           "name": "Dump Complete Process Tree (ps -A)",
           "desc": "Lists every running user, system, and kernel daemon process with PID, UID, and memory RSS.",
           "template": "adb shell ps -A -o USER,PID,PPID,VSZ,RSS,NAME",
-          "params": []
+          "params": [],
+          "id": "adb_forensics_bugreport_dump_complete_process_tree_ps_a"
         },
         {
           "name": "Full Android Device Backup (.ab File)",
@@ -6814,7 +7208,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\backup.ab",
               "placeholder": "C:\\path\\backup.ab"
             }
-          ]
+          ],
+          "id": "adb_forensics_bugreport_full_android_device_backup_ab_file"
         },
         {
           "name": "Restore Device Backup",
@@ -6827,7 +7222,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\backup.ab",
               "placeholder": "C:\\path\\backup.ab"
             }
-          ]
+          ],
+          "id": "adb_forensics_bugreport_restore_device_backup"
         }
       ]
     },
@@ -6842,25 +7238,29 @@
           "name": "Normal System Reboot",
           "desc": "Performs standard clean reboot into Android OS.",
           "template": "adb reboot",
-          "params": []
+          "params": [],
+          "id": "adb_bootloader_fastboot_normal_system_reboot"
         },
         {
           "name": "Reboot into Bootloader / Fastboot Mode",
           "desc": "Reboots device directly into the hardware bootloader for flashing and unlocking.",
           "template": "adb reboot bootloader",
-          "params": []
+          "params": [],
+          "id": "adb_bootloader_fastboot_reboot_into_bootloader_fastboot_mode"
         },
         {
           "name": "Reboot into Recovery Mode",
           "desc": "Reboots device into stock or custom (TWRP/OrangeFox) recovery partition.",
           "template": "adb reboot recovery",
-          "params": []
+          "params": [],
+          "id": "adb_bootloader_fastboot_reboot_into_recovery_mode"
         },
         {
           "name": "Reboot into Emergency Download Mode (EDL - Qualcomm)",
           "desc": "Triggers Qualcomm 9008 EDL low-level unbricking mode.",
           "template": "adb reboot edl",
-          "params": []
+          "params": [],
+          "id": "adb_bootloader_fastboot_reboot_into_emergency_download_mode_edl_qualcomm"
         },
         {
           "name": "Sideload OTA Firmware Update ZIP",
@@ -6873,19 +7273,22 @@
               "default": "C:\\Users\\daddy\\Downloads\\update.zip",
               "placeholder": "C:\\path\\update.zip"
             }
-          ]
+          ],
+          "id": "adb_bootloader_fastboot_sideload_ota_firmware_update_zip"
         },
         {
           "name": "Fastboot Query Connected Devices",
           "desc": "Verifies hardware attachment while device is in bootloader/fastboot state.",
           "template": "fastboot devices",
-          "params": []
+          "params": [],
+          "id": "adb_bootloader_fastboot_fastboot_query_connected_devices"
         },
         {
           "name": "Fastboot Query All Bootloader Variables",
           "desc": "Reads bootloader lock status, current active slot (a/b), battery voltage, and secure boot state.",
           "template": "fastboot getvar all",
-          "params": []
+          "params": [],
+          "id": "adb_bootloader_fastboot_fastboot_query_all_bootloader_variables"
         },
         {
           "name": "Fastboot Flash Partition Image",
@@ -6904,13 +7307,15 @@
               "default": "C:\\Users\\daddy\\Downloads\\boot.img",
               "placeholder": "C:\\path\\boot.img"
             }
-          ]
+          ],
+          "id": "adb_bootloader_fastboot_fastboot_flash_partition_image"
         },
         {
           "name": "Fastboot Reboot to System",
           "desc": "Exits bootloader and boots into the primary Android OS partition.",
           "template": "fastboot reboot",
-          "params": []
+          "params": [],
+          "id": "adb_bootloader_fastboot_fastboot_reboot_to_system"
         }
       ]
     },
@@ -6938,7 +7343,8 @@
               "default": "ACCESS_FINE_LOCATION",
               "placeholder": "CAMERA, RECORD_AUDIO"
             }
-          ]
+          ],
+          "id": "adb_security_permissions_grant_dangerous_runtime_permission"
         },
         {
           "name": "Revoke Runtime Permission",
@@ -6957,7 +7363,8 @@
               "default": "ACCESS_FINE_LOCATION",
               "placeholder": "CAMERA, RECORD_AUDIO"
             }
-          ]
+          ],
+          "id": "adb_security_permissions_revoke_runtime_permission"
         },
         {
           "name": "AppOps Ignore / Block Background Permission",
@@ -6976,7 +7383,8 @@
               "default": "READ_CLIPBOARD",
               "placeholder": "READ_CLIPBOARD, COARSE_LOCATION"
             }
-          ]
+          ],
+          "id": "adb_security_permissions_appops_ignore_block_background_permission"
         },
         {
           "name": "AppOps Allow Permission",
@@ -6995,7 +7403,8 @@
               "default": "SYSTEM_ALERT_WINDOW",
               "placeholder": "SYSTEM_ALERT_WINDOW"
             }
-          ]
+          ],
+          "id": "adb_security_permissions_appops_allow_permission"
         },
         {
           "name": "Query Global or Secure System Settings",
@@ -7014,7 +7423,8 @@
               "default": "stay_on_while_plugged_in",
               "placeholder": "stay_on_while_plugged_in"
             }
-          ]
+          ],
+          "id": "adb_security_permissions_query_global_or_secure_system_settings"
         },
         {
           "name": "Modify Android System Setting",
@@ -7039,7 +7449,8 @@
               "default": "3",
               "placeholder": "0, 1, 3"
             }
-          ]
+          ],
+          "id": "adb_security_permissions_modify_android_system_setting"
         }
       ]
     },
@@ -7054,7 +7465,8 @@
           "name": "List All Running Android Apps & PIDs over USB",
           "desc": "Enumerates all active foreground and background application processes over ADB connection.",
           "template": "frida-ps -Uai",
-          "params": []
+          "params": [],
+          "id": "frida_android_dynamic_list_all_running_android_apps_pids_over_usb"
         },
         {
           "name": "Universal SSL Pinning Bypass (Bypass HTTPS Certificate Pinning)",
@@ -7073,7 +7485,8 @@
               "default": "C:\\Users\\daddy\\Desktop\\ssl_bypass.js",
               "placeholder": "C:\\path\\script.js"
             }
-          ]
+          ],
+          "id": "frida_android_dynamic_universal_ssl_pinning_bypass_bypass_https_certificate_pinning"
         },
         {
           "name": "Trace All Java Cryptographic Calls in Real-Time",
@@ -7086,7 +7499,8 @@
               "default": "com.target.app",
               "placeholder": "com.example.app"
             }
-          ]
+          ],
+          "id": "frida_android_dynamic_trace_all_java_cryptographic_calls_in_real_time"
         }
       ]
     },
@@ -7101,21 +7515,44 @@
           "name": "Physical OTG Mode (Control Phone with PC Keyboard/Mouse without Screen Mirror)",
           "desc": "Simulates a physical USB hardware keyboard and mouse directly over ADB with zero screen latency.",
           "template": "scrcpy --otg",
-          "params": []
+          "params": [],
+          "id": "scrcpy_tactical_modes_physical_otg_mode_control_phone_with_pc_keyboard_mouse_without_screen_mirror"
         },
         {
           "name": "Virtual Webcam Mode (Use Android Camera as PC Webcam)",
           "desc": "Routes phone camera feed directly into Windows camera pipeline or OBS studio.",
           "template": "scrcpy --video-source=camera --camera-size=1920x1080 --camera-fps=30",
-          "params": []
+          "params": [],
+          "id": "scrcpy_tactical_modes_virtual_webcam_mode_use_android_camera_as_pc_webcam"
         },
         {
           "name": "Audio-Only Forwarding to PC Speakers",
           "desc": "Streams phone audio to PC speakers over USB without displaying the video mirror.",
           "template": "scrcpy --no-video --audio-codec=opus",
-          "params": []
+          "params": [],
+          "id": "scrcpy_tactical_modes_audio_only_forwarding_to_pc_speakers"
         }
       ]
     }
-  ]
+  ],
+  "metadata": {
+    "schema_version": "2.0.0",
+    "catalog_version": "2026.09.30",
+    "total_tools": 111,
+    "total_recipes": 417,
+    "environments": {
+      "linux": {
+        "tools": 65,
+        "recipes": 222
+      },
+      "windows": {
+        "tools": 34,
+        "recipes": 112
+      },
+      "android": {
+        "tools": 12,
+        "recipes": 83
+      }
+    }
+  }
 }

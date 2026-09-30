@@ -56,7 +56,7 @@
       position: sticky;
       top: 0;
       z-index: 50;
-      padding: 14px 28px;
+      padding: 12px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -100,6 +100,19 @@
       letter-spacing: 0.08em;
     }
 
+    .catalog-stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
     /* Dual Environment Switcher */
     .env-switcher {
       display: flex;
@@ -139,7 +152,7 @@
     /* Live Search Bar */
     .search-box {
       position: relative;
-      width: 320px;
+      width: 300px;
     }
 
     .search-input {
@@ -151,12 +164,12 @@
       border-radius: var(--radius-md);
       font-size: 0.88rem;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: all 0.2s ease;
     }
 
     .search-input:focus {
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
     }
 
     .search-icon {
@@ -165,67 +178,122 @@
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-dim);
-      font-size: 0.9rem;
       pointer-events: none;
     }
 
-    /* Main Layout */
-    .app-layout {
+    /* Trusted Mode Switch */
+    .trusted-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .switch-track {
+      width: 34px;
+      height: 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .switch-thumb {
+      width: 12px;
+      height: 12px;
+      background: var(--text-dim);
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .trusted-toggle.active .switch-track {
+      background: rgba(255, 179, 0, 0.2);
+      border-color: var(--accent-amber);
+    }
+
+    .trusted-toggle.active .switch-thumb {
+      transform: translateX(16px);
+      background: var(--accent-amber);
+    }
+
+    /* Main Container Layout */
+    .studio-container {
       display: flex;
       flex: 1;
+      height: calc(100vh - 150px);
       overflow: hidden;
     }
 
-    /* Left Sidebar: Tool Selector */
+    /* Left Sidebar: Tools Navigation */
     .sidebar {
-      width: 320px;
+      width: 340px;
       background: var(--bg-surface);
       border-right: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
-      height: calc(100vh - 150px);
+      flex-shrink: 0;
     }
 
     .sidebar-header {
-      padding: 16px 20px 12px;
-      font-size: 0.78rem;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-title {
+      font-size: 0.82rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-dim);
-      font-weight: 700;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
     }
 
     .category-pills {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      padding: 12px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(5, 8, 14, 0.5);
     }
 
     .pill-btn {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      font-size: 0.74rem;
+      color: var(--text-dim);
+      font-size: 0.72rem;
       padding: 4px 10px;
-      border-radius: 20px;
+      border-radius: 12px;
       cursor: pointer;
       transition: all 0.15s ease;
     }
 
-    .pill-btn:hover, .pill-btn.active {
+    .pill-btn:hover {
+      color: #fff;
+      border-color: var(--border-focus);
+    }
+
+    .pill-btn.active {
+      background: var(--accent-blue);
       color: #fff;
       border-color: var(--accent-blue);
-      background: rgba(59, 130, 246, 0.2);
     }
 
     .tool-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      padding: 8px;
       gap: 4px;
     }
 
@@ -233,21 +301,22 @@
       padding: 12px 14px;
       border-radius: var(--radius-sm);
       cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
       display: flex;
       flex-direction: column;
       gap: 4px;
-      transition: all 0.15s ease;
-      border: 1px solid transparent;
     }
 
     .tool-item:hover {
       background: var(--bg-card);
+      border-color: var(--border-subtle);
     }
 
     .tool-item.active {
       background: var(--bg-card-hover);
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 12px rgba(6, 182, 212, 0.15);
+      box-shadow: inset 3px 0 0 var(--accent-cyan);
     }
 
     .tool-header-row {
@@ -257,74 +326,87 @@
     }
 
     .tool-name {
-      font-weight: 600;
-      font-size: 0.92rem;
+      font-weight: 700;
+      font-size: 0.95rem;
       color: #fff;
     }
 
     .tool-badge {
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-      background: rgba(6, 182, 212, 0.15);
-      color: var(--accent-cyan);
+      font-size: 0.68rem;
       font-weight: 600;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
     }
 
     .tool-desc-preview {
       font-size: 0.78rem;
-      color: var(--text-muted);
+      color: var(--text-dim);
       line-height: 1.3;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* Center Content Area */
-    .content-area {
+    /* Center Stage: Recipes & Parameter Scaffolding */
+    .center-stage {
       flex: 1;
-      padding: 28px 36px 120px;
-      overflow-y: auto;
-      height: calc(100vh - 150px);
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      overflow-y: auto;
+      padding: 24px 32px;
+      gap: 20px;
+      background: radial-gradient(circle at top right, rgba(6, 182, 212, 0.03) 0%, transparent 60%);
     }
 
-    .active-tool-banner {
-      background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-card) 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 20px 24px;
+    .tool-banner {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 16px;
     }
 
-    .active-tool-info h1 {
+    .tool-banner-title {
       font-size: 1.4rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 6px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .active-tool-info p {
-      font-size: 0.88rem;
+    .tool-banner-cat {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+
+    .tool-banner-desc {
+      font-size: 0.92rem;
       color: var(--text-muted);
+      max-width: 900px;
+      line-height: 1.5;
     }
 
-    .recipes-section-title {
+    /* Recipe Cards Grid */
+    .recipe-section-title {
       font-size: 0.85rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-dim);
-      font-weight: 700;
-      margin-bottom: 12px;
+      color: var(--text-muted);
+      margin-top: 8px;
     }
 
     .recipe-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 14px;
     }
 
@@ -332,33 +414,31 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 16px 18px;
+      padding: 16px;
       cursor: pointer;
-      transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
     }
 
     .recipe-card:hover {
+      border-color: rgba(6, 182, 212, 0.5);
       background: var(--bg-card-hover);
-      border-color: rgba(6, 182, 212, 0.4);
       transform: translateY(-2px);
     }
 
     .recipe-card.active {
-      background: rgba(6, 182, 212, 0.08);
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 16px rgba(6, 182, 212, 0.2);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+      background: linear-gradient(180deg, var(--bg-card-hover) 0%, var(--bg-card) 100%);
     }
 
     .recipe-card-title {
-      font-weight: 600;
-      font-size: 0.98rem;
+      font-weight: 700;
+      font-size: 0.95rem;
       color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
 
     .recipe-card-desc {
@@ -367,20 +447,23 @@
       line-height: 1.4;
     }
 
-    /* Parameter Scaffolding Box */
+    /* Parameters Configuration Deck */
     .params-container {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 20px 24px;
+      border-radius: var(--radius-lg);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
+      margin-top: 10px;
     }
 
-    .params-header {
-      font-size: 0.9rem;
+    .params-title {
+      font-size: 0.85rem;
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: var(--accent-cyan);
       display: flex;
       align-items: center;
@@ -390,7 +473,7 @@
     .params-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
+      gap: 14px;
     }
 
     .param-field {
@@ -403,50 +486,43 @@
       font-size: 0.78rem;
       font-weight: 600;
       color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
     }
 
     .param-input {
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
-      color: var(--accent-cyan);
-      font-family: 'Fira Code', monospace;
-      font-size: 0.88rem;
-      padding: 10px 14px;
+      color: #fff;
+      padding: 9px 12px;
       border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-family: 'Fira Code', monospace;
       outline: none;
       transition: all 0.15s ease;
     }
 
     .param-input:focus {
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
-      color: #fff;
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
     }
 
-    /* Sticky Bottom Command Bar */
-    .command-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(10, 13, 20, 0.98);
-      backdrop-filter: blur(16px);
+    /* Bottom Live HUD Console & Quick Actions */
+    .hud-footer {
+      background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-deep) 100%);
       border-top: 1px solid var(--border-subtle);
-      padding: 16px 28px;
+      padding: 14px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      z-index: 100;
-      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+      position: sticky;
+      bottom: 0;
+      z-index: 40;
     }
 
     .live-command-box {
       flex: 1;
       background: var(--bg-input);
-      border: 1px solid rgba(6, 182, 212, 0.3);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       padding: 12px 18px;
       font-family: 'Fira Code', monospace;
@@ -459,7 +535,6 @@
       gap: 12px;
       box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
       user-select: all;
-      -webkit-user-select: all;
       cursor: text;
     }
 
@@ -522,7 +597,7 @@
       border-color: var(--accent-blue);
     }
 
-    /* Output Modal */
+    /* Modal Styles */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -545,7 +620,7 @@
       border-radius: var(--radius-lg);
       width: 100%;
       max-width: 780px;
-      max-height: 80vh;
+      max-height: 85vh;
       display: flex;
       flex-direction: column;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
@@ -561,8 +636,11 @@
 
     .modal-title {
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .modal-close {
@@ -581,14 +659,59 @@
       padding: 20px;
       overflow-y: auto;
       font-family: 'Fira Code', monospace;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       color: #cbd5e1;
       background: var(--bg-deep);
       white-space: pre-wrap;
       word-break: break-all;
     }
 
-    /* Scrollbar */
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      background: var(--bg-surface);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 9px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-danger-confirm {
+      background: linear-gradient(135deg, #e11d48, #be123c);
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .risk-banner {
+      background: rgba(255, 34, 68, 0.12);
+      border: 1px solid rgba(255, 34, 68, 0.4);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      color: #ff8595;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Scrollbars */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -598,10 +721,7 @@
     }
     ::-webkit-scrollbar-thumb {
       background: var(--border-subtle);
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-cyan);
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -612,141 +732,212 @@
     <div class="brand-group">
       <div class="logo-badge">CS</div>
       <div>
-        <div class="brand-title">CommandScout</div>
-        <div class="brand-subtitle">Tactical Syntax & Scaffolding Studio</div>
+        <div class="brand-title">COMMANDSCOUT</div>
+        <div class="brand-subtitle">Tactical Syntax & Scaffolding Studio v2.0</div>
       </div>
+      <span class="catalog-stat-badge" id="catalog-stat-badge">
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-green);"></span>
+        <span id="catalog-stat-text">111 Tools | 417 Recipes</span>
+      </span>
     </div>
 
-    <!-- Triple Environment Selector -->
+    <!-- Dual Environment Switcher -->
     <div class="env-switcher">
       <button class="env-btn active" id="btn-env-linux" onclick="switchEnvironment('linux')">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.865 8.166 6.839 9.489.5.09.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.53 1.03 1.53 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
         Linux / Kali
       </button>
       <button class="env-btn" id="btn-env-windows" onclick="switchEnvironment('windows')">
-        Windows / PS
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.951-1.801"/></svg>
+        Windows / PS 7
       </button>
       <button class="env-btn" id="btn-env-android" onclick="switchEnvironment('android')">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.0833 12 8.0833s-3.5902.3283-5.1368.8664L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
         Android / ADB
       </button>
     </div>
 
-    <!-- Live Search -->
+    <!-- Live Search Bar -->
     <div class="search-box">
-      <span class="search-icon" style="font-weight: 700; font-size: 0.75rem; color: var(--accent-green); letter-spacing: 1px;">FIND</span>
-      <input type="text" id="search-input" class="search-input" placeholder="Search tool or recipe (e.g. nmap, winget)..." oninput="handleSearch()">
+      <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" class="search-input" id="search-input" placeholder="Search commands, tools, flags..." oninput="handleSearch()">
+    </div>
+
+    <!-- Trusted Mode Toggle -->
+    <div class="trusted-toggle" id="trusted-mode-toggle" onclick="toggleTrustedMode()" title="Toggle safety confirmation gate">
+      <div class="switch-track">
+        <div class="switch-thumb"></div>
+      </div>
+      <span id="trusted-label">Safe Mode</span>
     </div>
   </header>
 
-  <!-- App Layout -->
-  <div class="app-layout">
+  <!-- Studio Container -->
+  <div class="studio-container">
 
-    <!-- Left Sidebar: Tool Selector -->
+    <!-- Left Sidebar: Tools -->
     <aside class="sidebar">
-      <div class="sidebar-header">Category Filter</div>
-      <div class="category-pills" id="category-pills">
-        <!-- Injected via JS -->
+      <div class="sidebar-header">
+        <span class="sidebar-title">Security & System Tools</span>
+        <span style="font-size: 0.75rem; color: var(--text-dim);" id="tool-count">--</span>
       </div>
 
-      <div class="sidebar-header" style="margin-top: 6px;">Available Utilities (<span id="tool-count">0</span>)</div>
-      <div class="tool-list" id="tool-list">
-        <!-- Injected via JS -->
-      </div>
+      <div class="category-pills" id="category-pills"></div>
+      <div class="tool-list" id="tool-list"></div>
     </aside>
 
-    <!-- Center Content -->
-    <main class="content-area">
-      <!-- Active Tool Banner -->
-      <div class="active-tool-banner" id="tool-banner">
-        <div class="active-tool-info">
-          <h1 id="active-tool-title">Nmap Network Scanner</h1>
-          <p id="active-tool-desc">Premier network exploration and vulnerability scanner.</p>
+    <!-- Center Stage: Active Tool & Recipes -->
+    <main class="center-stage">
+      <div class="tool-banner">
+        <div class="tool-banner-title">
+          <span id="active-tool-title">Select a Tool</span>
+          <span class="tool-banner-cat" id="active-tool-category">Tactical</span>
         </div>
-        <div class="tool-badge" id="active-tool-category">Recon &amp; Scanning</div>
+        <div class="tool-banner-desc" id="active-tool-desc">Choose a tool from the sidebar to inspect syntax and construct commands with zero typing.</div>
       </div>
 
-      <!-- Recipes Grid -->
-      <div>
-        <div class="recipes-section-title">Operational Recipes (Click to Scaffold)</div>
-        <div class="recipe-grid" id="recipe-grid">
-          <!-- Injected via JS -->
-        </div>
-      </div>
+      <div class="recipe-section-title">Field Recipes & Playbooks</div>
+      <div class="recipe-grid" id="recipe-grid"></div>
 
-      <!-- Parameter Scaffolding Box -->
+      <!-- Parameters Configuration Deck -->
       <div class="params-container" id="params-container" style="display: none;">
-        <div class="params-header">
-          Parameter Scaffolding (Zero Typing: Edit Target IP / Ports Below)
+        <div class="params-title">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+          Parameter Scaffolding Deck
         </div>
-        <div class="params-grid" id="params-grid">
-          <!-- Injected via JS -->
-        </div>
+        <div class="params-grid" id="params-grid"></div>
       </div>
     </main>
   </div>
 
-  <!-- Sticky Bottom Command Bar -->
-  <footer class="command-footer">
-    <div class="live-command-box" onclick="const s = window.getSelection(); const r = document.createRange(); r.selectNodeContents(document.getElementById('live-command-text')); s.removeAllRanges(); s.addRange(r);">
+  <!-- Bottom Live Command HUD -->
+  <footer class="hud-footer">
+    <div class="live-command-box" id="live-command-box" title="Click to select all">
       <span class="prompt-prefix" id="prompt-prefix">user@kali:~$</span>
-      <span id="live-command-text">Select a recipe above to generate live syntax...</span>
+      <span id="live-command-text" style="color: #fff;">Select a recipe to view syntax...</span>
     </div>
+
     <div class="action-buttons">
       <button class="btn-copy" id="btn-copy" onclick="copyCurrentCommand()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
         <span id="btn-copy-label">1-Click Copy</span>
       </button>
-      <button class="btn-exec" id="btn-exec" onclick="executeCurrentCommand()">
-        Run
+
+      <button class="btn-exec" id="btn-exec" onclick="requestExecution()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <span>Execute</span>
       </button>
     </div>
   </footer>
 
-  <!-- Output Modal -->
+  <!-- Safety Confirmation Gate Modal -->
+  <div class="modal-overlay" id="safety-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span style="color: var(--accent-amber);">🛡️ Execution Safety Gate</span>
+        </div>
+        <button class="modal-close" onclick="closeSafetyModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="background: var(--bg-surface);">
+        <div id="risk-banner-container"></div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Target Environment Runner:</div>
+        <div id="modal-target-runner" style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 16px;"></div>
+        
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Verified Command to Execute:</div>
+        <div id="modal-command-preview" style="background: var(--bg-deep); padding: 14px; border-radius: 8px; border: 1px solid var(--border-subtle); color: #38bdf8; margin-bottom: 16px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeSafetyModal()">Cancel / Copy Instead</button>
+        <button class="btn-danger-confirm" id="btn-confirm-exec" onclick="executeConfirmed()">
+          Confirm & Run
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal Output Modal -->
   <div class="modal-overlay" id="output-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <div class="modal-title" id="modal-title">Execution Output</div>
-        <button class="modal-close" onclick="closeModal()">X</button>
+        <div class="modal-title" id="output-modal-title">Terminal Execution</div>
+        <button class="modal-close" onclick="closeOutputModal()">&times;</button>
       </div>
-      <div class="modal-body" id="modal-output">Executing command...</div>
+      <div class="modal-body" id="output-modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeOutputModal()">Close</button>
+      </div>
     </div>
   </div>
 
   <script>
-    let database = { linux: [], windows: [] };
+    let database = {};
+    let sensorsData = {};
     let currentEnv = 'linux';
     let currentCategory = 'ALL';
     let activeTool = null;
     let activeRecipe = null;
     let currentParamValues = {};
+    let trustedMode = false;
+    let audioCtx = null;
 
-    // Web Audio Chime
     function playChime() {
       try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
-        osc.frequency.exponentialRampToValueAtTime(1320, audioCtx.currentTime + 0.12);
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.2);
-      } catch (e) {
-        // Fallback silently if audio context restricted
-      }
+        osc.stop(audioCtx.currentTime + 0.12);
+      } catch (e) {}
+    }
+
+    // Safe text escaping for DOM
+    function escapeText(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     async function loadDatabase() {
       try {
-        const res = await fetch('/api/commands');
-        if (res.ok) {
-          database = await res.json();
+        const [resDb, resHealth, resSensors] = await Promise.all([
+          fetch('/api/commands'),
+          fetch('/api/health'),
+          fetch('/api/sensors').catch(() => null)
+        ]);
+
+        if (resDb.ok) {
+          database = await resDb.json();
+          if (resHealth && resHealth.ok) {
+            const h = await resHealth.json();
+            if (h.metadata) {
+              const meta = h.metadata;
+              const badge = document.getElementById('catalog-stat-text');
+              if (badge && meta.total_tools && meta.total_recipes) {
+                badge.textContent = `${meta.total_tools} Tools | ${meta.total_recipes} Recipes`;
+              }
+            }
+            if (h.settings && h.settings.trusted_local_mode !== undefined) {
+              trustedMode = h.settings.trusted_local_mode;
+              updateTrustedUI();
+            }
+          }
+          if (resSensors && resSensors.ok) {
+            sensorsData = await resSensors.json();
+          }
           initUI();
-        } else {
-          console.error("Failed to load commands_db.json");
         }
       } catch (e) {
         console.error("Error fetching database:", e);
@@ -772,9 +963,9 @@
       } else if (env === 'windows') {
         document.getElementById('prompt-prefix').textContent = 'PS C:\\Users\\Austin>';
       } else {
-        document.getElementById('prompt-prefix').textContent = 'android:adb~$';
+        document.getElementById('prompt-prefix').textContent = 'adb shell:~$';
       }
-      
+
       currentCategory = 'ALL';
       document.getElementById('search-input').value = '';
       renderCategoryPills();
@@ -831,13 +1022,26 @@
         div.className = `tool-item ${activeTool && activeTool.id === tool.id ? 'active' : ''}`;
         div.onclick = () => selectTool(tool.id);
 
-        div.innerHTML = `
-          <div class="tool-header-row">
-            <span class="tool-name">${tool.name}</span>
-            <span class="tool-badge">${tool.category.split('&')[0].trim()}</span>
-          </div>
-          <div class="tool-desc-preview">${tool.desc}</div>
-        `;
+        const headerRow = document.createElement('div');
+        headerRow.className = 'tool-header-row';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'tool-name';
+        nameSpan.textContent = tool.name;
+
+        const badgeSpan = document.createElement('span');
+        badgeSpan.className = 'tool-badge';
+        badgeSpan.textContent = tool.category.split('&')[0].trim();
+
+        headerRow.appendChild(nameSpan);
+        headerRow.appendChild(badgeSpan);
+
+        const descDiv = document.createElement('div');
+        descDiv.className = 'tool-desc-preview';
+        descDiv.textContent = tool.desc;
+
+        div.appendChild(headerRow);
+        div.appendChild(descDiv);
         container.appendChild(div);
       });
     }
@@ -861,7 +1065,10 @@
       container.innerHTML = '';
 
       if (!activeTool || !activeTool.recipes.length) {
-        container.innerHTML = '<div style="color: var(--text-dim);">No recipes found.</div>';
+        const emptyMsg = document.createElement('div');
+        emptyMsg.style.color = 'var(--text-dim)';
+        emptyMsg.textContent = 'No recipes found for this tool.';
+        container.appendChild(emptyMsg);
         return;
       }
 
@@ -870,12 +1077,16 @@
         card.className = `recipe-card ${idx === 0 ? 'active' : ''}`;
         card.onclick = () => selectRecipe(recipe, card);
 
-        card.innerHTML = `
-          <div class="recipe-card-title">
-            <span>${recipe.name}</span>
-          </div>
-          <div class="recipe-card-desc">${recipe.desc}</div>
-        `;
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'recipe-card-title';
+        titleDiv.textContent = recipe.name;
+
+        const descDiv = document.createElement('div');
+        descDiv.className = 'recipe-card-desc';
+        descDiv.textContent = recipe.desc;
+
+        card.appendChild(titleDiv);
+        card.appendChild(descDiv);
         container.appendChild(card);
       });
 
@@ -958,16 +1169,13 @@
 
       playChime();
 
-      // 1. Direct robust browser copy
       let copied = false;
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(cmd);
           copied = true;
         }
-      } catch (err) {
-        console.warn('navigator.clipboard failed, attempting textarea fallback:', err);
-      }
+      } catch (err) {}
 
       if (!copied) {
         try {
@@ -975,19 +1183,15 @@
           ta.value = cmd;
           ta.style.position = 'fixed';
           ta.style.left = '-9999px';
-          ta.style.top = '-9999px';
           document.body.appendChild(ta);
-          ta.focus();
           ta.select();
           document.execCommand('copy');
           document.body.removeChild(ta);
           copied = true;
-        } catch (e) {
-          console.error('Textarea copy fallback failed:', e);
-        }
+        } catch (e) {}
       }
 
-      // 2. Notify backend
+      // Backend audio chime notification
       try {
         fetch('/api/copy', {
           method: 'POST',
@@ -996,10 +1200,8 @@
         }).catch(() => {});
       } catch (e) {}
 
-      // Visual feedback
       const btn = document.getElementById('btn-copy');
       const label = document.getElementById('btn-copy-label');
-
       btn.classList.add('copied');
       label.textContent = 'Copied to Clipboard!';
 
@@ -1009,45 +1211,110 @@
       }, 1600);
     }
 
-    async function executeCurrentCommand() {
+    function getTargetRunner() {
+      if (currentEnv === 'linux') return { name: 'WSL2 Kali Linux (wsl.exe)', runner: 'wsl' };
+      if (currentEnv === 'android') return { name: 'Android ADB (adb.exe)', runner: 'adb' };
+      return { name: 'Windows PowerShell 7 (pwsh.exe)', runner: 'powershell' };
+    }
+
+    function requestExecution() {
       const cmd = document.getElementById('live-command-text').textContent;
       if (!cmd || cmd.startsWith('Select a recipe')) return;
 
+      if (trustedMode) {
+        executeConfirmed();
+        return;
+      }
+
+      // Open Safety Confirmation Gate
+      const runner = getTargetRunner();
+      document.getElementById('modal-target-runner').textContent = runner.name;
+      document.getElementById('modal-command-preview').textContent = cmd;
+
+      // Risk analysis
+      const riskContainer = document.getElementById('risk-banner-container');
+      riskContainer.innerHTML = '';
+      const highRiskRegex = /(sudo |format |rm -rf|dd if=|pkill|kill -9|reboot|shutdown|wipe|uninstall)/i;
+      if (highRiskRegex.test(cmd)) {
+        const banner = document.createElement('div');
+        banner.className = 'risk-banner';
+        banner.innerHTML = '<strong>⚠️ High-Privilege / State-Changing Operation:</strong> This command involves elevated privileges, disk operations, or process termination. Review parameters before running.';
+        riskContainer.appendChild(banner);
+      }
+
+      document.getElementById('safety-modal').classList.add('open');
+    }
+
+    function closeSafetyModal() {
+      document.getElementById('safety-modal').classList.remove('open');
+    }
+
+    async function executeConfirmed() {
+      closeSafetyModal();
+      const cmd = document.getElementById('live-command-text').textContent;
+      const runner = getTargetRunner();
+
       const modal = document.getElementById('output-modal');
-      const modalOutput = document.getElementById('modal-output');
-      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('output-modal-body');
+      const modalTitle = document.getElementById('output-modal-title');
 
       modal.classList.add('open');
-      const envLabel = currentEnv === 'linux' ? 'WSL2 Kali' : (currentEnv === 'android' ? 'Android ADB' : 'PowerShell');
-      modalTitle.textContent = `Executing in ${envLabel}...`;
-      modalOutput.textContent = `>> [CommandScout] Running: ${cmd}\n\nPlease wait...\n`;
+      modalTitle.textContent = `Running in ${runner.name}...`;
+      modalBody.textContent = `>> [CommandScout Safety Gate: Passed]\n>> Target Runner: ${runner.name}\n>> Executing: ${cmd}\n\nPlease wait...\n`;
 
       try {
         const res = await fetch('/api/execute', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ command: cmd, env: currentEnv === 'linux' ? 'wsl' : 'powershell' })
+          body: JSON.stringify({
+            command: cmd,
+            env: runner.runner,
+            confirmed: true
+          })
         });
 
         const data = await res.json();
-        if (data.error) {
-          modalOutput.textContent += `\n[ERROR]: ${data.error}`;
+        if (data.status === 'error') {
+          modalBody.textContent += `\n[SERVER REJECTION - ${data.code}]: ${data.message}`;
         } else {
-          modalOutput.textContent = `>> Exit Code: ${data.exit_code}\n\n`;
-          if (data.stdout) modalOutput.textContent += `--- STDOUT ---\n${data.stdout}\n`;
-          if (data.stderr) modalOutput.textContent += `--- STDERR ---\n${data.stderr}\n`;
+          modalBody.textContent = `>> Exit Code: ${data.exit_code} (Duration: ${data.duration_ms} ms)\n\n`;
+          if (data.stdout) modalBody.textContent += `--- STDOUT ---\n${data.stdout}\n`;
+          if (data.stderr) modalBody.textContent += `--- STDERR ---\n${data.stderr}\n`;
+          if (!data.stdout && !data.stderr) modalBody.textContent += `[Command finished with no output]`;
         }
       } catch (e) {
-        modalOutput.textContent += `\n[COMMUNICATION ERROR]: ${e}`;
+        modalBody.textContent += `\n[COMMUNICATION ERROR]: ${e}`;
       }
     }
 
-    function closeModal() {
+    function closeOutputModal() {
       document.getElementById('output-modal').classList.remove('open');
     }
 
+    async function toggleTrustedMode() {
+      trustedMode = !trustedMode;
+      updateTrustedUI();
+      try {
+        await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ trusted_local_mode: trustedMode })
+        });
+      } catch (e) {}
+    }
+
+    function updateTrustedUI() {
+      const toggle = document.getElementById('trusted-mode-toggle');
+      const label = document.getElementById('trusted-label');
+      toggle.classList.toggle('active', trustedMode);
+      label.textContent = trustedMode ? 'Trusted Mode (Direct)' : 'Safe Mode (Gate)';
+    }
+
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') {
+        closeSafetyModal();
+        closeOutputModal();
+      }
     });
 
     loadDatabase();

@@ -1,66 +1,311 @@
 """
+================================================================================
 CommandScout: Tactical Syntax & Command Scaffolding Studio
-Backend Server (command_scout.py)
-- Serves the CommandScout interactive 1-click web interface on localhost:8899
-- Handles Windows clipboard copying with system audio confirmation (winsound)
-- Optional direct execution into PowerShell or WSL2
+Hardened Multi-Environment Backend Server (command_scout.py)
+Austin Davis Technical Portfolio | Project 11
+================================================================================
+Key Architectural Hardening:
+- Threaded non-blocking server (ThreadingHTTPServer)
+- Deliberate Execution Safety Gate with Confirmation & Audit Trail (audit_log.jsonl)
+- Distinct environment runners for Linux/WSL2 Kali, Windows/PowerShell 7, and Android/ADB
+- Startup schema contract validation (JSON Schema compliance for 111 tools / 417 recipes)
+- Cross-platform capability checks with graceful fallbacks
+- Hardware sensors telemetry integration (/api/sensors)
+================================================================================
 """
 
 import os
 import sys
 import json
+import time
+import shutil
 import subprocess
 import webbrowser
-import winsound
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+import shlex
+import re
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
-import tkinter as tk
+from datetime import datetime, timezone
+
+# Platform capability checks
+HAS_WINSOUND = False
+if sys.platform == "win32":
+    try:
+        import winsound
+        HAS_WINSOUND = True
+    except ImportError:
+        HAS_WINSOUND = False
 
 STATIC_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(STATIC_DIR, "commands_db.json")
+SENSORS_PATH = os.path.join(STATIC_DIR, "sensors.json")
+AUDIT_LOG_PATH = os.path.join(STATIC_DIR, "audit_log.jsonl")
 PORT = 8899
 
-def copy_to_windows_clipboard(text: str) -> bool:
-    """Sets Windows clipboard text cleanly and sounds an audio confirmation."""
-    try:
-        # Use native Windows clip.exe for guaranteed persistence across all apps & VMs
-        subprocess.run(["clip.exe"], input=text.strip().encode("utf-16le"), check=True)
-        winsound.MessageBeep(winsound.MB_ICONASTERISK)
-        return True
-    except Exception:
+# Global server settings
+SERVER_SETTINGS = {
+    "trusted_local_mode": False,   # When False, explicit confirmation required on /api/execute
+    "command_timeout_sec": 60,
+    "audit_enabled": True
+}
+
+
+def play_chime(sound_type="asterisk"):
+    """Emits audio confirmation with cross-platform fallback."""
+    if HAS_WINSOUND:
         try:
-            # Fallback to PowerShell Set-Clipboard
-            subprocess.run(["powershell.exe", "-NoProfile", "-Command", "Set-Clipboard -Value $input"], input=text.strip(), text=True, check=True)
-            winsound.MessageBeep(winsound.MB_ICONASTERISK)
+            if sound_type == "ok":
+                winsound.MessageBeep(winsound.MB_OK)
+            elif sound_type == "warn":
+                winsound.MessageBeep(winsound.MB_ICONEXCLAMATION)
+            else:
+                winsound.MessageBeep(winsound.MB_ICONASTERISK)
+            return
+        except Exception:
+            pass
+    # Cross-platform terminal bell fallback
+    try:
+        sys.stdout.write("\a")
+        sys.stdout.flush()
+    except Exception:
+        pass
+
+
+def copy_to_clipboard(text: str) -> bool:
+    """Sets system clipboard text cleanly across platforms."""
+    text_clean = text.strip()
+    if not text_clean:
+        return False
+
+    if sys.platform == "win32":
+        # 1. Native Windows clip.exe
+        try:
+            subprocess.run(["clip.exe"], input=text_clean.encode("utf-16le"), check=True, timeout=5)
+            play_chime("asterisk")
+            return True
+        except Exception:
+            pass
+
+        # 2. Fallback to PowerShell Set-Clipboard
+        try:
+            subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", "Set-Clipboard -Value $input"],
+                           input=text_clean, text=True, check=True, timeout=5)
+            play_chime("asterisk")
             return True
         except Exception as e:
-            print(f"[!] Clipboard error: {e}")
+            print(f"[!] Windows clipboard error: {e}")
             return False
+
+    elif sys.platform == "darwin":
+        # macOS pbcopy
+        try:
+            subprocess.run(["pbcopy"], input=text_clean.encode("utf-8"), check=True, timeout=5)
+            play_chime("asterisk")
+            return True
+        except Exception:
+            return False
+    else:
+        # Linux / WSL xclip or wl-copy
+        for tool in [["xclip", "-selection", "clipboard"], ["wl-copy"]]:
+            if shutil.which(tool[0]):
+                try:
+                    subprocess.run(tool, input=text_clean.encode("utf-8"), check=True, timeout=5)
+                    play_chime("asterisk")
+                    return True
+                except Exception:
+                    pass
+        return False
+
+
+def locate_executable(name: str, fallback_paths: list[str] = None) -> str | None:
+    """Finds binary path on system PATH or known paths."""
+    found = shutil.which(name)
+    if found:
+        return found
+    if fallback_paths:
+        for p in fallback_paths:
+            if os.path.exists(p):
+                return p
+    return None
+
+
+def get_environment_runners():
+    """Detects available execution engines on the host."""
+    wsl_bin = locate_executable("wsl.exe", [r"C:\Windows\System32\wsl.exe"])
+    pwsh_bin = locate_executable("pwsh.exe", [r"C:\Program Files\PowerShell\7\pwsh.exe"])
+    ps_bin = locate_executable("powershell.exe", [r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"])
+    
+    adb_bin = locate_executable("adb.exe", [
+        r"C:\ProgramData\chocolatey\bin\adb.exe",
+        r"C:\Users\daddy\AppData\Local\Android\Sdk\platform-tools\adb.exe",
+        r"C:\Users\daddy\AppData\Local\Microsoft\WinGet\Packages\Genymobile.scrcpy_Microsoft.Winget.Source_8wekyb3d8bbwe\scrcpy-win64-v4.1\adb.exe"
+    ])
+
+    return {
+        "wsl": wsl_bin,
+        "powershell": pwsh_bin or ps_bin,
+        "is_pwsh7": pwsh_bin is not None,
+        "adb": adb_bin
+    }
+
+
+def validate_catalog(db: dict) -> tuple[bool, list[str]]:
+    """Strict schema validator for command catalog."""
+    errors = []
+    required_envs = ["linux", "windows", "android"]
+    
+    for env in required_envs:
+        if env not in db:
+            errors.append(f"Missing required environment: '{env}'")
+            continue
+        tools = db[env]
+        if not isinstance(tools, list):
+            errors.append(f"Environment '{env}' must be a list of tools")
+            continue
+
+        for t_idx, tool in enumerate(tools):
+            t_id = tool.get("id")
+            if not t_id:
+                errors.append(f"[{env}] Tool at index {t_idx} missing 'id'")
+            if not tool.get("name"):
+                errors.append(f"[{env}/{t_id}] Missing 'name'")
+            if not tool.get("category"):
+                errors.append(f"[{env}/{t_id}] Missing 'category'")
+            
+            recipes = tool.get("recipes", [])
+            if not isinstance(recipes, list) or len(recipes) == 0:
+                errors.append(f"[{env}/{t_id}] Must contain at least 1 recipe")
+                continue
+
+            for r_idx, r in enumerate(recipes):
+                r_id = r.get("id")
+                if not r_id:
+                    errors.append(f"[{env}/{t_id}] Recipe at index {r_idx} missing 'id'")
+                template = r.get("template")
+                if not template:
+                    errors.append(f"[{env}/{t_id}/{r_id}] Missing 'template'")
+                    continue
+
+                # Check placeholders match params
+                placeholders = re.findall(r"\{\{([a-zA-Z0-9_-]+)\}\}", template)
+                param_keys = {p.get("key") for p in r.get("params", []) if isinstance(p, dict)}
+                for ph in placeholders:
+                    if ph not in param_keys:
+                        errors.append(f"[{env}/{t_id}/{r_id}] Template placeholder '{{{{{ph}}}}}' missing in params")
+
+    return (len(errors) == 0, errors)
+
+
+def record_audit(env: str, command: str, confirmed: bool, exit_code: int, duration_ms: float, client_ip: str, stdout: str, stderr: str):
+    """Appends structured JSON execution entry to audit_log.jsonl."""
+    if not SERVER_SETTINGS["audit_enabled"]:
+        return
+    entry = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "client_ip": client_ip,
+        "environment": env,
+        "command": command,
+        "confirmed": confirmed,
+        "exit_code": exit_code,
+        "duration_ms": round(duration_ms, 2),
+        "stdout_snippet": stdout[:200] if stdout else "",
+        "stderr_snippet": stderr[:200] if stderr else ""
+    }
+    try:
+        with open(AUDIT_LOG_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry) + "\n")
+    except Exception as e:
+        print(f"[!] Audit logging error: {e}")
+
 
 class CommandScoutHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=STATIC_DIR, **kwargs)
 
+    def send_json(self, status_code: int, data: dict):
+        """Sends clean UTF-8 JSON response."""
+        body = json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8")
+        self.send_response(status_code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def send_json_error(self, status_code: int, code: str, message: str, details: dict = None):
+        payload = {
+            "status": "error",
+            "code": code,
+            "message": message,
+            "details": details or {}
+        }
+        self.send_json(status_code, payload)
+
     def do_GET(self):
         parsed = urlparse(self.path)
+
         if parsed.path == "/api/health":
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            self.wfile.write(json.dumps({"status": "healthy", "port": PORT}).encode("utf-8"))
+            runners = get_environment_runners()
+            stats = {}
+            if os.path.exists(DB_PATH):
+                try:
+                    with open(DB_PATH, "r", encoding="utf-8") as f:
+                        db = json.load(f)
+                        stats = db.get("metadata", {})
+                except Exception:
+                    pass
+
+            self.send_json(200, {
+                "status": "healthy",
+                "service": "CommandScout Studio",
+                "port": PORT,
+                "runners": {
+                    "wsl": runners["wsl"] is not None,
+                    "powershell": runners["powershell"] is not None,
+                    "is_pwsh7": runners["is_pwsh7"],
+                    "adb": runners["adb"] is not None
+                },
+                "settings": SERVER_SETTINGS,
+                "metadata": stats
+            })
             return
+
         elif parsed.path == "/api/commands":
-            db_path = os.path.join(STATIC_DIR, "commands_db.json")
-            if os.path.exists(db_path):
-                with open(db_path, "r", encoding="utf-8") as f:
-                    data = f.read()
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(data.encode("utf-8"))
+            if not os.path.exists(DB_PATH):
+                self.send_json_error(404, "DATABASE_NOT_FOUND", "commands_db.json not found on server.")
                 return
-            else:
-                self.send_error(404, "commands_db.json not found")
+            try:
+                with open(DB_PATH, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                self.send_json(200, data)
+            except Exception as e:
+                self.send_json_error(500, "DATABASE_READ_ERROR", f"Error reading commands_db.json: {e}")
+            return
+
+        elif parsed.path == "/api/sensors":
+            if not os.path.exists(SENSORS_PATH):
+                self.send_json_error(404, "SENSORS_NOT_FOUND", "sensors.json not found.")
                 return
+            try:
+                with open(SENSORS_PATH, "r", encoding="utf-8") as f:
+                    sensors = json.load(f)
+                self.send_json(200, sensors)
+            except Exception as e:
+                self.send_json_error(500, "SENSORS_READ_ERROR", f"Error reading sensors.json: {e}")
+            return
+
+        elif parsed.path == "/api/audit":
+            entries = []
+            if os.path.exists(AUDIT_LOG_PATH):
+                try:
+                    with open(AUDIT_LOG_PATH, "r", encoding="utf-8") as f:
+                        for line in f:
+                            if line.strip():
+                                entries.append(json.loads(line.strip()))
+                except Exception as e:
+                    print(f"[!] Error reading audit log: {e}")
+            self.send_json(200, {"entries": entries[-50:]})  # Last 50 executions
+            return
 
         return super().do_GET()
 
@@ -68,87 +313,191 @@ class CommandScoutHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(length).decode("utf-8") if length > 0 else "{}"
-        
+
         try:
             payload = json.loads(body)
         except Exception:
             payload = {}
 
         if parsed.path == "/api/copy":
-            cmd = payload.get("command", "")
-            if cmd:
-                success = copy_to_windows_clipboard(cmd)
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": success, "command": cmd}).encode("utf-8"))
-            else:
-                self.send_response(400)
-                self.end_headers()
+            cmd = payload.get("command", "").strip()
+            if not cmd:
+                self.send_json_error(400, "EMPTY_COMMAND", "No command provided to copy.")
+                return
+            success = copy_to_clipboard(cmd)
+            self.send_json(200, {
+                "status": "success" if success else "failed",
+                "copied": success,
+                "command": cmd
+            })
+            return
+
+        elif parsed.path == "/api/settings":
+            # Allows UI to toggle trusted mode
+            if "trusted_local_mode" in payload:
+                SERVER_SETTINGS["trusted_local_mode"] = bool(payload["trusted_local_mode"])
+            self.send_json(200, {"status": "success", "settings": SERVER_SETTINGS})
             return
 
         elif parsed.path == "/api/execute":
-            cmd = payload.get("command", "")
-            target_env = payload.get("env", "powershell").lower()
+            cmd = payload.get("command", "").strip()
+            raw_env = payload.get("env", "powershell").lower().strip()
+            confirmed = bool(payload.get("confirmed", False))
 
+            # 1. Validation & Safety Confirmation Gate
             if not cmd:
-                self.send_response(400)
-                self.end_headers()
+                self.send_json_error(400, "EMPTY_COMMAND", "Command text cannot be empty.")
                 return
 
-            print(f"\n[CommandScout] Executing ({target_env}): {cmd}")
+            # Check for unresolved template placeholders e.g. <target_ip> or {{interface}}
+            if re.search(r"\{\{[a-zA-Z0-9_-]+\}\}", cmd):
+                self.send_json_error(400, "UNRESOLVED_PLACEHOLDERS", "Command contains unpopulated template parameters.")
+                return
+
+            # Unless trusted_local_mode is enabled on server, require explicit confirmation
+            if not SERVER_SETTINGS["trusted_local_mode"] and not confirmed:
+                self.send_json_error(403, "CONFIRMATION_REQUIRED",
+                                     "Execution safety gate active. Please confirm live execution in the modal.",
+                                     {"command": cmd, "env": raw_env})
+                return
+
+            # 2. Environment Routing & Binary Verification
+            runners = get_environment_runners()
+            shell_args = []
+            normalized_env = "powershell"
+
+            if raw_env in ["wsl", "linux", "kali"]:
+                normalized_env = "wsl"
+                if not runners["wsl"]:
+                    self.send_json_error(503, "WSL_UNAVAILABLE", "WSL2 executable (wsl.exe) was not found on this host.")
+                    return
+                # Route through WSL2 bash
+                shell_args = [runners["wsl"], "bash", "-c", cmd]
+
+            elif raw_env in ["android", "adb"]:
+                normalized_env = "adb"
+                if not runners["adb"]:
+                    self.send_json_error(503, "ADB_UNAVAILABLE", "Android Debug Bridge (adb.exe) was not found on this host. Ensure Android SDK platform-tools is installed.")
+                    return
+                # Route through adb
+                if cmd.startswith("adb "):
+                    clean_sub = cmd[4:].strip()
+                    shell_args = [runners["adb"]] + shlex.split(clean_sub)
+                else:
+                    shell_args = [runners["adb"], "shell", cmd]
+
+            else:
+                # Default: PowerShell
+                normalized_env = "powershell"
+                if not runners["powershell"]:
+                    self.send_json_error(503, "POWERSHELL_UNAVAILABLE", "PowerShell binary was not found on this host.")
+                    return
+                shell_args = [runners["powershell"], "-NoProfile", "-NonInteractive", "-Command", cmd]
+
+            # 3. Execution & Performance Timer
+            print(f"\n[CommandScout] Live Execution Gate Passed: ({normalized_env}) -> {cmd}")
+            start_time = time.perf_counter()
+            client_ip = self.client_address[0] if self.client_address else "127.0.0.1"
 
             try:
-                if target_env == "wsl":
-                    # Execute in WSL2 Kali/Ubuntu
-                    shell_args = ["wsl.exe", "bash", "-c", cmd]
-                else:
-                    # Execute in PowerShell
-                    shell_args = ["powershell.exe", "-NoProfile", "-Command", cmd]
+                proc = subprocess.run(
+                    shell_args,
+                    capture_output=True,
+                    text=True,
+                    timeout=SERVER_SETTINGS["command_timeout_sec"]
+                )
+                duration_ms = (time.perf_counter() - start_time) * 1000
+                play_chime("ok" if proc.returncode == 0 else "warn")
 
-                proc = subprocess.run(shell_args, capture_output=True, text=True, timeout=60)
-                winsound.MessageBeep(winsound.MB_OK)
+                # Audit logging
+                record_audit(normalized_env, cmd, confirmed, proc.returncode, duration_ms, client_ip, proc.stdout, proc.stderr)
 
-                res = {
+                self.send_json(200, {
+                    "status": "success",
+                    "env": normalized_env,
+                    "command": cmd,
+                    "exit_code": proc.returncode,
                     "stdout": proc.stdout,
                     "stderr": proc.stderr,
-                    "exit_code": proc.returncode
-                }
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps(res).encode("utf-8"))
+                    "duration_ms": round(duration_ms, 2)
+                })
+
             except subprocess.TimeoutExpired:
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"error": "Command timed out after 60 seconds."}).encode("utf-8"))
+                duration_ms = (time.perf_counter() - start_time) * 1000
+                record_audit(normalized_env, cmd, confirmed, -1, duration_ms, client_ip, "", "Command timed out.")
+                self.send_json_error(408, "TIMEOUT", f"Execution timed out after {SERVER_SETTINGS['command_timeout_sec']} seconds.")
+
             except Exception as e:
-                self.send_response(500)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+                duration_ms = (time.perf_counter() - start_time) * 1000
+                record_audit(normalized_env, cmd, confirmed, -1, duration_ms, client_ip, "", str(e))
+                self.send_json_error(500, "EXECUTION_EXCEPTION", f"Subprocess failed: {e}")
+
             return
 
-        self.send_error(404, "Endpoint not found")
+        self.send_json_error(404, "ENDPOINT_NOT_FOUND", f"Endpoint {parsed.path} does not exist.")
+
 
 def start_server():
-    server = HTTPServer(("127.0.0.1", PORT), CommandScoutHandler)
+    # 1. Database Contract Validation
+    print("=" * 70)
+    print("       COMMANDSCOUT: TACTICAL SYNTAX & SCAFFOLDING STUDIO v2.0")
+    print("=" * 70)
+
+    if not os.path.exists(DB_PATH):
+        print(f"[!] FATAL: Database file missing at {DB_PATH}")
+        sys.exit(1)
+
+    try:
+        with open(DB_PATH, "r", encoding="utf-8") as f:
+            catalog = json.load(f)
+    except Exception as e:
+        print(f"[!] FATAL: Failed to parse {DB_PATH}: {e}")
+        sys.exit(1)
+
+    is_valid, validation_errors = validate_catalog(catalog)
+    if not is_valid:
+        print(f"[!] FATAL: Database contract validation failed ({len(validation_errors)} errors):")
+        for err in validation_errors[:10]:
+            print(f"    - {err}")
+        sys.exit(1)
+
+    meta = catalog.get("metadata", {})
+    print(f"  [+] Catalog Contract Verified:")
+    print(f"      • Schema Version:  {meta.get('schema_version', '2.0.0')}")
+    print(f"      • Total Tools:     {meta.get('total_tools', 'N/A')}")
+    print(f"      • Total Recipes:   {meta.get('total_recipes', 'N/A')}")
+    for env_name, env_data in meta.get("environments", {}).items():
+        print(f"        - {env_name.upper():<8}: {env_data.get('tools')} tools | {env_data.get('recipes')} recipes")
+
+    # 2. Environment Capability Detection
+    runners = get_environment_runners()
+    print("\n  [+] Runtime Environment Runners:")
+    print(f"      • Linux / WSL2:    {'[READY] ' + runners['wsl'] if runners['wsl'] else '[DISABLED - WSL Not Found]'}")
+    ps_label = "PowerShell 7 (pwsh)" if runners["is_pwsh7"] else "Windows PowerShell 5"
+    print(f"      • Windows Shell:   {'[READY] ' + ps_label + ' (' + runners['powershell'] + ')' if runners['powershell'] else '[DISABLED]'}")
+    print(f"      • Android / ADB:   {'[READY] ' + runners['adb'] if runners['adb'] else '[DISABLED - ADB Not Found]'}")
+
+    print("\n  [+] Safety Model:")
+    print(f"      • Default Action:  1-Click Copy to Clipboard")
+    print(f"      • Live Execution:  Safety Confirmation Gate Active")
+    print(f"      • Audit Trail:     {AUDIT_LOG_PATH}")
+
+    # 3. Threaded HTTP Server Launch
+    server = ThreadingHTTPServer(("127.0.0.1", PORT), CommandScoutHandler)
     url = f"http://127.0.0.1:{PORT}"
-    print("=" * 65)
-    print("       COMMANDSCOUT: TACTICAL SYNTAX & SCAFFOLDING STUDIO")
-    print(f"       Running on: {url}")
-    print("=" * 65)
-    print(">> Mitigating hand fatigue: 1-click syntax copy & parameter builder.")
-    print(">> Opening browser UI automatically...\n")
-    
+    print("-" * 70)
+    print(f"  [*] Server active on: \033[1;36m{url}\033[0m")
+    print("  [*] Launching tactical browser interface...\n")
+    print("=" * 70)
+
     webbrowser.open(url)
 
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\n[CommandScout] Shutting down cleanly. Stay tactical.")
+        print("\n[CommandScout] Server shut down cleanly. Stay tactical.")
         server.server_close()
+
 
 if __name__ == "__main__":
     start_server()

@@ -1,0 +1,49 @@
+{
+  "schema_version": "2.0.0",
+  "updated_at": "2026-09-30",
+  "description": "CommandScout Hardware Sensors & Target Telemetry Registry",
+  "sensors": {
+    "sdr": {
+      "name": "Signals Intelligence SDR",
+      "model": "Nooelec NESDR SMArt v5",
+      "chipset": "RTL2832U + Rafael Micro R820T",
+      "frequencies_hz": {
+        "adsb_1090": 1090000000,
+        "noaa_15": 137912500,
+        "noaa_18": 137912500,
+        "noaa_19": 137100000,
+        "meteor_m2": 137900000,
+        "iss_voice_fm": 145800000
+      },
+      "default_sample_rate": 1024000,
+      "ppm_offset": 0
+    },
+    "wifi": {
+      "name": "Tactical Wi-Fi Adapter",
+      "model": "Qualcomm Atheros AR9271",
+      "chipset": "Qualcomm Atheros AR9271",
+      "interface_managed": "wlan0",
+      "interface_monitor": "wlan1mon",
+      "packet_injection": true,
+      "bands": ["2.4 GHz"]
+    },
+    "android": {
+      "name": "Mobile Android Lab Targets",
+      "primary_target": {
+        "model": "Samsung Galaxy S24 FE",
+        "transport": "USB/ADB",
+        "default_port": 5555
+      },
+      "secondary_target": {
+        "model": "Revoview AS65U",
+        "transport": "Wireless ADB",
+        "default_port": 5555
+      }
+    },
+    "host": {
+      "os": "Windows 11 (PowerShell 7.6.5 + WSL2 Kali)",
+      "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU (CUDA 13.3/13.4)",
+      "ollama_endpoint": "http://127.0.0.1:11434"
+    }
+  }
+}
