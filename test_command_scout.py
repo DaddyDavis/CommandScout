@@ -178,10 +178,38 @@ class TestCommandScoutServer(unittest.TestCase):
         with urllib.request.urlopen(req, timeout=10) as res:
             self.assertEqual(res.status, 200)
             data = json.loads(res.read().decode("utf-8"))
-            self.assertEqual(data["status"], "success")
-            self.assertEqual(data["exit_code"], 0)
-            self.assertIn("CommandScout_Safe_Execution_Confirmed", data["stdout"])
+            self.assertEqual(data["status"], "started")
+            self.assertIn("task_id", data)
+            task_id = data["task_id"]
+
+        # Poll task until complete
+        task_url = f"http://127.0.0.1:{self.test_port}/api/tasks/{task_id}"
+        completed = False
+        start = time.time()
+        task_info = {}
+        while time.time() - start < 8:
+            with urllib.request.urlopen(task_url, timeout=5) as t_res:
+                task_info = json.loads(t_res.read().decode("utf-8"))
+                if task_info.get("status") == "COMPLETED":
+                    completed = True
+                    break
+            time.sleep(0.3)
+
+        self.assertTrue(completed, f"Task did not complete in time. Last status: {task_info.get('status')}")
+        self.assertEqual(task_info.get("exit_code"), 0)
+        self.assertIn("CommandScout_Safe_Execution_Confirmed", task_info.get("stdout", ""))
+
+    def test_11_tasks_list_endpoint(self):
+        url = f"http://127.0.0.1:{self.test_port}/api/tasks"
+        with urllib.request.urlopen(url, timeout=5) as res:
+            self.assertEqual(res.status, 200)
+            data = json.loads(res.read().decode("utf-8"))
+            self.assertIn("active_count", data)
+            self.assertIn("total_count", data)
+            self.assertIn("tasks", data)
+            self.assertIsInstance(data["tasks"], list)
 
 
 if __name__ == "__main__":
     unittest.main()
+

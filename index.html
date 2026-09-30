@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CommandScout | Tactical Syntax & Scaffolding Studio</title>
   <link rel="icon" type="image/x-icon" href="/commandscout.ico">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- 100% Offline Typography: Prioritizes local system fonts (Cascadia Code / Consolas / Segoe UI) with zero cloud dependencies -->
   <style>
     :root {
       --bg-deep: #030508;
@@ -39,7 +37,7 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-deep);
       color: var(--text-main);
       min-height: 100vh;
@@ -56,11 +54,11 @@
       position: sticky;
       top: 0;
       z-index: 50;
-      padding: 12px 28px;
+      padding: 12px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
     }
 
     .brand-group {
@@ -84,7 +82,7 @@
     }
 
     .brand-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       background: linear-gradient(90deg, #fff, #94a3b8);
@@ -93,23 +91,71 @@
     }
 
     .brand-subtitle {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--accent-cyan);
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
 
-    .catalog-stat-badge {
+    /* Active Operations Radar Button (Live Running Task Indicator) */
+    .active-ops-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+    }
+
+    .active-ops-pill:hover {
+      border-color: var(--accent-cyan);
+      background: var(--bg-card-hover);
+    }
+
+    .active-ops-pill.running {
+      background: rgba(255, 179, 0, 0.12);
+      border-color: var(--accent-amber);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(255, 179, 0, 0.25);
+    }
+
+    .ops-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+    }
+
+    .active-ops-pill.running .ops-dot {
+      background: var(--accent-amber);
+      animation: pulse-glow 1.2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-glow {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.4); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
+    /* Offline Badge */
+    .offline-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid rgba(0, 229, 255, 0.3);
+      background: rgba(0, 255, 102, 0.08);
+      border: 1px solid rgba(0, 255, 102, 0.25);
       padding: 4px 10px;
       border-radius: 20px;
-      font-size: 0.75rem;
-      color: var(--accent-cyan);
+      font-size: 0.72rem;
+      color: var(--accent-green);
       font-weight: 600;
     }
 
@@ -127,15 +173,15 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: var(--radius-sm);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
     }
 
     .env-btn:hover {
@@ -152,7 +198,7 @@
     /* Live Search Bar */
     .search-box {
       position: relative;
-      width: 300px;
+      width: 260px;
     }
 
     .search-input {
@@ -160,9 +206,9 @@
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       color: #fff;
-      padding: 9px 14px 9px 38px;
+      padding: 8px 12px 8px 36px;
       border-radius: var(--radius-md);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       outline: none;
       transition: all 0.2s ease;
     }
@@ -186,15 +232,15 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       cursor: pointer;
       user-select: none;
     }
 
     .switch-track {
-      width: 34px;
-      height: 18px;
+      width: 32px;
+      height: 16px;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
@@ -203,8 +249,8 @@
     }
 
     .switch-thumb {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       background: var(--text-dim);
       border-radius: 50%;
       position: absolute;
@@ -227,13 +273,13 @@
     .studio-container {
       display: flex;
       flex: 1;
-      height: calc(100vh - 150px);
+      height: calc(100vh - 145px);
       overflow: hidden;
     }
 
-    /* Left Sidebar: Tools Navigation */
+    /* Left Sidebar: Tools */
     .sidebar {
-      width: 340px;
+      width: 330px;
       background: var(--bg-surface);
       border-right: 1px solid var(--border-subtle);
       display: flex;
@@ -242,7 +288,7 @@
     }
 
     .sidebar-header {
-      padding: 16px 20px;
+      padding: 14px 18px;
       border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
@@ -250,7 +296,7 @@
     }
 
     .sidebar-title {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -261,7 +307,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      padding: 12px 18px;
+      padding: 10px 16px;
       border-bottom: 1px solid var(--border-subtle);
       background: rgba(5, 8, 14, 0.5);
     }
@@ -350,14 +396,14 @@
       text-overflow: ellipsis;
     }
 
-    /* Center Stage: Recipes & Parameter Scaffolding */
+    /* Center Stage */
     .center-stage {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      padding: 24px 32px;
-      gap: 20px;
+      padding: 20px 28px;
+      gap: 18px;
       background: radial-gradient(circle at top right, rgba(6, 182, 212, 0.03) 0%, transparent 60%);
     }
 
@@ -366,11 +412,11 @@
       flex-direction: column;
       gap: 6px;
       border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 16px;
+      padding-bottom: 14px;
     }
 
     .tool-banner-title {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -378,7 +424,7 @@
     }
 
     .tool-banner-cat {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       padding: 3px 10px;
       border-radius: 20px;
@@ -388,39 +434,36 @@
     }
 
     .tool-banner-desc {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
       max-width: 900px;
       line-height: 1.5;
     }
 
-    /* Recipe Cards Grid */
     .recipe-section-title {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
-      margin-top: 8px;
     }
 
     .recipe-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 12px;
     }
 
     .recipe-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 16px;
+      padding: 14px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
+      gap: 6px;
+      transition: all 0.2s ease;
     }
 
     .recipe-card:hover {
@@ -431,20 +474,20 @@
 
     .recipe-card.active {
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.15);
       background: linear-gradient(180deg, var(--bg-card-hover) 0%, var(--bg-card) 100%);
     }
 
     .recipe-card-title {
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: #fff;
     }
 
     .recipe-card-desc {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
     /* Parameters Configuration Deck */
@@ -452,15 +495,14 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      margin-top: 10px;
+      gap: 12px;
     }
 
     .params-title {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -472,8 +514,8 @@
 
     .params-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
     }
 
     .param-field {
@@ -483,7 +525,7 @@
     }
 
     .param-label {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--text-muted);
     }
@@ -492,10 +534,10 @@
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       color: #fff;
-      padding: 9px 12px;
+      padding: 8px 12px;
       border-radius: var(--radius-sm);
-      font-size: 0.88rem;
-      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
       outline: none;
       transition: all 0.15s ease;
     }
@@ -505,15 +547,15 @@
       box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
     }
 
-    /* Bottom Live HUD Console & Quick Actions */
+    /* Bottom Live HUD Console */
     .hud-footer {
       background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-deep) 100%);
       border-top: 1px solid var(--border-subtle);
-      padding: 14px 28px;
+      padding: 12px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
       position: sticky;
       bottom: 0;
       z-index: 40;
@@ -524,15 +566,15 @@
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 12px 18px;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.95rem;
+      padding: 10px 16px;
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.92rem;
       color: #38bdf8;
       overflow-x: auto;
       white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
       user-select: all;
       cursor: text;
@@ -547,28 +589,28 @@
     .action-buttons {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .btn-copy {
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
       color: #000;
       border: none;
-      padding: 12px 24px;
+      padding: 11px 22px;
       border-radius: var(--radius-sm);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.15s ease;
       box-shadow: 0 0 16px rgba(6, 182, 212, 0.3);
+      transition: all 0.15s ease;
     }
 
     .btn-copy:hover {
       transform: translateY(-1px);
-      box-shadow: 0 0 22px rgba(6, 182, 212, 0.5);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
     }
 
     .btn-copy.copied {
@@ -581,9 +623,9 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       color: #fff;
-      padding: 12px 18px;
+      padding: 11px 16px;
       border-radius: var(--radius-sm);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -597,11 +639,11 @@
       border-color: var(--accent-blue);
     }
 
-    /* Modal Styles */
+    /* Modals */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(6px);
       z-index: 200;
       display: none;
@@ -619,7 +661,7 @@
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
       width: 100%;
-      max-width: 780px;
+      max-width: 820px;
       max-height: 85vh;
       display: flex;
       flex-direction: column;
@@ -627,7 +669,7 @@
     }
 
     .modal-header {
-      padding: 16px 20px;
+      padding: 14px 20px;
       border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
@@ -658,8 +700,8 @@
     .modal-body {
       padding: 20px;
       overflow-y: auto;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.88rem;
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.85rem;
       color: #cbd5e1;
       background: var(--bg-deep);
       white-space: pre-wrap;
@@ -667,12 +709,12 @@
     }
 
     .modal-footer {
-      padding: 14px 20px;
+      padding: 12px 20px;
       border-top: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 12px;
+      gap: 10px;
       background: var(--bg-surface);
       border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     }
@@ -681,7 +723,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       color: var(--text-muted);
-      padding: 9px 16px;
+      padding: 8px 16px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       font-weight: 600;
@@ -691,13 +733,91 @@
       background: linear-gradient(135deg, #e11d48, #be123c);
       color: #fff;
       border: none;
-      padding: 9px 20px;
+      padding: 8px 18px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       font-weight: 700;
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .btn-kill {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-kill:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    /* Active Ops Table */
+    .ops-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+    }
+
+    .ops-table th {
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+    }
+
+    .ops-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+    }
+
+    .ops-table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-running {
+      background: rgba(255, 179, 0, 0.2);
+      color: var(--accent-amber);
+      border: 1px solid var(--accent-amber);
+    }
+
+    .status-completed {
+      background: rgba(0, 255, 102, 0.15);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
+    }
+
+    .status-failed {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid #ef4444;
+    }
+
+    .status-cancelled {
+      background: rgba(148, 163, 184, 0.2);
+      color: #cbd5e1;
+      border: 1px solid #94a3b8;
     }
 
     .risk-banner {
@@ -733,34 +853,40 @@
       <div class="logo-badge">CS</div>
       <div>
         <div class="brand-title">COMMANDSCOUT</div>
-        <div class="brand-subtitle">Tactical Syntax & Scaffolding Studio v2.0</div>
+        <div class="brand-subtitle">Tactical Syntax & Scaffolding Studio v2.1</div>
       </div>
-      <span class="catalog-stat-badge" id="catalog-stat-badge">
-        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-green);"></span>
-        <span id="catalog-stat-text">111 Tools | 417 Recipes</span>
+      <span class="offline-badge" title="100% Offline-First Architecture (Localhost only, zero cloud dependencies)">
+        <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-green);"></span>
+        100% Offline
       </span>
+    </div>
+
+    <!-- Active Operations Radar (Visual Running Jobs Tracker) -->
+    <div class="active-ops-pill" id="active-ops-pill" onclick="openTasksModal()" title="View Active Running Operations & Background Jobs">
+      <span class="ops-dot" id="ops-dot"></span>
+      <span id="active-ops-label">0 Active Ops</span>
     </div>
 
     <!-- Dual Environment Switcher -->
     <div class="env-switcher">
       <button class="env-btn active" id="btn-env-linux" onclick="switchEnvironment('linux')">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.865 8.166 6.839 9.489.5.09.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.53 1.03 1.53 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.865 8.166 6.839 9.489.5.09.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.53 1.03 1.53 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
         Linux / Kali
       </button>
       <button class="env-btn" id="btn-env-windows" onclick="switchEnvironment('windows')">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.951-1.801"/></svg>
+        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.951-1.801"/></svg>
         Windows / PS 7
       </button>
       <button class="env-btn" id="btn-env-android" onclick="switchEnvironment('android')">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.0833 12 8.0833s-3.5902.3283-5.1368.8664L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.0833 12 8.0833s-3.5902.3283-5.1368.8664L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
         Android / ADB
       </button>
     </div>
 
     <!-- Live Search Bar -->
     <div class="search-box">
-      <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" class="search-input" id="search-input" placeholder="Search commands, tools, flags..." oninput="handleSearch()">
+      <svg class="search-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" class="search-input" id="search-input" placeholder="Search 417 recipes, tools, flags..." oninput="handleSearch()">
     </div>
 
     <!-- Trusted Mode Toggle -->
@@ -841,11 +967,11 @@
       </div>
       <div class="modal-body" style="background: var(--bg-surface);">
         <div id="risk-banner-container"></div>
-        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Target Environment Runner:</div>
-        <div id="modal-target-runner" style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 16px;"></div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">Target Environment Runner:</div>
+        <div id="modal-target-runner" style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 14px;"></div>
         
-        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Verified Command to Execute:</div>
-        <div id="modal-command-preview" style="background: var(--bg-deep); padding: 14px; border-radius: 8px; border: 1px solid var(--border-subtle); color: #38bdf8; margin-bottom: 16px;"></div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">Verified Command to Execute:</div>
+        <div id="modal-command-preview" style="background: var(--bg-deep); padding: 14px; border-radius: 8px; border: 1px solid var(--border-subtle); color: #38bdf8; margin-bottom: 14px;"></div>
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeSafetyModal()">Cancel / Copy Instead</button>
@@ -856,7 +982,38 @@
     </div>
   </div>
 
-  <!-- Terminal Output Modal -->
+  <!-- Active Operations Console Modal (Tracks Multi-Jobs) -->
+  <div class="modal-overlay" id="tasks-modal">
+    <div class="modal-card" style="max-width: 900px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span style="color: var(--accent-cyan);">⚡ Active Operations & Background Jobs</span>
+        </div>
+        <button class="modal-close" onclick="closeTasksModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="background: var(--bg-surface); padding: 10px;">
+        <table class="ops-table">
+          <thead>
+            <tr>
+              <th style="width: 110px;">Status</th>
+              <th style="width: 90px;">Runner</th>
+              <th>Command Line</th>
+              <th style="width: 80px;">Elapsed</th>
+              <th style="width: 140px; text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ops-table-body">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 24px;">No active operations currently running.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeTasksModal()">Close Console</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Output Log Modal -->
   <div class="modal-overlay" id="output-modal">
     <div class="modal-card">
       <div class="modal-header">
@@ -865,7 +1022,7 @@
       </div>
       <div class="modal-body" id="output-modal-body"></div>
       <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeOutputModal()">Close</button>
+        <button class="btn-secondary" onclick="closeOutputModal()">Minimize to Background</button>
       </div>
     </div>
   </div>
@@ -880,6 +1037,9 @@
     let currentParamValues = {};
     let trustedMode = false;
     let audioCtx = null;
+    let activeTasksCache = [];
+    let activeStreamTaskId = null;
+    let pollInterval = null;
 
     function playChime() {
       try {
@@ -899,17 +1059,6 @@
       } catch (e) {}
     }
 
-    // Safe text escaping for DOM
-    function escapeText(str) {
-      if (str === null || str === undefined) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
-
     async function loadDatabase() {
       try {
         const [resDb, resHealth, resSensors] = await Promise.all([
@@ -922,13 +1071,6 @@
           database = await resDb.json();
           if (resHealth && resHealth.ok) {
             const h = await resHealth.json();
-            if (h.metadata) {
-              const meta = h.metadata;
-              const badge = document.getElementById('catalog-stat-text');
-              if (badge && meta.total_tools && meta.total_recipes) {
-                badge.textContent = `${meta.total_tools} Tools | ${meta.total_recipes} Recipes`;
-              }
-            }
             if (h.settings && h.settings.trusted_local_mode !== undefined) {
               trustedMode = h.settings.trusted_local_mode;
               updateTrustedUI();
@@ -950,8 +1092,190 @@
       if (database[currentEnv] && database[currentEnv].length > 0) {
         selectTool(database[currentEnv][0].id);
       }
+      startTaskPolling();
     }
 
+    /* -------------------------------------------------------------
+       Background Task Monitoring & Multi-Job Polling Loop
+       ------------------------------------------------------------- */
+    function startTaskPolling() {
+      if (pollInterval) clearInterval(pollInterval);
+      pollTasks();
+      pollInterval = setInterval(pollTasks, 1500);
+    }
+
+    async function pollTasks() {
+      try {
+        const res = await fetch('/api/tasks');
+        if (!res.ok) return;
+        const data = await res.json();
+        activeTasksCache = data.tasks || [];
+        updateOpsIndicator(data.active_count, activeTasksCache);
+
+        // If tasks modal is open, re-render table
+        if (document.getElementById('tasks-modal').classList.contains('open')) {
+          renderTasksTable();
+        }
+
+        // If live stream output modal is tracking a task, fetch its latest output
+        if (activeStreamTaskId && document.getElementById('output-modal').classList.contains('open')) {
+          pollTaskOutput(activeStreamTaskId);
+        }
+      } catch (e) {}
+    }
+
+    function updateOpsIndicator(activeCount, tasks) {
+      const pill = document.getElementById('active-ops-pill');
+      const label = document.getElementById('active-ops-label');
+
+      if (activeCount > 0) {
+        pill.classList.add('running');
+        const runningTask = tasks.find(t => t.status === 'RUNNING');
+        const cmdSnippet = runningTask ? runningTask.command.substring(0, 18) + '...' : '';
+        const elapsed = runningTask ? formatElapsed(runningTask.elapsed_sec) : '';
+        
+        if (activeCount === 1) {
+          label.textContent = `⚡ 1 Running: ${cmdSnippet} (${elapsed})`;
+        } else {
+          label.textContent = `⚡ ${activeCount} Ops Running (${elapsed})`;
+        }
+      } else {
+        pill.classList.remove('running');
+        label.textContent = `0 Active Ops`;
+      }
+    }
+
+    function formatElapsed(sec) {
+      if (!sec) sec = 0;
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function openTasksModal() {
+      renderTasksTable();
+      document.getElementById('tasks-modal').classList.add('open');
+    }
+
+    function closeTasksModal() {
+      document.getElementById('tasks-modal').classList.remove('open');
+    }
+
+    function renderTasksTable() {
+      const tbody = document.getElementById('ops-table-body');
+      tbody.innerHTML = '';
+
+      if (activeTasksCache.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 24px;">No command tasks recorded.</td></tr>';
+        return;
+      }
+
+      activeTasksCache.forEach(t => {
+        const tr = document.createElement('tr');
+
+        // Status badge
+        const tdStatus = document.createElement('td');
+        const badge = document.createElement('span');
+        badge.className = `status-badge status-${t.status.toLowerCase()}`;
+        badge.textContent = t.status;
+        tdStatus.appendChild(badge);
+
+        // Runner
+        const tdRunner = document.createElement('td');
+        tdRunner.style.color = 'var(--accent-cyan)';
+        tdRunner.style.fontWeight = '600';
+        tdRunner.textContent = t.env.toUpperCase();
+
+        // Command Line
+        const tdCmd = document.createElement('td');
+        tdCmd.style.fontFamily = "'Fira Code', 'Cascadia Code', monospace";
+        tdCmd.style.color = '#fff';
+        tdCmd.textContent = t.command;
+
+        // Elapsed
+        const tdElapsed = document.createElement('td');
+        tdElapsed.style.color = 'var(--text-muted)';
+        tdElapsed.textContent = formatElapsed(t.elapsed_sec);
+
+        // Actions
+        const tdActions = document.createElement('td');
+        tdActions.style.textAlign = 'right';
+
+        const btnView = document.createElement('button');
+        btnView.className = 'btn-secondary';
+        btnView.style.padding = '4px 10px';
+        btnView.style.fontSize = '0.75rem';
+        btnView.style.marginRight = '6px';
+        btnView.textContent = 'View Log';
+        btnView.onclick = () => openTaskStream(t.task_id, t.command);
+
+        tdActions.appendChild(btnView);
+
+        if (t.status === 'RUNNING') {
+          const btnKill = document.createElement('button');
+          btnKill.className = 'btn-kill';
+          btnKill.textContent = 'Kill Task';
+          btnKill.onclick = () => killTask(t.task_id);
+          tdActions.appendChild(btnKill);
+        }
+
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdRunner);
+        tr.appendChild(tdCmd);
+        tr.appendChild(tdElapsed);
+        tr.appendChild(tdActions);
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function killTask(taskId) {
+      try {
+        await fetch(`/api/tasks/${taskId}/kill`, { method: 'POST' });
+        pollTasks();
+      } catch (e) {}
+    }
+
+    async function openTaskStream(taskId, command) {
+      activeStreamTaskId = taskId;
+      const modal = document.getElementById('output-modal');
+      const modalTitle = document.getElementById('output-modal-title');
+      modalTitle.textContent = `Task Stream: [${taskId}] ${command.substring(0, 35)}...`;
+      modal.classList.add('open');
+      pollTaskOutput(taskId);
+    }
+
+    async function pollTaskOutput(taskId) {
+      try {
+        const res = await fetch(`/api/tasks/${taskId}`);
+        if (!res.ok) return;
+        const task = await res.json();
+        const body = document.getElementById('output-modal-body');
+
+        let text = `>> TASK ID:    ${task.task_id}\n`;
+        text += `>> STATUS:     ${task.status} (${formatElapsed(task.elapsed_sec)} elapsed)\n`;
+        text += `>> RUNNER:     ${task.env.toUpperCase()} (PID: ${task.pid || 'N/A'})\n`;
+        text += `>> COMMAND:    ${task.command}\n`;
+        text += `----------------------------------------------------------------------\n`;
+
+        if (task.stdout) text += `--- STDOUT ---\n${task.stdout}\n`;
+        if (task.stderr) text += `--- STDERR ---\n${task.stderr}\n`;
+        if (!task.stdout && !task.stderr && task.status === 'RUNNING') {
+          text += `[Process is running in background. Waiting for output buffer...]\n`;
+        }
+
+        body.textContent = text;
+        body.scrollTop = body.scrollHeight;
+      } catch (e) {}
+    }
+
+    function closeOutputModal() {
+      activeStreamTaskId = null;
+      document.getElementById('output-modal').classList.remove('open');
+    }
+
+    /* -------------------------------------------------------------
+       UI Navigation & Selection
+       ------------------------------------------------------------- */
     function switchEnvironment(env) {
       currentEnv = env;
       document.getElementById('btn-env-linux').classList.toggle('active', env === 'linux');
@@ -1090,7 +1414,6 @@
         container.appendChild(card);
       });
 
-      // Default select first recipe
       selectRecipe(activeTool.recipes[0]);
     }
 
@@ -1103,7 +1426,6 @@
         cardElement.classList.add('active');
       }
 
-      // Initialize default param values
       if (recipe.params && recipe.params.length > 0) {
         recipe.params.forEach(p => {
           currentParamValues[p.key] = p.default || '';
@@ -1154,7 +1476,6 @@
       if (!activeRecipe) return;
       let cmd = activeRecipe.template;
 
-      // Replace {{key}} placeholders with current values
       for (const [key, val] of Object.entries(currentParamValues)) {
         const regex = new RegExp(`{{${key}}}`, 'g');
         cmd = cmd.replace(regex, val || `<${key}>`);
@@ -1191,7 +1512,6 @@
         } catch (e) {}
       }
 
-      // Backend audio chime notification
       try {
         fetch('/api/copy', {
           method: 'POST',
@@ -1226,19 +1546,17 @@
         return;
       }
 
-      // Open Safety Confirmation Gate
       const runner = getTargetRunner();
       document.getElementById('modal-target-runner').textContent = runner.name;
       document.getElementById('modal-command-preview').textContent = cmd;
 
-      // Risk analysis
       const riskContainer = document.getElementById('risk-banner-container');
       riskContainer.innerHTML = '';
       const highRiskRegex = /(sudo |format |rm -rf|dd if=|pkill|kill -9|reboot|shutdown|wipe|uninstall)/i;
       if (highRiskRegex.test(cmd)) {
         const banner = document.createElement('div');
         banner.className = 'risk-banner';
-        banner.innerHTML = '<strong>⚠️ High-Privilege / State-Changing Operation:</strong> This command involves elevated privileges, disk operations, or process termination. Review parameters before running.';
+        banner.innerHTML = '<strong>⚠️ High-Privilege / State-Changing Operation:</strong> This command involves elevated privileges, package upgrades, or disk operations. Review parameters before running.';
         riskContainer.appendChild(banner);
       }
 
@@ -1254,14 +1572,6 @@
       const cmd = document.getElementById('live-command-text').textContent;
       const runner = getTargetRunner();
 
-      const modal = document.getElementById('output-modal');
-      const modalBody = document.getElementById('output-modal-body');
-      const modalTitle = document.getElementById('output-modal-title');
-
-      modal.classList.add('open');
-      modalTitle.textContent = `Running in ${runner.name}...`;
-      modalBody.textContent = `>> [CommandScout Safety Gate: Passed]\n>> Target Runner: ${runner.name}\n>> Executing: ${cmd}\n\nPlease wait...\n`;
-
       try {
         const res = await fetch('/api/execute', {
           method: 'POST',
@@ -1274,21 +1584,16 @@
         });
 
         const data = await res.json();
-        if (data.status === 'error') {
-          modalBody.textContent += `\n[SERVER REJECTION - ${data.code}]: ${data.message}`;
-        } else {
-          modalBody.textContent = `>> Exit Code: ${data.exit_code} (Duration: ${data.duration_ms} ms)\n\n`;
-          if (data.stdout) modalBody.textContent += `--- STDOUT ---\n${data.stdout}\n`;
-          if (data.stderr) modalBody.textContent += `--- STDERR ---\n${data.stderr}\n`;
-          if (!data.stdout && !data.stderr) modalBody.textContent += `[Command finished with no output]`;
+        if (data.status === 'started') {
+          // Immediately stream task output in modal and refresh Active Ops indicator
+          openTaskStream(data.task_id, cmd);
+          pollTasks();
+        } else if (data.status === 'error') {
+          alert(`[Safety Rejection]: ${data.message}`);
         }
       } catch (e) {
-        modalBody.textContent += `\n[COMMUNICATION ERROR]: ${e}`;
+        alert(`[Connection Error]: ${e}`);
       }
-    }
-
-    function closeOutputModal() {
-      document.getElementById('output-modal').classList.remove('open');
     }
 
     async function toggleTrustedMode() {
@@ -1313,6 +1618,7 @@
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeSafetyModal();
+        closeTasksModal();
         closeOutputModal();
       }
     });

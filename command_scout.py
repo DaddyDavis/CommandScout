@@ -6,6 +6,8 @@ Austin Davis Technical Portfolio | Project 11
 ================================================================================
 Key Architectural Hardening:
 - Threaded non-blocking server (ThreadingHTTPServer)
+- Asynchronous Background Task Manager & Multi-Job Tracker (ACTIVE_TASKS)
+- Live process execution monitoring & task termination (/api/tasks, /api/tasks/<id>/kill)
 - Deliberate Execution Safety Gate with Confirmation & Audit Trail (audit_log.jsonl)
 - Distinct environment runners for Linux/WSL2 Kali, Windows/PowerShell 7, and Android/ADB
 - Startup schema contract validation (JSON Schema compliance for 111 tools / 417 recipes)
@@ -23,6 +25,7 @@ import subprocess
 import webbrowser
 import shlex
 import re
+import threading
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
 from datetime import datetime, timezone
@@ -45,9 +48,126 @@ PORT = 8899
 # Global server settings
 SERVER_SETTINGS = {
     "trusted_local_mode": False,   # When False, explicit confirmation required on /api/execute
-    "command_timeout_sec": 60,
+    "command_timeout_sec": 300,    # 5-minute timeout for long jobs like winget upgrade --all
     "audit_enabled": True
 }
+
+# ==============================================================================
+# ASYNCHRONOUS TASK & MULTI-JOB MONITORING REGISTRY
+# ==============================================================================
+TASKS_LOCK = threading.Lock()
+ACTIVE_TASKS = {}
+TASK_COUNTER = 0
+
+
+class CommandTask:
+    def __init__(self, task_id: str, command: str, env: str, shell_args: list[str], client_ip: str):
+        self.task_id = task_id
+        self.command = command
+        self.env = env
+        self.shell_args = shell_args
+        self.client_ip = client_ip
+        self.status = "RUNNING"
+        self.start_time = time.time()
+        self.end_time = None
+        self.exit_code = None
+        self.stdout = ""
+        self.stderr = ""
+        self.process = None
+        self.thread = None
+
+    def start(self):
+        self.thread = threading.Thread(target=self._run, daemon=True)
+        self.thread.start()
+
+    def _run(self):
+        try:
+            self.process = subprocess.Popen(
+                self.shell_args,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                bufsize=1
+            )
+
+            stdout_lines = []
+            stderr_lines = []
+
+            def read_pipe(pipe, acc):
+                try:
+                    for line in iter(pipe.readline, ''):
+                        acc.append(line)
+                except Exception:
+                    pass
+                finally:
+                    pipe.close()
+
+            t_out = threading.Thread(target=read_pipe, args=(self.process.stdout, stdout_lines), daemon=True)
+            t_err = threading.Thread(target=read_pipe, args=(self.process.stderr, stderr_lines), daemon=True)
+            t_out.start()
+            t_err.start()
+
+            # Wait for process to terminate or timeout
+            try:
+                self.process.wait(timeout=SERVER_SETTINGS["command_timeout_sec"])
+            except subprocess.TimeoutExpired:
+                self.terminate()
+                self.status = "TIMED_OUT"
+                self.stderr += f"\n[CommandScout] Process timed out after {SERVER_SETTINGS['command_timeout_sec']} seconds."
+                return
+
+            t_out.join(timeout=2)
+            t_err.join(timeout=2)
+
+            self.stdout = "".join(stdout_lines)
+            self.stderr = "".join(stderr_lines)
+            self.exit_code = self.process.returncode
+            if self.status != "CANCELLED":
+                self.status = "COMPLETED" if self.exit_code == 0 else "FAILED"
+
+        except Exception as e:
+            self.stderr += f"\nProcess execution error: {e}"
+            self.status = "FAILED"
+            self.exit_code = -1
+        finally:
+            self.end_time = time.time()
+            duration_ms = (self.end_time - self.start_time) * 1000
+            play_chime("ok" if self.exit_code == 0 else "warn")
+            record_audit(self.env, self.command, True, self.exit_code or -1, duration_ms, self.client_ip, self.stdout, self.stderr)
+
+    def terminate(self) -> bool:
+        if self.process and self.status == "RUNNING":
+            self.status = "CANCELLED"
+            try:
+                if sys.platform == "win32":
+                    subprocess.run(["taskkill", "/F", "/T", "/PID", str(self.process.pid)],
+                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                else:
+                    self.process.terminate()
+            except Exception:
+                pass
+            self.end_time = time.time()
+            return True
+        return False
+
+    def to_dict(self, include_output: bool = False) -> dict:
+        now = time.time()
+        elapsed = (self.end_time or now) - self.start_time
+        data = {
+            "task_id": self.task_id,
+            "command": self.command,
+            "env": self.env,
+            "status": self.status,
+            "start_time": self.start_time,
+            "end_time": self.end_time,
+            "elapsed_sec": round(elapsed, 1),
+            "exit_code": self.exit_code,
+            "pid": self.process.pid if self.process else None
+        }
+        if include_output:
+            data["stdout"] = self.stdout
+            data["stderr"] = self.stderr
+        return data
 
 
 def play_chime(sound_type="asterisk"):
@@ -63,7 +183,6 @@ def play_chime(sound_type="asterisk"):
             return
         except Exception:
             pass
-    # Cross-platform terminal bell fallback
     try:
         sys.stdout.write("\a")
         sys.stdout.flush()
@@ -78,7 +197,6 @@ def copy_to_clipboard(text: str) -> bool:
         return False
 
     if sys.platform == "win32":
-        # 1. Native Windows clip.exe
         try:
             subprocess.run(["clip.exe"], input=text_clean.encode("utf-16le"), check=True, timeout=5)
             play_chime("asterisk")
@@ -86,7 +204,6 @@ def copy_to_clipboard(text: str) -> bool:
         except Exception:
             pass
 
-        # 2. Fallback to PowerShell Set-Clipboard
         try:
             subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", "Set-Clipboard -Value $input"],
                            input=text_clean, text=True, check=True, timeout=5)
@@ -97,7 +214,6 @@ def copy_to_clipboard(text: str) -> bool:
             return False
 
     elif sys.platform == "darwin":
-        # macOS pbcopy
         try:
             subprocess.run(["pbcopy"], input=text_clean.encode("utf-8"), check=True, timeout=5)
             play_chime("asterisk")
@@ -105,7 +221,6 @@ def copy_to_clipboard(text: str) -> bool:
         except Exception:
             return False
     else:
-        # Linux / WSL xclip or wl-copy
         for tool in [["xclip", "-selection", "clipboard"], ["wl-copy"]]:
             if shutil.which(tool[0]):
                 try:
@@ -118,7 +233,6 @@ def copy_to_clipboard(text: str) -> bool:
 
 
 def locate_executable(name: str, fallback_paths: list[str] = None) -> str | None:
-    """Finds binary path on system PATH or known paths."""
     found = shutil.which(name)
     if found:
         return found
@@ -130,7 +244,6 @@ def locate_executable(name: str, fallback_paths: list[str] = None) -> str | None
 
 
 def get_environment_runners():
-    """Detects available execution engines on the host."""
     wsl_bin = locate_executable("wsl.exe", [r"C:\Windows\System32\wsl.exe"])
     pwsh_bin = locate_executable("pwsh.exe", [r"C:\Program Files\PowerShell\7\pwsh.exe"])
     ps_bin = locate_executable("powershell.exe", [r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"])
@@ -150,7 +263,6 @@ def get_environment_runners():
 
 
 def validate_catalog(db: dict) -> tuple[bool, list[str]]:
-    """Strict schema validator for command catalog."""
     errors = []
     required_envs = ["linux", "windows", "android"]
     
@@ -186,7 +298,6 @@ def validate_catalog(db: dict) -> tuple[bool, list[str]]:
                     errors.append(f"[{env}/{t_id}/{r_id}] Missing 'template'")
                     continue
 
-                # Check placeholders match params
                 placeholders = re.findall(r"\{\{([a-zA-Z0-9_-]+)\}\}", template)
                 param_keys = {p.get("key") for p in r.get("params", []) if isinstance(p, dict)}
                 for ph in placeholders:
@@ -197,7 +308,6 @@ def validate_catalog(db: dict) -> tuple[bool, list[str]]:
 
 
 def record_audit(env: str, command: str, confirmed: bool, exit_code: int, duration_ms: float, client_ip: str, stdout: str, stderr: str):
-    """Appends structured JSON execution entry to audit_log.jsonl."""
     if not SERVER_SETTINGS["audit_enabled"]:
         return
     entry = {
@@ -223,7 +333,6 @@ class CommandScoutHandler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=STATIC_DIR, **kwargs)
 
     def send_json(self, status_code: int, data: dict):
-        """Sends clean UTF-8 JSON response."""
         body = json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8")
         self.send_response(status_code)
         self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -255,10 +364,15 @@ class CommandScoutHandler(SimpleHTTPRequestHandler):
                 except Exception:
                     pass
 
+            with TASKS_LOCK:
+                active_count = sum(1 for t in ACTIVE_TASKS.values() if t.status == "RUNNING")
+
             self.send_json(200, {
                 "status": "healthy",
                 "service": "CommandScout Studio",
                 "port": PORT,
+                "offline_mode": True,
+                "active_tasks_count": active_count,
                 "runners": {
                     "wsl": runners["wsl"] is not None,
                     "powershell": runners["powershell"] is not None,
@@ -294,6 +408,31 @@ class CommandScoutHandler(SimpleHTTPRequestHandler):
                 self.send_json_error(500, "SENSORS_READ_ERROR", f"Error reading sensors.json: {e}")
             return
 
+        elif parsed.path == "/api/tasks":
+            # List all tasks with active summary
+            with TASKS_LOCK:
+                task_list = [t.to_dict(include_output=False) for t in ACTIVE_TASKS.values()]
+                task_list.sort(key=lambda x: x["start_time"], reverse=True)
+                active_count = sum(1 for t in task_list if t["status"] == "RUNNING")
+
+            self.send_json(200, {
+                "active_count": active_count,
+                "total_count": len(task_list),
+                "tasks": task_list[:30]
+            })
+            return
+
+        elif parsed.path.startswith("/api/tasks/"):
+            # Get individual task details with live stdout/stderr
+            task_id = parsed.path[len("/api/tasks/"):].strip()
+            with TASKS_LOCK:
+                task = ACTIVE_TASKS.get(task_id)
+            if not task:
+                self.send_json_error(404, "TASK_NOT_FOUND", f"Task '{task_id}' was not found.")
+                return
+            self.send_json(200, task.to_dict(include_output=True))
+            return
+
         elif parsed.path == "/api/audit":
             entries = []
             if os.path.exists(AUDIT_LOG_PATH):
@@ -304,12 +443,13 @@ class CommandScoutHandler(SimpleHTTPRequestHandler):
                                 entries.append(json.loads(line.strip()))
                 except Exception as e:
                     print(f"[!] Error reading audit log: {e}")
-            self.send_json(200, {"entries": entries[-50:]})  # Last 50 executions
+            self.send_json(200, {"entries": entries[-50:]})
             return
 
         return super().do_GET()
 
     def do_POST(self):
+        global TASK_COUNTER
         parsed = urlparse(self.path)
         length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(length).decode("utf-8") if length > 0 else "{}"
@@ -333,35 +473,47 @@ class CommandScoutHandler(SimpleHTTPRequestHandler):
             return
 
         elif parsed.path == "/api/settings":
-            # Allows UI to toggle trusted mode
             if "trusted_local_mode" in payload:
                 SERVER_SETTINGS["trusted_local_mode"] = bool(payload["trusted_local_mode"])
             self.send_json(200, {"status": "success", "settings": SERVER_SETTINGS})
             return
+
+        elif parsed.path.startswith("/api/tasks/") and parsed.path.endswith("/kill"):
+            # Terminate running task: /api/tasks/<id>/kill
+            parts = parsed.path.split("/")
+            if len(parts) >= 4:
+                task_id = parts[3]
+                with TASKS_LOCK:
+                    task = ACTIVE_TASKS.get(task_id)
+                if not task:
+                    self.send_json_error(404, "TASK_NOT_FOUND", f"Task '{task_id}' not found.")
+                    return
+                killed = task.terminate()
+                self.send_json(200, {
+                    "status": "cancelled" if killed else "already_terminated",
+                    "task_id": task_id
+                })
+                return
 
         elif parsed.path == "/api/execute":
             cmd = payload.get("command", "").strip()
             raw_env = payload.get("env", "powershell").lower().strip()
             confirmed = bool(payload.get("confirmed", False))
 
-            # 1. Validation & Safety Confirmation Gate
             if not cmd:
                 self.send_json_error(400, "EMPTY_COMMAND", "Command text cannot be empty.")
                 return
 
-            # Check for unresolved template placeholders e.g. <target_ip> or {{interface}}
             if re.search(r"\{\{[a-zA-Z0-9_-]+\}\}", cmd):
                 self.send_json_error(400, "UNRESOLVED_PLACEHOLDERS", "Command contains unpopulated template parameters.")
                 return
 
-            # Unless trusted_local_mode is enabled on server, require explicit confirmation
             if not SERVER_SETTINGS["trusted_local_mode"] and not confirmed:
                 self.send_json_error(403, "CONFIRMATION_REQUIRED",
                                      "Execution safety gate active. Please confirm live execution in the modal.",
                                      {"command": cmd, "env": raw_env})
                 return
 
-            # 2. Environment Routing & Binary Verification
             runners = get_environment_runners()
             shell_args = []
             normalized_env = "powershell"
@@ -371,15 +523,13 @@ class CommandScoutHandler(SimpleHTTPRequestHandler):
                 if not runners["wsl"]:
                     self.send_json_error(503, "WSL_UNAVAILABLE", "WSL2 executable (wsl.exe) was not found on this host.")
                     return
-                # Route through WSL2 bash
                 shell_args = [runners["wsl"], "bash", "-c", cmd]
 
             elif raw_env in ["android", "adb"]:
                 normalized_env = "adb"
                 if not runners["adb"]:
-                    self.send_json_error(503, "ADB_UNAVAILABLE", "Android Debug Bridge (adb.exe) was not found on this host. Ensure Android SDK platform-tools is installed.")
+                    self.send_json_error(503, "ADB_UNAVAILABLE", "Android Debug Bridge (adb.exe) was not found on this host.")
                     return
-                # Route through adb
                 if cmd.startswith("adb "):
                     clean_sub = cmd[4:].strip()
                     shell_args = [runners["adb"]] + shlex.split(clean_sub)
@@ -387,60 +537,39 @@ class CommandScoutHandler(SimpleHTTPRequestHandler):
                     shell_args = [runners["adb"], "shell", cmd]
 
             else:
-                # Default: PowerShell
                 normalized_env = "powershell"
                 if not runners["powershell"]:
                     self.send_json_error(503, "POWERSHELL_UNAVAILABLE", "PowerShell binary was not found on this host.")
                     return
                 shell_args = [runners["powershell"], "-NoProfile", "-NonInteractive", "-Command", cmd]
 
-            # 3. Execution & Performance Timer
-            print(f"\n[CommandScout] Live Execution Gate Passed: ({normalized_env}) -> {cmd}")
-            start_time = time.perf_counter()
-            client_ip = self.client_address[0] if self.client_address else "127.0.0.1"
+            # Generate Unique Task ID and Launch in Background
+            with TASKS_LOCK:
+                TASK_COUNTER += 1
+                task_id = f"task_{TASK_COUNTER}_{int(time.time())}"
+                client_ip = self.client_address[0] if self.client_address else "127.0.0.1"
+                task = CommandTask(task_id, cmd, normalized_env, shell_args, client_ip)
+                ACTIVE_TASKS[task_id] = task
 
-            try:
-                proc = subprocess.run(
-                    shell_args,
-                    capture_output=True,
-                    text=True,
-                    timeout=SERVER_SETTINGS["command_timeout_sec"]
-                )
-                duration_ms = (time.perf_counter() - start_time) * 1000
-                play_chime("ok" if proc.returncode == 0 else "warn")
+            print(f"\n[CommandScout] Task Launched [{task_id}] ({normalized_env}): {cmd}")
+            task.start()
 
-                # Audit logging
-                record_audit(normalized_env, cmd, confirmed, proc.returncode, duration_ms, client_ip, proc.stdout, proc.stderr)
-
-                self.send_json(200, {
-                    "status": "success",
-                    "env": normalized_env,
-                    "command": cmd,
-                    "exit_code": proc.returncode,
-                    "stdout": proc.stdout,
-                    "stderr": proc.stderr,
-                    "duration_ms": round(duration_ms, 2)
-                })
-
-            except subprocess.TimeoutExpired:
-                duration_ms = (time.perf_counter() - start_time) * 1000
-                record_audit(normalized_env, cmd, confirmed, -1, duration_ms, client_ip, "", "Command timed out.")
-                self.send_json_error(408, "TIMEOUT", f"Execution timed out after {SERVER_SETTINGS['command_timeout_sec']} seconds.")
-
-            except Exception as e:
-                duration_ms = (time.perf_counter() - start_time) * 1000
-                record_audit(normalized_env, cmd, confirmed, -1, duration_ms, client_ip, "", str(e))
-                self.send_json_error(500, "EXECUTION_EXCEPTION", f"Subprocess failed: {e}")
-
+            # Return task ID immediately so UI can monitor it asynchronously
+            self.send_json(200, {
+                "status": "started",
+                "task_id": task_id,
+                "command": cmd,
+                "env": normalized_env,
+                "message": "Task dispatched to background execution."
+            })
             return
 
         self.send_json_error(404, "ENDPOINT_NOT_FOUND", f"Endpoint {parsed.path} does not exist.")
 
 
 def start_server():
-    # 1. Database Contract Validation
     print("=" * 70)
-    print("       COMMANDSCOUT: TACTICAL SYNTAX & SCAFFOLDING STUDIO v2.0")
+    print("       COMMANDSCOUT: TACTICAL SYNTAX & SCAFFOLDING STUDIO v2.1")
     print("=" * 70)
 
     if not os.path.exists(DB_PATH):
@@ -469,20 +598,19 @@ def start_server():
     for env_name, env_data in meta.get("environments", {}).items():
         print(f"        - {env_name.upper():<8}: {env_data.get('tools')} tools | {env_data.get('recipes')} recipes")
 
-    # 2. Environment Capability Detection
     runners = get_environment_runners()
     print("\n  [+] Runtime Environment Runners:")
-    print(f"      • Linux / WSL2:    {'[READY] ' + runners['wsl'] if runners['wsl'] else '[DISABLED - WSL Not Found]'}")
+    print(f"      • Linux / WSL2:    {'[READY] ' + runners['wsl'] if runners['wsl'] else '[DISABLED]'}")
     ps_label = "PowerShell 7 (pwsh)" if runners["is_pwsh7"] else "Windows PowerShell 5"
     print(f"      • Windows Shell:   {'[READY] ' + ps_label + ' (' + runners['powershell'] + ')' if runners['powershell'] else '[DISABLED]'}")
-    print(f"      • Android / ADB:   {'[READY] ' + runners['adb'] if runners['adb'] else '[DISABLED - ADB Not Found]'}")
+    print(f"      • Android / ADB:   {'[READY] ' + runners['adb'] if runners['adb'] else '[DISABLED]'}")
 
-    print("\n  [+] Safety Model:")
+    print("\n  [+] Operational Mode:")
+    print(f"      • Deployment:      100% Offline-First (Localhost Only)")
+    print(f"      • Task Monitoring: Live Multi-Job Background Registry Active")
     print(f"      • Default Action:  1-Click Copy to Clipboard")
-    print(f"      • Live Execution:  Safety Confirmation Gate Active")
     print(f"      • Audit Trail:     {AUDIT_LOG_PATH}")
 
-    # 3. Threaded HTTP Server Launch
     server = ThreadingHTTPServer(("127.0.0.1", PORT), CommandScoutHandler)
     url = f"http://127.0.0.1:{PORT}"
     print("-" * 70)
