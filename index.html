@@ -617,13 +617,16 @@
       </div>
     </div>
 
-    <!-- Dual Environment Selector -->
+    <!-- Triple Environment Selector -->
     <div class="env-switcher">
       <button class="env-btn active" id="btn-env-linux" onclick="switchEnvironment('linux')">
-        Linux / Kali Security
+        Linux / Kali
       </button>
       <button class="env-btn" id="btn-env-windows" onclick="switchEnvironment('windows')">
-        Windows / PowerShell
+        Windows / PS
+      </button>
+      <button class="env-btn" id="btn-env-android" onclick="switchEnvironment('android')">
+        Android / ADB
       </button>
     </div>
 
@@ -753,7 +756,7 @@
     function initUI() {
       renderCategoryPills();
       renderToolList();
-      if (database[currentEnv].length > 0) {
+      if (database[currentEnv] && database[currentEnv].length > 0) {
         selectTool(database[currentEnv][0].id);
       }
     }
@@ -762,14 +765,22 @@
       currentEnv = env;
       document.getElementById('btn-env-linux').classList.toggle('active', env === 'linux');
       document.getElementById('btn-env-windows').classList.toggle('active', env === 'windows');
-      document.getElementById('prompt-prefix').textContent = env === 'linux' ? 'user@kali:~$' : 'PS C:\\Users\\Austin>';
+      document.getElementById('btn-env-android').classList.toggle('active', env === 'android');
+
+      if (env === 'linux') {
+        document.getElementById('prompt-prefix').textContent = 'user@kali:~$';
+      } else if (env === 'windows') {
+        document.getElementById('prompt-prefix').textContent = 'PS C:\\Users\\Austin>';
+      } else {
+        document.getElementById('prompt-prefix').textContent = 'android:adb~$';
+      }
       
       currentCategory = 'ALL';
       document.getElementById('search-input').value = '';
       renderCategoryPills();
       renderToolList();
 
-      if (database[currentEnv].length > 0) {
+      if (database[currentEnv] && database[currentEnv].length > 0) {
         selectTool(database[currentEnv][0].id);
       }
     }
@@ -1007,7 +1018,8 @@
       const modalTitle = document.getElementById('modal-title');
 
       modal.classList.add('open');
-      modalTitle.textContent = `Executing in ${currentEnv === 'linux' ? 'WSL2 Kali' : 'PowerShell'}...`;
+      const envLabel = currentEnv === 'linux' ? 'WSL2 Kali' : (currentEnv === 'android' ? 'Android ADB' : 'PowerShell');
+      modalTitle.textContent = `Executing in ${envLabel}...`;
       modalOutput.textContent = `>> [CommandScout] Running: ${cmd}\n\nPlease wait...\n`;
 
       try {
